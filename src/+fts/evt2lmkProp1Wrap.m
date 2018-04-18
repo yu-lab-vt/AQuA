@@ -41,7 +41,7 @@ for nn=1:numel(evts)
     msk(evt0) = 1;
     datS = datS.*msk;
     
-    % landmark
+    % put landmark inside cropped event
     lmkMsk1 = cell(nLmk,1);
     for ii=1:nLmk
         [h0l,w0l] = ind2sub([H,W],lmkLst{ii});
@@ -62,7 +62,7 @@ for nn=1:numel(evts)
         end
     end
     
-    res1 = burst.evt2lmkProp1(datS,lmkMsk1);
+    res1 = fts.evt2lmkProp1(datS,lmkMsk1);
     chgToward(nn,:) = res1.chgToward;
     chgAway(nn,:) = res1.chgAway;
     chgTowardBefReach(nn,:) = res1.chgTowardBefReach;

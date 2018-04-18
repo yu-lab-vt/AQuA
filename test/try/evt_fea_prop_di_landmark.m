@@ -38,7 +38,7 @@ for ii=1:nLmk
 end
 
 %% all events
-rr = burst.evt2lmkProp1Wrap(dRecon,evts,lmkMsk);
+rr = fts.evt2lmkProp1Wrap(dRecon,evts,lmkMsk);
 
 %% single event
 nn = 19;

@@ -6,17 +6,15 @@ function res = evt2lmkProp1(datS,lmkMsk)
 nLmk = numel(lmkMsk);
 
 thrRg = 0.2:0.1:0.8;
-% thrRg = 0.5;
 chgToward = zeros(1,nLmk);
 chgAway = zeros(1,nLmk);
 chgTowardBefReach = zeros(1,nLmk);
 chgAwayAftReach = zeros(1,nLmk);
 for kk=1:numel(thrRg)
-%     fprintf('%d\n',kk)
     evt0 = datS>thrRg(kk);
     loc0 = find(evt0>0);
     
-    % should not happen
+    % meet an empty event, should not happen
     if isempty(loc0)
         continue
     end
@@ -35,11 +33,9 @@ for kk=1:numel(thrRg)
         end
     end
     
-    % distance to landmarks
+    % distance of valid pixels to landmarks
     % use the center of the landmark
-    % use geodesic distance
-    % % if landmark outside event, use a pixel in event closest to landmark as landmark
-    % if landmark outside event, use Euclidean distances
+    % use geodesic distance; if landmark outside event, use Euclidean distances
     D = cell(nLmk,1);
     evt0s = squeeze(sum(evt0,3)>0);
     for ii=1:nLmk
@@ -50,8 +46,6 @@ for kk=1:numel(thrRg)
         if sum(evt0s(msk00>0))==0
             [h1,w1] = find(evt0s>0);
             dist00 = sqrt((h1-h00).^2+(w1-w00).^2);
-            %[~,ix] = min(dist00);
-            %msk00 = zeros(H,W); msk00(h1(ix),w1(ix)) = 1;
             tmp = zeros(H,W);
             tmp(evt0s>0) = dist00;
         else
@@ -60,10 +54,10 @@ for kk=1:numel(thrRg)
         D{ii} = tmp;
     end
     
-    % frontier tracking
-    bdLst = cell(numel(tRg),1);
+    % regions and boundaries per frame
+    bdLst = cell(numel(tRg),1);  % boundaries in each frame
     lblMap = zeros(H,W,numel(tRg));    
-    ccLst = cell(numel(tRg),1);
+    ccLst = cell(numel(tRg),1);  % region lists in each frame
     for ii=1:numel(tRg)
         xCur = evt0(:,:,tRg(ii));
         [B,L] = bwboundaries(xCur,8,'noholes');
@@ -72,19 +66,16 @@ for kk=1:numel(thrRg)
         ccLst{ii} = label2idx(L);
     end
 
-    dxAllPos = zeros(numel(tRg),nLmk);
-    dxAllNeg = zeros(numel(tRg),nLmk);
-    tReach = nan(1,nLmk);
+    % frontier change tracking per frame
+    dxAllPos = zeros(numel(tRg),nLmk);  % change toward landmark
+    dxAllNeg = zeros(numel(tRg),nLmk);  % change away from landmark
+    tReach = nan(1,nLmk);  % time for reaching a landmark
     for ii=2:numel(tRg)
+        % check reach the landmark or not
         lblCur = lblMap(:,:,ii);
         for jj=1:nLmk
-            % !! suffient coverage of landmark
-            %tmp = lmkMsk{jj}; 
-            %n00 = sum(tmp(:)>0);
             n11 = sum(lblCur(lmkMsk{jj}>0));
             insideLmk = n11>0;
-            %insideLmk = n11>n00*0.5;
-            %insideLmk = n11>10 || n11>n00*0.3;
             if insideLmk && isnan(tReach(jj))
                 tReach(jj) = ii;
             end
@@ -93,11 +84,11 @@ for kk=1:numel(thrRg)
         ccCur = ccLst{ii};
         lblPre = lblMap(:,:,ii-1);
         for jj=1:numel(ccCur)
-            % cc in previous frame that connect to this cc
+            % regions in previous frame that connect to this region
             cc0 = ccCur{jj};
             lblSel = unique(lblPre(cc0));
             lblSel = lblSel(lblSel>0);
-            if isempty(lblSel)
+            if isempty(lblSel)  % this region is new, no propagation
                 continue
             end
             
@@ -105,10 +96,11 @@ for kk=1:numel(thrRg)
             % we use some ad hocs:
             % smaller pre area has higher distance penalty
             % multiple pre area could compete
-            % if a previous cc is too small itself and/or relative to current cc, ignore it
-            % may not be the correct one, but looks more comfortable
-            bdPre = [];
-            bdPreWt = [];
+            % if a previous cc is too small itself relative to current cc, ignore
+            % may not be biologically correct, but looks more comfortable
+            
+            bdPre = [];  % location of the boundaries of previous frame region
+            bdPreWt = [];  % boundary weight for choosing propagtion origin
             n0c = numel(cc0);
             for uu=1:numel(lblSel)
                 n0 = numel(ccLst{ii-1}{lblSel(uu)});
@@ -124,7 +116,6 @@ for kk=1:numel(thrRg)
             end
             
             % current boundary, the ending point of propagation
-            % or use all increased pixels?
             % do not include boundary that is active in previous frame
             % we only use the incresing signals
 
@@ -136,20 +127,20 @@ for kk=1:numel(thrRg)
             
             % link each pixel in bdCur to a pixel in bdPre
             % for each landmark, find the distance change for each pair
-            % positive change is away from landmark
+            % positive change is toward the landmark
             % if pixCur contains landmark, it is treated as two parts
             dxPos = zeros(numel(bdCur),nLmk);
             dxNeg = zeros(numel(bdCur),nLmk);
             [h0,w0] = ind2sub([H,W],bdCur);
             [h1,w1] = ind2sub([H,W],bdPre);
             for uu=1:numel(bdCur)
-                % closest starting frontier point                                
+                % weighted closest starting frontier point                          
                 d00 = sqrt((h0(uu)-h1).^2+(w0(uu)-w1).^2);
                 d01 = d00.*bdPreWt;
                 [~,ix] = min(d01);
                 d00min = d00(ix);                
                 
-                % find path between points
+                % find path between points by drawing a line
                 h0a = h0(uu); w0a = w0(uu); h1a = h1(ix); w1a = w1(ix);                
                 wGap = (w1a-w0a)/max(round(d00min),1);
                 hGap = (h1a-h0a)/max(round(d00min),1);
@@ -164,7 +155,7 @@ for kk=1:numel(thrRg)
                 end                
                 hwx = sub2ind([H,W],hx,wx);
 
-                % propagation distance w.r.t landmarks
+                % propagation distance w.r.t. landmarks
                 for vv=1:nLmk
                     D0 = D{vv};
                     dp0 = D0(hwx);
@@ -180,18 +171,24 @@ for kk=1:numel(thrRg)
                 tmp2 = zeros(H,W); bd2 = bdCur(dxNeg(:,lmkSel)>0); tmp2(bd2) = 1;
                 tmp3 = lmkMsk{vv}*0.3; tmp3(bdPre) = 1;
                 tmp = cat(3,tmp1,tmp2,tmp3); figure;imshow(tmp)                
-                text(20,20,sprintf('Toward %f - Away %f',sum(dxPos(:,lmkSel)),sum(dxNeg(:,lmkSel))),'Color','y');
+                text(20,20,sprintf('Toward %f - Away %f',...
+                    sum(dxPos(:,lmkSel)),sum(dxNeg(:,lmkSel))),'Color','y');
                 %pause(2); 
                 keyboard
                 close
             end
             
+            % combine results from pixels
             dxAllPos(ii,:) = dxAllPos(ii,:) + sum(dxPos,1);
             dxAllNeg(ii,:) = dxAllNeg(ii,:) + sum(dxNeg,1);
         end
     end
+    
+    % combine results from regions
     chgToward = chgToward + sum(dxAllPos,1);
     chgAway = chgAway + sum(dxAllNeg,1);
+    
+    % split results to before and after reaching landmarks
     for ii=1:nLmk
         if ~isnan(tReach(ii))
             t1 = min(tReach(ii)+1,numel(tRg));
