@@ -1,0 +1,5 @@
+Name,Script
+Index,x=1:nEvt
+Area,x=sqrt(fts.basic.area)
+Duration,x=sqrt(fts.curve.width55)
+Max Dff,x=sqrt(fts.curve.dffMax)
