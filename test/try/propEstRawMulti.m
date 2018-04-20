@@ -12,7 +12,9 @@ save([p0,f0,'_dF.mat'],'df_uint8');
 p0 = 'D:\neuro_WORK\glia_kira\tmp\propRaw\';
 f0 = '2x_135um_reg_gcampwLP_10min_moco_Substack (301-500)';
 load([p0,f0,'_res.mat']);
+load([p0,f0,'_dat.mat']);
 load([p0,f0,'_df.mat']);
+dat = double(dat_uint8)/255;
 df = double(df_uint8)/255;
 
 % an event

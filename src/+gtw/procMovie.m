@@ -75,8 +75,8 @@ riseLst = cell(nSe,1);
 riseMapLst = cell(nSe,1);
 dwLst = cell(nSe,1);
 rgt1Lst = cell(nSe,1);
-% for nn=1:nSe
-for nn=18
+for nn=1:nSe
+% for nn=18
     fprintf('%d/%d\n',nn,nSe)
     nnx = seSel(nn);  % (super) event index
     se0 = seLst{nn};  % voxles in this event

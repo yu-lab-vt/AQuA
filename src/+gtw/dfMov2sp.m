@@ -40,6 +40,7 @@ dFx = df0ip;
 Sx = 1*(m0==seSel);
 
 thrVec = 0:thrMax;
+% thrVec = 0;
 
 tMapMT = gtw.getMovPixelMapMultiThr(dFx,Sx,thrVec,s00);
 % tMapMT = burst.getSuperEventRisingMapMultiThr(dFx,Sx,thrVec,s00);
