@@ -1,4 +1,4 @@
-function [lblMapEx,riseMap,riseX] = getSpDelay(dat,lblMap,dL,opts)
+function [lblMapEx,riseMap,riseX] = getSpDelay(dat,lblMap,opts)
 % getSpDelay get the delay of each super pixel
 
 [H,W,T] = size(dat);
@@ -14,7 +14,7 @@ datSmoBase = min(movmean(datSmo,K,3),[],3);
 dfSmo = datSmo - datSmoBase;
 
 % extend super voxels
-lblMapEx = burst.extendVoxGrp(lblMap,dfSmo,dL,opts.varEst);
+lblMapEx = burst.extendVoxGrp(lblMap,dfSmo,ones(size(lblMap)),opts.varEst);
 
 % rising time
 thrx = (0:7)*sqrt(opts.varEst);

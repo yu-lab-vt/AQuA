@@ -130,8 +130,6 @@ for nGrow=1:maxGrow
     % add pixels to FIU
     twVecPre = twMap(validMap>0,:);
     if sum(twVec0(:)<0)>0
-        %fprintf('Time window fixed\n')
-        %keyboard
         twVec0(twVec0<0) = twVecPre(twVec0<0);  % !! bug in GTW path
     end
     
@@ -139,14 +137,7 @@ for nGrow=1:maxGrow
     isBad = zeros(nPix,1);
     sz0 = zeros(nPix,1);
     for ii=1:nPix
-        %         tw0 = twVecPre(ii,:);
         tw1 = twVec0(ii,:);
-        %         if abs(tw0(3)-tw1(3))>2 || abs(tw0(4)-tw1(4))>2  % !! hard constraint
-        %             isBad(ii) = 1;
-        %             continue
-        %         end
-        %a = max(tw1(3)-1,tw1(1));
-        %b = min(tw1(4)+1,tw1(2));
         a = tw1(1);
         b = tw1(2);
         y = tst(ii,a:b);
@@ -191,19 +182,6 @@ res.sz = sz(fiux>0);
 res.szAll = sum(res.sz)/sqrt(numel(res.sz));
 res.pixBad = find(pixBad>0);
 res.bdsCell = bdsCell(fiux>0);
-% if numel(res.pixNew)>0
-%     ref1 = reshape(nanmean(tst2RefVec(fiuxIdx>0,:),1),[],1);
-%     ref0 = reshape(charxIn,[],1);
-%     n1 = numel(res.pixNew);
-%     n0 = sum(fiux(:)>0)-n1;
-%     res.charxIn = nan(1,Tin);
-%     res.charxIn(tx0:tx1) = (ref1*n1+ref0*n0)/(n0+n1);
-%     if sum(~isnan(res.charxIn))==0
-%         res = [];
-%         %         fprintf('Growing error\n')
-%         %         keyboard
-%     end
-% end
 res.stg=1;
 
 end

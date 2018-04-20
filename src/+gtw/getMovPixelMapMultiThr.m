@@ -7,7 +7,7 @@ Mx = sum(Sx,3)>0;
 SxMin = nanmin(Sx(:));
 Sx(Sx>0) = Sx(Sx>0)-SxMin+1;
 
-szVec = zeros(size(thrVec))+16;
+szVec = zeros(size(thrVec))+4;
 tMapMT = zeros(H0,W0,numel(thrVec));
 for ii=1:numel(thrVec)    
     dFxHi = dFx>thrVec(ii)*s00;

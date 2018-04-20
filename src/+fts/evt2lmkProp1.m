@@ -5,12 +5,26 @@ function res = evt2lmkProp1(datS,lmkMsk)
 [H,W,T] = size(datS);
 nLmk = numel(lmkMsk);
 
+if H*W*T>100^3
+    isBig = 1;
+    fprintf('Propagation for landmark ...\n')
+else
+    isBig = 0;
+end
+
 thrRg = 0.2:0.1:0.8;
 chgToward = zeros(1,nLmk);
 chgAway = zeros(1,nLmk);
 chgTowardBefReach = zeros(1,nLmk);
 chgAwayAftReach = zeros(1,nLmk);
+pixTwd = zeros(H*W,nLmk);
+pixAwy = zeros(H*W,nLmk);
+
 for kk=1:numel(thrRg)
+    if isBig>0
+        fprintf('%d ',kk)
+    end
+    
     evt0 = datS>thrRg(kk);
     loc0 = find(evt0>0);
     
@@ -36,18 +50,21 @@ for kk=1:numel(thrRg)
     % distance of valid pixels to landmarks
     % use the center of the landmark
     % use geodesic distance; if landmark outside event, use Euclidean distances
+    % keep landmark simple
     D = cell(nLmk,1);
     evt0s = squeeze(sum(evt0,3)>0);
     for ii=1:nLmk
         msk00 = lmkMsk{ii};
         [h0,w0] = find(msk00>0);
-        h00 = mean(h0); w00 = mean(w0);
-        msk00 = zeros(H,W); msk00(max(round(h00),1),max(round(w00),1)) = 1;
+        %h00 = mean(h0); w00 = mean(w0);
+        %msk00 = zeros(H,W); msk00(max(round(h00),1),max(round(w00),1)) = 1;
         if sum(evt0s(msk00>0))==0
             [h1,w1] = find(evt0s>0);
-            dist00 = sqrt((h1-h00).^2+(w1-w00).^2);
-            tmp = zeros(H,W);
-            tmp(evt0s>0) = dist00;
+            tmp = inf(H,W);
+            for jj=1:numel(h0)
+                dist00 = sqrt((h1-h0(jj)).^2+(w1-w0(jj)).^2);            
+                tmp(evt0s>0) = min(tmp(evt0s),dist00);
+            end
         else
             tmp = bwdistgeodesic(evt0s,msk00>0);
         end        
@@ -155,16 +172,20 @@ for kk=1:numel(thrRg)
                 end                
                 hwx = sub2ind([H,W],hx,wx);
 
-                % propagation distance w.r.t. landmarks
+                % propagation distance w.r.t. landmarks, per pixel
                 for vv=1:nLmk
                     D0 = D{vv};
                     dp0 = D0(hwx);
                     dp0Min = min(dp0);
                     dxPos(uu,vv) = max(D0(h1a,w1a)-dp0Min,0);  % toward
-                    dxNeg(uu,vv) = max(D0(h0a,w0a)-dp0Min,0);  % away               
+                    dxNeg(uu,vv) = max(D0(h0a,w0a)-dp0Min,0);  % away
                 end
             end
             
+            % gather pixel level propagation w.r.t. landmarks
+            pixTwd(bdCur,:) = pixTwd(bdCur,:)+dxPos;
+            pixAwy(bdCur,:) = pixAwy(bdCur,:)+dxNeg;           
+                        
             if 0
                 lmkSel = 2;
                 tmp1 = zeros(H,W); bd1 = bdCur(dxPos(:,lmkSel)>0); tmp1(bd1) = 1;
@@ -202,6 +223,12 @@ res.chgToward = chgToward;
 res.chgAway = chgAway;
 res.chgTowardBefReach = chgTowardBefReach;
 res.chgAwayAftReach = chgAwayAftReach;
+res.pixelToward = reshape(pixTwd,H,W,nLmk);
+res.pixelAway = reshape(pixAwy,H,W,nLmk);
+
+if isBig>0
+    fprintf(' OK\n')
+end
 
 end
 

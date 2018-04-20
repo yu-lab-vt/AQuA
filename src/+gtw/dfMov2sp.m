@@ -1,4 +1,4 @@
-function [df0ip,dfm,intMap,spSz,spLst,spMap1] = dfMov2sp(df0,m0,vMap0,seSel,varEst)
+function [df0ip,dfm,intMap,spSz,spLst] = dfMov2sp(df0,m0,vMap0,seSel,riseOnly,varEst)
 % dfMov2sp convert df movie to super pixels emphasizing bright parts
 % df0 may contain missing values
 
@@ -12,7 +12,7 @@ df0ip = df0;
 df0NanMap = sum(isnan(df0),3);
 [ih,iw] = find(df0NanMap>0);
 for ii=1:numel(ih)
-    if mod(ii,10000)==0; fprintf('%d\n',ii); end
+    %if mod(ii,100000)==0; fprintf('%d\n',ii); end
     ih0 = ih(ii);
     iw0 = iw(ii);
     x0 = squeeze(df0(ih0,iw0,:));
@@ -29,6 +29,7 @@ for ii=1:numel(ih)
     x0i = x0;
     df0ip(ih0,iw0,:) = x0i;
 end
+df0ip(isnan(df0ip)) = 0;
 
 % ----------------------------------------------------------------
 % emphasize on the bright parts
@@ -38,16 +39,18 @@ thrMax = ceil(quantile(df0ip(:),0.99)/s00);
 dFx = df0ip;
 Sx = 1*(m0==seSel);
 
-thrVec = 1:thrMax;
+thrVec = 0:thrMax;
+
 tMapMT = gtw.getMovPixelMapMultiThr(dFx,Sx,thrVec,s00);
 % tMapMT = burst.getSuperEventRisingMapMultiThr(dFx,Sx,thrVec,s00);
 
 nThr = numel(thrVec);
 intMap = nan(H0,W0);
 areaPerThr = zeros(nThr,1);
-baseSz = 10;
+% baseSz = 10;
 for ii=nThr:-1:1
-    minSz = (nThr+1-ii)*baseSz;
+    %minSz = (nThr+1-ii)*baseSz;
+    minSz = 4;
     newMap = ~isnan(tMapMT(:,:,ii)) & isnan(intMap);
     newMap = bwareaopen(newMap,minSz,4);
     
@@ -67,7 +70,11 @@ end
 % ----------------------------------------------------------------
 % super pixels
 
-nNodeUB = round(100*100*100/T0);
+if riseOnly>0
+    nNodeUB = round(100*100*100/T0);
+else
+    nNodeUB = round(100*100*70/T0);
+end
 spSzBase = max(sum(areaPerThr./(nThr:-1:1)')/nNodeUB,8);
 spSz = spSzBase*(nThr:-1:1)';
 
@@ -94,12 +101,17 @@ for ii=nThr:-1:1
             rgh1 = max(sh00-1,1):min(sh00+1,H0);
             rgw1 = max(sw00-1,1):min(sw00+1,W0);
             nb0 = spMapUsed(rgh1,rgw1);
-            if intMap(sh00,sw00)==ii && sum(nb0(:))==0 && usedRatio<0.5
+            if sum(intMap(pix00)==ii)>0 && sum(nb0(:))==0 && usedRatio<0.5
+            %if intMap(sh00,sw00)==ii && sum(nb0(:))==0 && usedRatio<0.5
                 spSeedMap(sh00,sw00) = ii;
                 spMapUsed(pix00) = 1;
             end
         end
     end
+end
+
+if sum(spSeedMap(:))==0
+    keyboard
 end
 
 % assign pixels to seeds
@@ -113,7 +125,7 @@ pWeit = nan(nPix,nNeib);  % weight to neighbor seeds
 pixMap = zeros(H0,W0);
 pixMap(:) = 1:nPix;
 for ii=1:numel(sh)
-    if mod(ii,1000)==0; fprintf('%d\n',ii); end
+    %if mod(ii,1000)==0; fprintf('%d\n',ii); end
     sh0 = sh(ii);
     sw0 = sw(ii);
     
@@ -162,66 +174,19 @@ lbl0 = pNeib1(5*(0:(nPix-1))+ix')';
 % lbl0 = spIdxMap(lbl0);
 spMap1 = zeros(H0,W0);
 spMap1(:) = lbl0;
-spMap1(vMap0==0) = 0;
+% vMap0di = imdilate(vMap0>0,strel('square',5));
+% spMap1(vMap0di==0) = 0;
 
 spLst = label2idx(spMap1);
+spLst = spLst(~cellfun(@isempty,spLst));
 
-% ov1 = plt.regionMapWithData(uint32(spMap1),spMap1*0,0.75); 
-% tmp = ov1(:,:,1); tmp(spSeedMap>0) = 255; ov1(:,:,1) = tmp;
-% tmp = ov1(:,:,2); tmp(spSeedMap>0) = 0; ov1(:,:,2) = tmp;
-% tmp = ov1(:,:,3); tmp(spSeedMap>0) = 0; ov1(:,:,3) = tmp;
-% zzshow(ov1);
-
-% -----------------------------------------------------------------------------
-% for ii=1:nThr
-%     mapCur = intMap==ii;
-%     %mapPre = intMap<ii;
-%     mapNxt = intMap>ii;
-%     if max(mapCur(:))>0
-%         A = dfm;
-%         A(spMap>0) = -10000;
-%         nx = round(H0*W0/spSz(ii));
-%         L0 = superpixels(A,nx);
-%         spLst0 = label2idx(L0);
-%         L0a = zeros(H0,W0);
-%         for nn=1:numel(spLst0)
-%             % do not intrude higher level
-%             % contain pixels in valid map (optional)
-%             % do not overlap with lower level map (optional)
-%             %pix00 = spLst0{nn};
-%             %if sum(mapNxt(pix00))==0 && sum(vMap0(pix00))>0 && numel(pix00)>=4
-%             if sum(mapNxt(spLst0{nn}))==0  && sum(spMap(spLst0{nn}))==0 && sum(mapCur(spLst0{nn}))>0
-%                 L0a(spLst0{nn}) = nn;
-%             end
-%         end
-%         L0a(spMap>0) = 0;
-%         %ov1x = plt.regionMapWithData(uint32(L0),L0*0,0.75);zzshow(ov1x);
-%         %ov1x = plt.regionMapWithData(uint32(L0a),L0a*0,0.75);zzshow(ov1x);
-%         
-%         nCnt = max(spMap(:));
-%         spMap(L0a>0) = L0a(L0a>0)+nCnt;
-%     end
-% end
-% 
-% spLst = label2idx(spMap);
-% spLst = spLst(~cellfun(@isempty,spLst));
-% 
-% spMap1 = zeros(H0,W0);
-% for nn=1:numel(spLst)
-%     spMap1(spLst{nn}) = nn;
-% end
-% 
-% % add isolated parts
-% cc = bwconncomp(vMap0);
-% nSp = numel(spLst);
-% for ii=1:cc.NumObjects
-%     pix0 = cc.PixelIdxList{ii};
-%     if sum(spMap1(pix0))==0
-%         nSp = nSp+1;
-%         spLst{nSp} = pix0;
-%         spMap1(pix0) = nSp;
-%     end
-% end
+if 0
+    ov1 = plt.regionMapWithData(uint32(spMap1),spMap1*0,0.3);
+    tmp = ov1(:,:,1); tmp(spSeedMap>0) = 255; ov1(:,:,1) = tmp;
+    tmp = ov1(:,:,2); tmp(spSeedMap>0) = 0; ov1(:,:,2) = tmp;
+    tmp = ov1(:,:,3); tmp(spSeedMap>0) = 0; ov1(:,:,3) = tmp;
+    zzshow(ov1);
+end
 
 end
 

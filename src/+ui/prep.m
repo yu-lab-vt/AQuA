@@ -54,7 +54,7 @@ if op==0
     [ov,bd,scl,btSt] = ui.prepInitUIStruct(dat,opts); %#ok<ASGLU>
     
     % data and settings
-    vBasic = {'opts','scl','btSt','ov','bd','dat','evt','fts','dffMat','dMat',...
+    vBasic = {'opts','scl','btSt','ov','bd','dat','evt','fts','dffMat','dMat','riseLst',...
         'dF','datSmo','lmLocR','lmLoc','lblMapS','riseMap','arLst'};
     for ii=1:numel(vBasic)
         v0 = vBasic{ii};

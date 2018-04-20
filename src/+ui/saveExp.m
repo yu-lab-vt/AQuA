@@ -14,7 +14,7 @@ ff = waitbar(0,'Saving ...');
 %% save
 % variables to save
 % vSave = {'opts','scl','btSt','ov','bd','dat'};
-vSave = {'opts','scl','btSt','ov','bd','dat','evt','fts','dffMat','dMat'};
+vSave = {'opts','scl','btSt','ov','bd','dat','evt','fts','dffMat','dMat','riseLst'};
 res = [];
 for ii=1:numel(vSave)
     v0 = vSave{ii};
@@ -36,6 +36,11 @@ res.dffMatFilter = dffMat(xSel,:,:);
 dMat = getappdata(f,'dMat');
 if ~isempty(dMat)
     res.dMatFilter = dMat(xSel,:,:);
+end
+
+riseLst = getappdata(f,'riseLst');
+if ~isempty(riseLst)
+    res.riseLstFilter = riseLst(xSel);
 end
 
 res.evtSelectedList = find(xSel>0);

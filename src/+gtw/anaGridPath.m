@@ -1,4 +1,4 @@
-function [datWarpInt,rMapAvg,datWarp] = anaGridPath(path0,spLst,dfm,vMap0,intMap,spSz,refBase)
+function [datWarpInt,rMapAvg,datWarp,seedMap1] = anaGridPath(path0,spLst,dfm,vMap0,intMap,spSz,refBase)
 % anaGridPath extract information from GTW path on a grid structure
 
 [H0,W0] = size(dfm);
@@ -36,7 +36,7 @@ pWeit = nan(nPix,nNeib);  % weight to neighbor seeds
 pixMap = zeros(H0,W0);
 pixMap(:) = 1:nPix;
 for ii=1:numel(sh)
-    if mod(ii,1000)==0; fprintf('%d\n',ii); end
+    %if mod(ii,10000)==0; fprintf('%d\n',ii); end
     sh0 = sh(ii);
     sw0 = sw(ii);
     
@@ -89,7 +89,7 @@ pWeit1 = pWeit(pixSel,:);
 pWeit1Sum = sum(pWeit1,2);
 % [xq,yq] = meshgrid(1:W0,1:H0);
 for tt=1:T1
-    if mod(tt,10)==0; fprintf('Interpolate %d\n',tt); end
+    %if mod(tt,10)==0; fprintf('Interpolate %d\n',tt); end
     d0 = datWarp(:,:,tt);
     d0(isnan(d0)) = 0;
     %v0 = d0(yx);

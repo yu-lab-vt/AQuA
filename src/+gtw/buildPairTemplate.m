@@ -38,7 +38,7 @@ if ~exist('visMe','var')
 end
 
 if winSize==1
-    error('winSize should be integer larger than 1\n');
+    error('winSize should be integer larger than 1');
 end
 
 s0 = [0,0];

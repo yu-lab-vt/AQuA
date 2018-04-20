@@ -1,17 +1,17 @@
-function [resCell,lblMap] = growSeed(dat,datSmo,dF,resCell,lblMap,lmLoc,lm3Idx,mskSig,opts,stg)
+function [resCell,lblMap] = growSeed(dat,dF,resCell,lblMap,lmLoc,lm3Idx,opts,stg)
 % detectGrowRegionOneStepPara grow all seeds by one step in parallel
 % compete between seeds
 
 [H,W,T] = size(dat);
 nLm = numel(lmLoc);
-maxGrow = 1;
+% maxGrow = 1;
 thrTW = opts.thrTWScl*sqrt(opts.varEst);
 thrAR = opts.thrARScl*sqrt(opts.varEst);
 tExt = max(opts.maxStp,5);
 
 % prepare data
 datc = cell(nLm,1);
-datSmoc = cell(nLm,1);
+% datSmoc = cell(nLm,1);
 for uu=1:numel(lmLoc)
     %if mod(uu,1000)==0; fprintf('%d\n',uu); end
     %if uu==2296; keyboard; end
@@ -25,21 +25,21 @@ for uu=1:numel(lmLoc)
         [ihS,iwS,itS] = ind2sub([H,W,T],iSeed);
         rgH1 = max(ihS-1,1):min(ihS+1,H); rgW1 = max(iwS-1,1):min(iwS+1,W);
         rgH2 = max(ihS-2,1):min(ihS+2,H); rgW2 = max(iwS-2,1):min(iwS+2,W);
-        s1 = sum(reshape(mskSig(rgH1,rgW1,:),[],T),1);
+        %s1 = sum(reshape(mskSig(rgH1,rgW1,:),[],T),1);
         t0 = 1;
-        if itS>1
-            t0d = find(s1(1:itS)==0,1,'last');
-            if ~isempty(t0d)
-                t0 = t0d;
-            end
-        end
+%         if itS>1
+%             t0d = find(s1(1:itS)==0,1,'last');
+%             if ~isempty(t0d)
+%                 t0 = t0d;
+%             end
+%         end
         t1 = T;
-        if itS<T
-            t1d = find(s1(itS+1:end)==0,1);
-            if ~isempty(t1d)
-                t1 = itS+t1d-1;
-            end
-        end
+%         if itS<T
+%             t1d = find(s1(itS+1:end)==0,1);
+%             if ~isempty(t1d)
+%                 t1 = itS+t1d-1;
+%             end
+%         end
         rgT = max(t0-tExt,1):min(t1+tExt,T);
         T1 = numel(rgT);
         
@@ -79,7 +79,7 @@ for uu=1:numel(lmLoc)
         res.stg = 0;
         resCell{uu} = res;
     else
-        % based on current res.fiux, rgT is unchanged
+        % based on current res.fiux, ** rgT is unchanged **
         % update location related items in res
         res = resCell{uu};
         if ~isempty(res) && res.cont>0
@@ -108,18 +108,19 @@ for uu=1:numel(lmLoc)
         end
     end
     datc{uu} = dat(res.rgH,res.rgW,res.rgT);
-    datSmoc{uu} = datSmo(res.rgH,res.rgW,res.rgT);
+%     datSmoc{uu} = datSmo(res.rgH,res.rgW,res.rgT);
 end
 
 % fit around seeds
-parfor uu=1:nLm
-    %if mod(uu,1000)==0; fprintf('%d ',uu); end
+for uu=1:nLm
+    %if mod(uu,1000)==0; fprintf('%d\n',uu); end
     %fprintf('%d\n',uu)
     res = resCell{uu};
     if isempty(res) || res.cont==0
         continue
     end
-    resCell{uu} = burst.detectGrowEvent(datc{uu},datSmoc{uu},res,opts,maxGrow);
+    resCell{uu} = burst.detectGrowSp(datc{uu},res,opts);
+    %resCell{uu} = burst.detectGrowEvent(datc{uu},datSmoc{uu},res,opts,maxGrow);
 end
 % if nLm>1000; fprintf('\n'); end
 
@@ -143,8 +144,9 @@ for uu=1:nLm
         ih0 = ih0+min(rgH)-1;
         iw0 = iw0+min(rgW)-1;
         lblCur = lblMap(ih0,iw0,twx(3):twx(4));
-        sigCur = mskSig(ih0,iw0,twx(3):twx(4));
-        isGood = nanmax(lblCur)==0 && sum(sigCur>0)>0;
+        %sigCur = mskSig(ih0,iw0,twx(3):twx(4));
+        %isGood = nanmax(lblCur)==0 && sum(sigCur>0)>0;
+        isGood = nanmax(lblCur)==0;
         if isGood  % ignore competition
             isGoodSum = 1;
             lblCur = lblMap(ih0,iw0,twx(3):twx(4));

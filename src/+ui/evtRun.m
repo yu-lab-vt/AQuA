@@ -10,9 +10,9 @@ lblMapS = getappdata(f,'lblMapS');
 riseMap = getappdata(f,'riseMap');
 % riseX = getappdata(f,'riseX');
 dat = getappdata(f,'dat');
-datSmo = getappdata(f,'datSmo');
+% datSmo = getappdata(f,'datSmo');
 dF = getappdata(f,'dF');
-dL = getappdata(f,'dL');
+% dL = getappdata(f,'dL');
 opts = getappdata(f,'opts');
 
 try
@@ -27,12 +27,14 @@ catch
 end
 
 try
-    [fts,evt,dffMat,dMat,dRecon,~,~,lblMapE] = burst.evtTop(...
-        dat,datSmo,dF,dL,lblMapS,riseMap,opts);
+    [fts,evt,dffMat,riseLst,dRecon,lblMapE] = burst.evtTop(dat,dF,lblMapS,riseMap,opts);
+    %[fts,evt,dffMat,dMat,dRecon,~,~,lblMapE] = burst.evtTop(...
+    %    dat,datSmo,dF,dL,lblMapS,riseMap,opts);
     
     % save data
     setappdata(f,'evt',evt);
     setappdata(f,'fts',fts);
+    setappdata(f,'riseLst',riseLst);
     setappdata(f,'dffMat',dffMat);
     setappdata(f,'dMat',dMat);
     

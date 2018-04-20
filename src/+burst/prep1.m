@@ -31,6 +31,12 @@ opts.maxValueDat = maxDat;
 % noise estimation
 [dF,stdEst,stdMapGau] = estNoisePerBlk(dat,opts.cut,opts.movAvgWin);
 
+% slightly smooth the data
+% !! do this before noise estimation?
+for tt=1:T
+    dat(:,:,tt) = imgaussfilt(dat(:,:,tt),opts.smoXY);
+end
+
 % noise and threshold
 opts.varEst = stdEst.^2;
 opts.varEstOrg = stdEst.^2;
@@ -40,6 +46,7 @@ opts.varEst = opts.varEstOrg;
 tmp = load('./cfg/z01Order.mat'); opts.tbl = tmp.tbl;
 
 end
+
 
 function [dF,stdEst,stdMapGau] = estNoisePerBlk(datIn,cut,movAvgWin)
 movAvg = load('./cfg/movAvgMin.mat');
