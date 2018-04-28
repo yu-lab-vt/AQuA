@@ -1,4 +1,4 @@
-function res = gatherRes(dat,opts,evt,fts,dffMat,lblMapE,dRecon)
+function res = gatherRes(dat,opts,evt,fts,dffMat,dMat,riseLst,lblMapE,dRecon)
 
 opts.bitNum = 8;
 dat1 = dat*(2^opts.bitNum-1);
@@ -13,7 +13,9 @@ res.opts = opts;
 res.dat = dat1;
 res.evt = evt;
 res.fts = fts;
+res.riseLst = riseLst;
 res.dffMat = dffMat;
+res.dMat = dMat;
 
 ov = containers.Map('UniformValues',0);
 ov('None') = [];
@@ -41,5 +43,7 @@ ov0.colorCodeType = {'Random'};
 ov(ov0.name) = ov0;
 
 res.ov = ov;
+
+fprintf('Done\n')
 
 end

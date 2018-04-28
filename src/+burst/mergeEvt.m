@@ -1,10 +1,10 @@
-function mOut = mergeEvt(mIn,opts)
+function mOut = mergeEvt(mIn,mergeEventDiscon)
 % mergeEvt merge spatially close events, for Glutamate or some noisy invivo data
 % if events already adjacent, do not merge them
 %
 % TODO: use a distance measure using intensity to control merging
 
-minDist = opts.mergeEventDiscon;
+minDist = mergeEventDiscon;
 
 if minDist<=0
     mOut = mIn;

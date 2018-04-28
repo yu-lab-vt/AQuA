@@ -61,7 +61,8 @@ if exist('datIn','var')
     if T>1
         data.imageScroll.SliderStep = [1/(T-1),1/(T-1)*10];
     else
-        data.imageScroll.SliderStep = [1,1];
+        data.imageScroll.Enable = 'off';
+        %data.imageScroll.SliderStep = [1,1];
     end
     
     data.imgXLim = data.aImage.XLim;

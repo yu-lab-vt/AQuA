@@ -1,21 +1,19 @@
 function lblMapS = sp2evtStp1(lblMapS,riseMap,maxRiseDly1,maxRiseDly2,minOverRate,dat)
 % sp2evtStp1 combine superpixels to hyper events
 
-% lblMapSIn = lblMapS;
-
 [H,W,T] = size(lblMapS);
 dh = [-1 0 1 -1 1 -1 0 1];
 dw = [-1 -1 -1 0 0 1 1 1];
 
 spVoxLst = label2idx(lblMapS);
 nSp = numel(spVoxLst);
-riseX0 = nan(nSp,1);
+riseX = nan(nSp,1);
 for nn=1:nSp
     vox0 = spVoxLst{nn};
     if ~isempty(vox0)
-        t0 = double(riseMap(vox0));
+        t0 = riseMap(vox0);
         t0 = t0(t0>0);
-        riseX0(nn) = nanmedian(t0);
+        riseX(nn) = nanmean(t0);
     end
 end
 
@@ -52,9 +50,9 @@ for ee=1:numel(maxRiseDlyVec)
                 vox0Sel = vox0(idxSel);
                 
                 % delay difference in boundary pixels
-                rise0 = double(riseMap(vox0Sel));
-                rise1 = double(riseMap(vox1Sel));
-                riseDif = abs(rise0-rise1);  % !! uint16 subtraction gives nonnegative values
+                rise0 = riseMap(vox0Sel);
+                rise1 = riseMap(vox1Sel);
+                riseDif = abs(rise0-rise1);
                 
                 xSel = x(idxSel);
                 xGood = xSel(riseDif<maxRiseDly0);
@@ -77,7 +75,7 @@ for ee=1:numel(maxRiseDlyVec)
             u1 = u(ii);
             ihw1 = spPixLst{u1};
             nInter = numel(intersect(ihw,ihw1));
-			%if (nInter/numel(ihw)>minOverRate || nInter>20) && minOverRate<1
+            %if (nInter/numel(ihw)>minOverRate || nInter>20) && minOverRate<1
             %if (nInter/numel(ihw)>minOverRate || nInter>20)
             if nInter/numel(ihw)>minOverRate || nInter/numel(ihw1)>minOverRate
                 e0 = union(e0,u1);
@@ -89,16 +87,16 @@ for ee=1:numel(maxRiseDlyVec)
     % merge superpixels without conflict
     % earlier one first
     evtLbl = nan(nSp,1);
-    [~,dlyOrder] = sort(riseX0,'ascend');
-    for ii=1:nSp
-        spSeed = dlyOrder(ii);
+    [~,dlyOrder] = sort(riseX,'ascend');
+    for kk=1:nSp
+        spSeed = dlyOrder(kk);
         if ~isnan(evtLbl(spSeed))
             continue
         end
         %fprintf('%d\n',spSeed)
         newSp = spSeed;
         evtLbl(newSp) = spSeed;
-        while 1  % !! too greedy?
+        while 1
             newSp1 = [];
             for jj=1:numel(newSp)
                 neib0 = neibLst{newSp(jj)};
@@ -106,9 +104,6 @@ for ee=1:numel(maxRiseDlyVec)
                     if isnan(evtLbl(neib0(uu)))
                         exld0 = exldLst{neib0(uu)};
                         if sum(evtLbl(exld0)==spSeed)==0
-                            if neib0(uu)==842
-                                %keyboard
-                            end
                             newSp1 = union(newSp1,neib0(uu));
                         end
                     end
@@ -120,6 +115,26 @@ for ee=1:numel(maxRiseDlyVec)
             evtLbl(newSp1) = spSeed;
             newSp = newSp1;
         end
+        
+        if 0
+            xx = unique(evtLbl);
+            xx = xx(~isnan(xx));
+            nSp = numel(xx);
+            riseX1 = nan(nSp,1);
+            lblMapS1 = zeros(H,W,T,'uint32');
+            for ii=1:numel(xx)
+                idx = find(evtLbl==xx(ii));
+                riseX1(ii) = min(riseX(idx));
+                for jj=1:numel(idx)
+                    vox0 = spVoxLst{idx(jj)};
+                    lblMapS1(vox0) = uint32(ii);
+                end
+            end            
+            ov1 = plt.regionMapWithData(lblMapS1,dat,0.5); zzshow(ov1);
+            pause(0.5);
+            keyboard   
+            close
+        end
     end
     
     % update super pixel map and rising time
@@ -130,19 +145,20 @@ for ee=1:numel(maxRiseDlyVec)
     lblMapS1 = zeros(H,W,T,'uint32');
     for ii=1:numel(xx)
         idx = find(evtLbl==xx(ii));
-        %riseX1(ii) = nanmean(riseX(idx));
-        riseX1(ii) = min(riseX0(idx));
+        riseX1(ii) = min(riseX(idx));
         for jj=1:numel(idx)
             vox0 = spVoxLst{idx(jj)};
             lblMapS1(vox0) = uint32(ii);
         end
     end
     
-    %ov1 = plt.regionMapWithData(lblMapS1,dat.^2*0.3,0.5); zzshow(ov1); 
-    %pause(0.5); 
-    %keyboard
+    if 0
+        ov1 = plt.regionMapWithData(lblMapS1,dat,0.5); zzshow(ov1);
+        pause(0.5);
+        %keyboard
+    end
     
-    riseX0 = riseX1;
+    riseX = riseX1;
     lblMapS = lblMapS1;
     spVoxLst = label2idx(lblMapS);
 end

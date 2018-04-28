@@ -1,4 +1,4 @@
-function [ ss,ee,gInfo ] = buildGTWGraph( ref, tst, s, t, smoBase, winSize, varEst)
+function [ ss,ee,gInfo ] = buildGTWGraph( ref, tst, s, t, smoBase, winSize, s2)
 %buildGraph4Aosokin Build the dual graph of dynamic time warping problem
 % For Aosokin's Matlab wrappers, like https://github.com/aosokin/graphCutMex_IBFS
 %
@@ -12,10 +12,13 @@ function [ ss,ee,gInfo ] = buildGTWGraph( ref, tst, s, t, smoBase, winSize, varE
 %
 % smoBase: smoothness between edges
 % winSize: window size, (winSize-1) lines above and below diagonal
+% s2: noise variance for each test curve, or use single s2 for all test curves
 %
 % Basic constraint:
 % No skipping/turn left/go down: otherwise has infinite cost (capacity)
 % Start NEAR (1,1) and stop NEAR (T,T)
+%
+% ALL INPUTS SHOULD BE DOUBLE
 %
 % Yizhi Wang, CBIL@VT
 % freemanwyz@gmail.com
@@ -25,7 +28,9 @@ capRev = 1e8;
 pmCost = (0:winSize)*1e8;
 
 [nNode,T] = size(tst);
-s2 = zeros(nNode,1)+varEst;
+if numel(s2)==1
+    s2 = zeros(nNode,1)+s2;
+end
 nEdge = numel(s);
 
 %% template using coordinate

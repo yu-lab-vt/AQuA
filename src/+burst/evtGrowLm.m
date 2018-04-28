@@ -1,6 +1,7 @@
-function spEvt = sp2evtStp2_growSeed(spEvt,distMat,rise0,sp)
+function spEvt = evtGrowLm(spEvt,distMat,rise0,spMap)
 
-nSeed = max(spEvt);
+spVec = unique(spEvt(spEvt>0 & ~isnan(spEvt)));
+nSeed = numel(spVec);
 nSp = numel(rise0);
 
 % seed data structure
@@ -8,7 +9,7 @@ nSp = numel(rise0);
 seedNeibLst = cell(nSeed,1);
 seedLst = cell(nSeed,1);
 for ii=1:nSeed
-    idx = find(spEvt==ii);
+    idx = find(spEvt==spVec(ii));
     tmp = distMat(idx,:);
     seedLst{ii} = idx;
     tmp1 = sum(~isnan(tmp),1);
@@ -17,8 +18,21 @@ for ii=1:nSeed
     seedNeibLst{ii} = setdiff(neib0,idx);
 end
 
+% randomize order
+[risex,spOrd] = sort(rise0,'ascend');
+n0 = 1;
+for ii=2:numel(risex)
+    if risex(ii)~=risex(ii-1)
+        n1 = ii-1;
+        if n1>n0
+            spOrd0 = spOrd(n0:n1);
+            spOrd(n0:n1) = spOrd0(randperm(n1-n0+1));
+        end
+        n0 = ii;
+    end
+end
+
 % assign pixels to seeds
-[~,spOrd] = sort(rise0,'ascend');
 wtLst = [];
 for ii=1:nSp
     if mod(ii,1000)==0; fprintf('%d\n',ii); end
@@ -40,13 +54,13 @@ for ii=1:nSp
     end
     if suc==1
         [~,jj] = min(dist00);
-        spEvt(idx) = jj;
+        spEvt(idx) = spVec(jj);
         seedLst{jj} = union(seedLst{jj},idx);
         neibNew = find(~isnan(distMat(idx,:)));
         seedNeibLst{jj} = setdiff(union(seedNeibLst{jj},neibNew),seedLst{jj});
         
         % revisit un-decided super pixels
-        for ee=1:1000
+        for ee=1:nSp+1
             suc1 = 0;
             for kk=1:numel(wtLst)
                 idx = wtLst(kk);
@@ -63,7 +77,7 @@ for ii=1:nSp
                 end
                 if suc2==1
                     [~,jj] = min(dist00);
-                    spEvt(idx) = jj;
+                    spEvt(idx) = spVec(jj);
                     seedLst{jj} = union(seedLst{jj},idx);
                     neibNew = find(~isnan(distMat(idx,:)));
                     seedNeibLst{jj} = setdiff(union(seedNeibLst{jj},neibNew),seedLst{jj});
@@ -75,7 +89,7 @@ for ii=1:nSp
                 break
             end
         end
-        if ee==1000
+        if ee==nSp+1
             fprintf('Sp acquiring error\n')
         end
     else
@@ -83,27 +97,10 @@ for ii=1:nSp
         wtLst = union(wtLst,idx);
     end
     if mod(ii,1000)==0
-        %plotMe(sp,spEvt);
+        %plt.superPixelsSelected(sp,spEvt);
         %keyboard
         %close all
     end
 end
-
-end
-
-function plotMe(sp,spEvt)
-voxLst = label2idx(sp);
-evt = zeros(size(sp));
-evt0 = unique(spEvt);
-evt0 = evt0(evt0>0);
-nEvt0 = numel(evt0);
-for ii=1:nEvt0
-    vox0 = voxLst(spEvt==evt0(ii));
-    for jj=1:numel(vox0)
-        vox00 = vox0{jj};
-        evt(vox00) = evt0(ii);
-    end
-end
-ov1 = plt.regionMapWithData(evt,evt*0,0.5); zzshow(ov1);
 end
 

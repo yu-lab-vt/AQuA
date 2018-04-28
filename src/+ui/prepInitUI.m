@@ -63,8 +63,8 @@ fh.thrTWScl.String = num2str(opts.thrTWScl);
 fh.thrExtZ.String = num2str(opts.thrExtZ);
 fh.cRise.String = num2str(opts.cRise);
 fh.cDelay.String = num2str(opts.cDelay);
-fh.cOver.String = num2str(opts.cOver);
-fh.evtGtwSmo.String = num2str(opts.evtGtwSmo);
+% fh.cOver.String = num2str(opts.cOver);
+fh.evtGtwSmo.String = num2str(opts.gtwSmo);
 fh.mergeEventDiscon.String = num2str(opts.mergeEventDiscon);
 
 % update overlay menu

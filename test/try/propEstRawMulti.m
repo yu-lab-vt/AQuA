@@ -23,6 +23,8 @@ seSel = 600;
 [dRecon0,riseMap,riseLst] = gtw.procMovie(df,seLst,seSel,0,opts);
 
 %% super event propagation
+[ref,tst,refBase,s,t,txx,spLst] = gtw.sp2graph(df0ip,vMap0,spLst);
+
 % four directions
 [H,W,~] = size(dRecon0);
 lmkMsk4 = fts.getLmk4Sides(H,W);

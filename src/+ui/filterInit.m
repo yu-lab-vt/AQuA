@@ -32,6 +32,7 @@ tb.ColumnEditable = [true,false,true,true];
 
 btSt = getappdata(f,'btSt');
 btSt.ftsFilter = fVar;
+btSt.ftsCmd = fCmd;
 setappdata(f,'btSt',btSt);
 
 end

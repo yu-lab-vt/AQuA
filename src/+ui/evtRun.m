@@ -18,8 +18,8 @@ opts = getappdata(f,'opts');
 try
     opts.cRise = str2double(fh.cRise.String);
     opts.cDelay = str2double(fh.cDelay.String);
-    opts.cOver = str2double(fh.cOver.String);
-    opts.evtGtwSmo = str2double(fh.evtGtwSmo.String);
+    %opts.cOver = str2double(fh.cOver.String);
+    opts.gtwSmo = str2double(fh.evtGtwSmo.String);
     opts.mergeEventDiscon = str2double(fh.mergeEventDiscon.String);
     setappdata(f,'opts',opts);
 catch
@@ -27,13 +27,14 @@ catch
 end
 
 try
-    [fts,evt,dffMat,riseLst,dRecon,lblMapE] = burst.evtTop(dat,dF,lblMapS,riseMap,opts);
+    %[fts,evt,dffMat,riseLst,dRecon,lblMapE] = burst.evtTop(dat,dF,lblMapS,riseMap,opts);
+    [ftsLst,evtLst,dffMat,dMat,riseLst,dRecon,lblMapE] = burst.evtTop(dat,dF,lblMapS,riseMap,opts);
     %[fts,evt,dffMat,dMat,dRecon,~,~,lblMapE] = burst.evtTop(...
     %    dat,datSmo,dF,dL,lblMapS,riseMap,opts);
     
     % save data
-    setappdata(f,'evt',evt);
-    setappdata(f,'fts',fts);
+    setappdata(f,'evt',evtLst);
+    setappdata(f,'fts',ftsLst);
     setappdata(f,'riseLst',riseLst);
     setappdata(f,'dffMat',dffMat);
     setappdata(f,'dMat',dMat);

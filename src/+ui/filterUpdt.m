@@ -7,8 +7,9 @@ tb = fh.filterTable;
 
 btSt = getappdata(f,'btSt');
 fVar = btSt.ftsFilter;
+fCmd = btSt.ftsCmd;
 
-nEvt = numel(fts.area);
+nEvt = numel(fts.basic.area);
 xSel = ones(nEvt,1);
 
 for ii=1:numel(fVar)
@@ -26,7 +27,12 @@ for ii=1:numel(fVar)
             return
         end
     end
-    f0 = fts.(fVar{ii});
+    if isfield(fts,fVar{ii})
+        f0 = fts.(fVar{ii});
+    else
+        cmd0 = ['f0=',fCmd{ii},';'];
+        eval(cmd0);
+    end
     xSel(isnan(f0)) = 0;
     xSel(f0<xmin | f0>xmax) = 0;
 end

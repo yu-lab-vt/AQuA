@@ -60,11 +60,12 @@ fprintf('Gathering data ...\n')
 ov0 = ov('Events');
 evtMap = zeros(sz,'uint32');
 lblMapE = zeros(sz,'uint32');
-dRecon = zeros(sz,'single');
+dRecon = zeros(sz,'uint8');
 for tt=1:sz(3)
     tmp = zeros(sz(1),sz(2));
     tmpAll = zeros(sz(1),sz(2));
     ov00 = ov0.frame{tt};
+    dRecon00 = zeros(sz(1),sz(2));
     if isempty(ov00)
         continue
     end
@@ -74,8 +75,9 @@ for tt=1:sz(3)
         val00 = ov00.val{ii};
         tmp(pix00(val00>thrxx)) = idx00;
         tmpAll(pix00) = idx00;
-        dRecon(pix00) = single(val00);
+        dRecon00(pix00) = uint8(val00*255);
     end
+    dRecon(:,:,tt) = dRecon00;
     evtMap(:,:,tt) = uint32(tmp);
     lblMapE(:,:,tt) = uint32(tmpAll);
 end
@@ -85,7 +87,7 @@ waitbar(0.5,ff);
 if 1
     fprintf('Updating basic features ...\n')
     dat = getappdata(f,'dat');
-    [evt,fts,dffMat,dMat] = burst.getFeaturesTop(dat,lblMapE,dRecon,opts);
+    [evt,fts,dffMat,dMat] = fea.getFeaturesTop(dat,lblMapE,dRecon,opts);
     setappdata(f,'evt',evt);
     setappdata(f,'dffMat',dffMat);
     setappdata(f,'dMat',dMat);
@@ -104,7 +106,7 @@ if ~isempty(fm)
         end
     end
 end
-fts.networkAll = burst.getEvtNetworkFeatures(evtx,sz);
+fts.networkAll = fea.getEvtNetworkFeatures(evtx,sz);
 
 % events inside cells only
 if ~isempty(regLst)
@@ -119,14 +121,14 @@ if ~isempty(regLst)
         end
     end
 end
-fts.network = burst.getEvtNetworkFeatures(evtx,sz);
+fts.network = fea.getEvtNetworkFeatures(evtx,sz);
 
 % update features
 waitbar(0.75,ff);
 if ~isempty(regLst) || ~isempty(lmkLst)
     fprintf('Updating region and landmark features ...\n')
-    %fts.lmk = burst.getDistRegionBorderMIMO(evtx,regLst,lmkLst,sz);
-    fts.region = burst.getDistRegionBorderMIMO(evtx,dRecon,regLst,lmkLst);
+    %fts.lmk = fea.getDistRegionBorderMIMO(evtx,regLst,lmkLst,sz);
+    fts.region = fea.getDistRegionBorderMIMO(evtx,dRecon,regLst,lmkLst);
 else
     fts.region = [];
 end

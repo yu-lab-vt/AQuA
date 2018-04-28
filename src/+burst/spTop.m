@@ -1,4 +1,4 @@
-function [lblMapS,dReconSp,riseX,riseMap] = spTop(dat,dF,lmLoc,opts)
+function [lblMap,dReconSp,riseX,riseMap] = spTop(dat,dF,lmLoc,opts)
 
 thrSpSig = 4;
 
@@ -19,7 +19,10 @@ for pp=1:40
 end
 
 % clean super voxels
+fprintf('Cleaning super voxels by size ...\n')
 lblMap = burst.filterAndFillSp(lblMap);
+
+fprintf('Cleaning super voxels by z score...\n')
 zVec1 = stat.getSpZ(dat,lblMap,opts.varEst);
 spLst = label2idx(lblMap);
 spLst = spLst(zVec1>thrSpSig);
@@ -29,7 +32,8 @@ for nn=1:numel(spLst)
 end
 
 % Extend and re-fit each patch, estimate delay, reconstruct signal
-[lblMapS,riseMap,riseX] = burst.getSpDelay(dat,lblMap,opts);
+fprintf('Extending super voxels ...\n')
+[lblMap,riseMap,riseX] = burst.getSpDelay(dat,lblMap,opts);
 % [lblMapS,~,riseX,riseMap] = burst.alignPatchShort1(dat,datSmo,lblMap,dL,opts);
 
 % use significant super voxels only
@@ -46,3 +50,4 @@ end
 % riseMap(lblMapS==0) = nan;
 
 end
+

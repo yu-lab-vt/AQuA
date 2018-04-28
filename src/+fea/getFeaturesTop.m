@@ -1,4 +1,4 @@
-function [evtLst,fts,dffMat,dMat] = getFeaturesTop(dat,evtMap,evtRec,opts)
+function [evtLst,ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtMap,evtRec,opts)
 
 [H,W,T] = size(evtMap);
 
@@ -14,9 +14,9 @@ if ~isfield(opts,'maxValueDat')
 end
 
 evtLst = label2idx(evtMap);
-fts = [];
-fts.basic = [];
-fts.propagation = [];
+ftsLst = [];
+ftsLst.basic = [];
+ftsLst.propagation = [];
 
 dMat = zeros(numel(evtLst),T,2,'single');
 dffMat = zeros(numel(evtLst),T,2,'single');
@@ -32,16 +32,16 @@ for ii=1:numel(evtLst)
     [ih,iw,it] = ind2sub([H,W,T],pix0);
     
     ihw = unique(sub2ind([H,W],ih,iw));
-    fts.loc.x3D{ii} = pix0;
-    fts.loc.x2D{ii} = ihw;
+    ftsLst.loc.x3D{ii} = pix0;
+    ftsLst.loc.x2D{ii} = ihw;
     
     rgH = max(min(ih)-1,1):min(max(ih)+1,H);
     rgW = max(min(iw)-1,1):min(max(iw)+1,W);
     rgT = min(it):max(it);
     
     % dff
-    fts.loc.t0(ii) = min(it);
-    fts.loc.t1(ii) = max(it);
+    ftsLst.loc.t0(ii) = min(it);
+    ftsLst.loc.t1(ii) = max(it);
     
     voxd1 = dat(rgH,rgW,:);
     voxd1 = reshape(voxd1,[],T);
@@ -63,8 +63,8 @@ for ii=1:numel(evtLst)
     dff = (charx1-charxBg)/charxBg;
     dffMat(ii,:,2) = single(dff);    
     [dffMax,tMax] = max(dff(rgT));
-    fts.curve.dffMax(ii) = dffMax;
-    fts.curve.dffMaxFrame(ii) = (tMax+min(rgT)-1)*secondPerFrame;
+    ftsLst.curve.dffMax(ii) = dffMax;
+    ftsLst.curve.dffMaxFrame(ii) = (tMax+min(rgT)-1)*secondPerFrame;
         
     % extend event window in the curve    
     voxi1(voxi1==ii) = 0;
@@ -101,17 +101,17 @@ for ii=1:numel(evtLst)
         t1a = t1;
     end
     dff1 = dff(t0a:t1a);
-    fts.curve.tBegin(ii) = min(it);
-    fts.curve.tEnd(ii) = max(it);
+    ftsLst.curve.tBegin(ii) = min(it);
+    ftsLst.curve.tEnd(ii) = max(it);
     
     % curve features
-    [ rise19,fall91,width55,width11,decayTau ] = burst.getCurveStat( ...
+    [ rise19,fall91,width55,width11,decayTau ] = fea.getCurveStat( ...
         dff1, secondPerFrame, foptions, opts.ignoreTau );
-    fts.curve.rise19(ii) = rise19;
-    fts.curve.fall91(ii) = fall91;
-    fts.curve.width55(ii) = width55;
-    fts.curve.width11(ii) = width11;
-    fts.curve.decayTau(ii) = decayTau;
+    ftsLst.curve.rise19(ii) = rise19;
+    ftsLst.curve.fall91(ii) = fall91;
+    ftsLst.curve.width55(ii) = width55;
+    ftsLst.curve.width11(ii) = width11;
+    ftsLst.curve.decayTau(ii) = decayTau;
     
     % basic features
     rgT = t0:t1;
@@ -130,12 +130,12 @@ for ii=1:numel(evtLst)
     if ii==228
 %         keyboard
     end
-    [fts.basic,fts.propagation] = burst.getFeatures1(voxi,voxr,muPerPix,ii,fts.basic,fts.propagation);
+    [ftsLst.basic,ftsLst.propagation] = fea.getFeatures1(voxi,voxr,muPerPix,ii,ftsLst.basic,ftsLst.propagation);
     %fts = burst.getFeatures(voxd,voxi,voxr,muPerPix,fts,ii);
 end
 
-fts.bds = img.getEventBorder(evtLst,[H,W,T]);
-fts.notes.propDirectionOrder = {'north', 'south', 'west', 'east'};
+ftsLst.bds = img.getEventBorder(evtLst,[H,W,T]);
+ftsLst.notes.propDirectionOrder = {'north', 'south', 'west', 'east'};
 
 end
 

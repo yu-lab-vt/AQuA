@@ -38,9 +38,10 @@ if ~isempty(dMat)
     res.dMatFilter = dMat(xSel,:,:);
 end
 
+% rising map is for super events
 riseLst = getappdata(f,'riseLst');
 if ~isempty(riseLst)
-    res.riseLstFilter = riseLst(xSel);
+    res.riseLstFilter = riseLst;
 end
 
 res.evtSelectedList = find(xSel>0);

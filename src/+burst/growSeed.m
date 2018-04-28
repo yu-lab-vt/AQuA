@@ -26,14 +26,14 @@ for uu=1:numel(lmLoc)
         rgH1 = max(ihS-1,1):min(ihS+1,H); rgW1 = max(iwS-1,1):min(iwS+1,W);
         rgH2 = max(ihS-2,1):min(ihS+2,H); rgW2 = max(iwS-2,1):min(iwS+2,W);
         %s1 = sum(reshape(mskSig(rgH1,rgW1,:),[],T),1);
-        t0 = 1;
+        t0 = itS-20;
 %         if itS>1
 %             t0d = find(s1(1:itS)==0,1,'last');
 %             if ~isempty(t0d)
 %                 t0 = t0d;
 %             end
 %         end
-        t1 = T;
+        t1 = itS+20;
 %         if itS<T
 %             t1d = find(s1(itS+1:end)==0,1);
 %             if ~isempty(t1d)
@@ -112,7 +112,7 @@ for uu=1:numel(lmLoc)
 end
 
 % fit around seeds
-for uu=1:nLm
+parfor uu=1:nLm
     %if mod(uu,1000)==0; fprintf('%d\n',uu); end
     %fprintf('%d\n',uu)
     res = resCell{uu};

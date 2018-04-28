@@ -1,12 +1,14 @@
-function tMapMT = getSuperEventRisingMapMultiThr(dFx,Sx,thrVec,s00)
+function tMapMT = getSuperEventRisingMapMultiThr(dFx,mskIn,thrVec,s00)
+% getSuperEventRisingMapMultiThr estimate rising for delta F thresholds
+% mskIn: this event is 1, others are -1
+% s00: standard deviation of noise
 
 [H0,W0,~] = size(dFx);
 
-Mx = sum(Sx,3)>0;
-SxMin = nanmin(Sx(:));
-Sx(Sx>0) = Sx(Sx>0)-SxMin+1;
+% Mx = sum(Sx,3)>0;
+Mx = ones(H0,W0);
 
-nVox = sum(Sx(:)>0);
+nVox = sum(mskIn(:)>0);
 
 % thrVec = 0:6;
 szVec = zeros(size(thrVec))+4;
@@ -14,7 +16,7 @@ tMapMT = zeros(H0,W0,numel(thrVec));
 for ii=1:numel(thrVec)
     if nVox>1e6; fprintf('%d\n',ii); end
     dFxHi = dFx>thrVec(ii)*s00;
-    dFxHi(Sx==0) = 0;
+    dFxHi(mskIn==-1) = 0;
     dFxHi = bwareaopen(dFxHi,szVec(ii),8);
     M0 = sum(dFxHi,3)>0 & Mx;
     tMap = nan(H0,W0);

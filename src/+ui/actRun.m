@@ -23,7 +23,8 @@ end
 
 try
     % [dat,datSmo,dL,lmAll,lmLoc] = burst.actTop(dat,dF,opts);
-    [dat,datSmo,dL,arLst,lmLoc,lmLocR] = burst.actTop(dat,dF,opts);
+    %[dat,datSmo,dL,arLst,lmLoc,lmLocR] = burst.actTop(dat,dF,opts);
+    [arLst,lmLoc] = burst.actTop(dat,dF,opts);
     
     % overlays object
     ov = getappdata(f,'ov');
@@ -33,11 +34,11 @@ try
     ov(ov0.name) = ov0;
     setappdata(f,'ov',ov);
     
-    setappdata(f,'dat',dat);
-    setappdata(f,'dL',dL);
-    setappdata(f,'datSmo',datSmo);
+    %setappdata(f,'dat',dat);
+    %setappdata(f,'dL',dL);
+    %setappdata(f,'datSmo',datSmo);
     setappdata(f,'arLst',arLst);
-    setappdata(f,'lmLocR',lmLocR);
+    %setappdata(f,'lmLocR',lmLocR);
     setappdata(f,'lmLoc',lmLoc);
     
     % update UI

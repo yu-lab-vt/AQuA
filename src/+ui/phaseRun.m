@@ -7,12 +7,12 @@ fh = guidata(f);
 fh.wkflPhaseRun.Enable = 'off'; pause(0.1)
 
 dF = getappdata(f,'dF');
-dL = getappdata(f,'dL');
+% dL = getappdata(f,'dL');
 dat = getappdata(f,'dat');
-datSmo = getappdata(f,'datSmo');
+% datSmo = getappdata(f,'datSmo');
 opts = getappdata(f,'opts');
 lmLoc = getappdata(f,'lmLoc');
-lmLocR = getappdata(f,'lmLocR');
+% lmLocR = getappdata(f,'lmLocR');
 % lmAll = getappdata(f,'lmAll');
 
 try
@@ -25,7 +25,8 @@ end
 
 try
     % grow seeds
-    [lblMapS,~,~,riseMap] = burst.spTop(dat,dF,dL,datSmo,lmLoc,lmLocR,opts);
+    %[lblMapS,~,~,riseMap] = burst.spTop(dat,dF,dL,datSmo,lmLoc,lmLocR,opts);
+    [lblMapS,~,~,riseMap] = burst.spTop(dat,dF,lmLoc,opts);
     
     % save data
     setappdata(f,'lblMapS',lblMapS);

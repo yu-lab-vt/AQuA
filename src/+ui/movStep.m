@@ -135,7 +135,9 @@ if ~isempty(lst) && strcmp(st.overlayDatSel,'Events')
                     for jj=1:numel(xyC)
                         xy = xyC{jj};
                         patch(fh.mov,'XData',xy(:,2),'YData',H-xy(:,1)+1,'FaceColor','none','EdgeColor','g');
-                        text(fh.mov,xy(1,2)+1,H-xy(1,1),num2str(idx(ii)),'Color','g');
+                        if jj==1
+                            text(fh.mov,xy(1,2)+1,H-xy(1,1),num2str(idx(ii)),'Color','g');
+                        end
                     end
                 end
             end
