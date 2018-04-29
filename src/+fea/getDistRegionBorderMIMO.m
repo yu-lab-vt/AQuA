@@ -22,10 +22,10 @@ if ~isempty(lmkLst)
     resReg.landMark.border = lBorder;
     resReg.landMark.centerBorderAvgDist = lAvgDist;
     % distances to landmarks
-    resReg.landmarkDist = burst.evt2lmkProp(evts,lBorder,sz,0,0);
+    resReg.landmarkDist = fea.evt2lmkProp(evts,lBorder,sz,0,0);
     
     % frontier based propagation features related to landmark
-    rr = burst.evt2lmkProp1Wrap(datS,evts,lMask);
+    rr = fea.evt2lmkProp1Wrap(datS,evts,lMask);
     resReg.landmarkDir = rr;
 else
     resReg.landMark = [];

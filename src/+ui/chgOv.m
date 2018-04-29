@@ -39,7 +39,14 @@ btSt.overlayColorSel = 'Random';
 % update color code for events
 if strcmp(ovSel,'Events')    
     ovFea = fh.overlayFeature.String{fh.overlayFeature.Value};
-    ovCol = fh.overlayColor.String{fh.overlayColor.Value};
+    ovCol = fh.overlayColor.String{fh.overlayColor.Value};    
+    if strcmp(ovFea,'Index')
+        ovCol = 'Random';
+    else
+        if strcmp(ovCol,'Random')
+            ovCol = 'GreenRed';
+        end
+    end    
     
     btSt.overlayFeatureSel = ovFea;
     btSt.overlayColorSel = ovCol;

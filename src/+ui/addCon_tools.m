@@ -56,7 +56,7 @@ x0 = [18,3,15,20,3];
 uicontrol(bL2,'Style','text','String','Feature','HorizontalAlignment','left');
 uicontrol(bL2,'Style','popupmenu','Tag','overlayFeature','String',{'Index'},'Enable','off');
 uicontrol(bL2,'Style','text','String','Color','HorizontalAlignment','left');
-uicontrol(bL2,'Style','popupmenu','Tag','overlayColor','String',{'Random','Linear'},'Enable','off');
+uicontrol(bL2,'Style','popupmenu','Tag','overlayColor','String',{'Random','GreenRed'},'Enable','off');
 uix.Empty('Parent',bL2);
 x1 = [15,20,15,20,3];
 

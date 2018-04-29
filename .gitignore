@@ -9,4 +9,5 @@ doc/
 *.log
 *.asv
 .tags
+tags
 .vscode/

@@ -65,7 +65,7 @@ for nn=1:numel(evts)
         lmkMsk1{ii} = msk0;
     end
     
-    res1 = fts.evt2lmkProp1(datS,lmkMsk1);
+    res1 = fea.evt2lmkProp1(datS,lmkMsk1);
     chgToward(nn,:) = res1.chgToward;
     chgAway(nn,:) = res1.chgAway;
     chgTowardBefReach(nn,:) = res1.chgTowardBefReach;

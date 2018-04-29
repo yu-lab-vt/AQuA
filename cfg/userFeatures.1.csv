@@ -1,0 +1,50 @@
+Name,Script
+Index,x=1:nEvt
+Basic - Area,x=sqrt(fts.basic.area)
+Basic - Perimeter,x=fts.basic.peri
+Basic - Circularity,x=fts.basic.circMetric
+Curve - Max Dff,x=sqrt(fts.curve.dffMax)
+Curve - Duration 10% to 10%,x=sqrt(fts.curve.width11)
+Curve - Duration 50% to 50%,x=sqrt(fts.curve.width55)
+Curve - Rising duration 10% to 90%,x=sqrt(fts.curve.rise19)
+Curve - Decaying duration 90% to 10%,x=sqrt(fts.curve.fall91)
+Curve - Decay tau,x=sqrt(fts.curve.decayTau)
+Network - Temporal density,"x=fts.network.nOccurSameLoc(:,1)"
+Network - Temporal density similar size,"x=fts.network.nOccurSameLoc(:,2)"
+Network - Spatial density 1,"x=fts.network.nOccurSameTime(:,1)"
+Network - Spatial density similar size,"x=fts.network.nOccurSameTime(:,2)"
+Propagation - onset - overall,"x0=fts.propagation.propPropagation - onsetOverall;x=sqrt(sum(x0,2))"
+Propagation - onset - overall - normalized by area,"x0=fts.propagation.propPropagation - onsetOverall;x0=sum(x0,2);s0=fts.basic.area;x=x0./s0(:)"
+Propagation - onset - north,"x0=fts.propagation.propPropagation - onsetOverall(:,1);x=sqrt(x0)"
+Propagation - onset - south,"x0=fts.propagation.propPropagation - onsetOverall(:,2);x=sqrt(x0)"
+Propagation - onset - west,"x0=fts.propagation.propPropagation - onsetOverall(:,3);x=sqrt(x0)"
+Propagation - onset - east,"x0=fts.propagation.propPropagation - onsetOverall(:,4);x=sqrt(x0)"
+Propagation - onset - north - normalized by area,"x0=fts.propagation.propPropagation - onsetOverall(:,1);s0=fts.basic.area;x=x0./s0(:)"
+Propagation - onset - south - normalized by area,"x0=fts.propagation.propPropagation - onsetOverall(:,2);s0=fts.basic.area;x=x0./s0(:)"
+Propagation - onset - west - normalized by area,"x0=fts.propagation.propPropagation - onsetOverall(:,3);s0=fts.basic.area;x=x0./s0(:)"
+Propagation - onset - east - normalized by area,"x0=fts.propagation.propPropagation - onsetOverall(:,4);s0=fts.basic.area;x=x0./s0(:)"
+Propagation - onset - north - ratio,"x0=fts.propagation.propPropagation - onsetOverall; xAll=sum(x0,2); xSel=x0(:,1); x=xSel./xAll"
+Propagation - onset - south - ratio,"x0=fts.propagation.propPropagation - onsetOverall; xAll=sum(x0,2); xSel=x0(:,2); x=xSel./xAll"
+Propagation - onset - west - ratio,"x0=fts.propagation.propPropagation - onsetOverall; xAll=sum(x0,2); xSel=x0(:,3); x=xSel./xAll"
+Propagation - onset - east - ratio,"x0=fts.propagation.propPropagation - onsetOverall; xAll=sum(x0,2); xSel=x0(:,4); x=xSel./xAll"
+Propagation - offset - overall,"x0=fts.propagation.propPropagation - offsetOverall;x=sqrt(sum(abs(x0),2))"
+Propagation - offset - overall - normalized by area,"x0=fts.propagation.propPropagation - offsetOverall;x0=sum(abs(x0),2);s0=fts.basic.area;x=x0./s0(:)"
+Propagation - offset - north,"x0=fts.propagation.propPropagation - offsetOverall(:,1);x=sqrt(abs(x0))"
+Propagation - offset - south,"x0=fts.propagation.propPropagation - offsetOverall(:,2);x=sqrt(abs(x0))"
+Propagation - offset - west,"x0=fts.propagation.propPropagation - offsetOverall(:,3);x=sqrt(abs(x0))"
+Propagation - offset - east,"x0=fts.propagation.propPropagation - offsetOverall(:,4);x=sqrt(abs(x0))"
+Propagation - offset - north - normalized by area,"x0=fts.propagation.propPropagation - offsetOverall(:,1);s0=fts.basic.area;x=abs(x0)./s0(:)"
+Propagation - offset - south - normalized by area,"x0=fts.propagation.propPropagation - offsetOverall(:,2);s0=fts.basic.area;x=abs(x0)./s0(:)"
+Propagation - offset - west - normalized by area,"x0=fts.propagation.propPropagation - offsetOverall(:,3);s0=fts.basic.area;x=abs(x0)./s0(:)"
+Propagation - offset - east - normalized by area,"x0=fts.propagation.propPropagation - offsetOverall(:,4);s0=fts.basic.area;x=abs(x0)./s0(:)"
+Propagation - offset - north - ratio,"x0=abs(fts.propagation.propPropagation - offsetOverall); xAll=sum(x0,2); xSel=x0(:,1); x=xSel./xAll"
+Propagation - offset - south - ratio,"x0=abs(fts.propagation.propPropagation - offsetOverall); xAll=sum(x0,2); xSel=x0(:,2); x=xSel./xAll"
+Propagation - offset - west - ratio,"x0=abs(fts.propagation.propPropagation - offsetOverall); xAll=sum(x0,2); xSel=x0(:,3); x=xSel./xAll"
+Propagation - offset - east - ratio,"x0=abs(fts.propagation.propPropagation - offsetOverall); xAll=sum(x0,2); xSel=x0(:,4); x=xSel./xAll"
+Region - distance to border,"x0=fts.region.cell.dist2border;x=nanmin(x0,2)"
+Region - distance to border - normalized by region radius,"x0=fts.region.cell.dist2borderNorm;x=nanmin(x0,2)"
+
+
+
+
+

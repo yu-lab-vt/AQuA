@@ -1,14 +1,16 @@
 % traverse fields
+p0 = 'D:\neuro_WORK\glia_kira\projects\results_20180428\';
+f0 = 'FilteredNRMCCyto16m_slice2_TTX3_L2 3-012cycle1channel1_region_lmk.mat';
+load([p0,f0]);
 
 fts = res.fts;
 
-evtSel = false(numel(fts.loc.x2D),1);
-evtSel(1:10) = true;
+rg = fts.region;
 
-fts1 = assignFields(fts,evtSel);
-
-
-
+% !! update GUI
+% normalized by area
+% xxDi
+% xxLmk
 
 
 

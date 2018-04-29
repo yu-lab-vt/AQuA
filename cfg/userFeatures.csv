@@ -1,5 +1,30 @@
 Name,Script
 Index,x=1:nEvt
-Area,x=sqrt(fts.basic.area)
-Duration,x=sqrt(fts.curve.width55)
-Max Dff,x=sqrt(fts.curve.dffMax)
+Basic - Area,x=sqrt(fts.basic.area)
+Basic - Perimeter,x=fts.basic.peri
+Basic - Circularity,x=fts.basic.circMetric
+Curve - Max Dff,x=sqrt(fts.curve.dffMax)
+Curve - Duration 10% to 10%,x=sqrt(fts.curve.width11)
+Curve - Duration 50% to 50%,x=sqrt(fts.curve.width55)
+Curve - Rising duration 10% to 90%,x=sqrt(fts.curve.rise19)
+Curve - Decaying duration 90% to 10%,x=sqrt(fts.curve.fall91)
+Curve - Decay tau,x=sqrt(fts.curve.decayTau)
+Network - Temporal density,"x=fts.network.nOccurSameLoc(:,1)"
+Network - Temporal density similar size,"x=fts.network.nOccurSameLoc(:,2)"
+Network - Spatial density 1,"x=fts.network.nOccurSameTime(:,1)"
+Network - Spatial density similar size,"x=fts.network.nOccurSameTime(:,2)"
+Propagation - onset - overall,"x0=fts.propagation.propPropagation - onsetOverall;x=sqrt(sum(x0,2))"
+Propagation - onset - one direction,"x0=fts.propagation.propPropagation - onsetOverall(:,xxDi);x=sqrt(x0)"
+Propagation - onset - one direction - ratio,"x0=fts.propagation.propPropagation - onsetOverall; xAll=sum(x0,2); xSel=x0(:,xxDi); x=xSel./xAll"
+Propagation - offset - overall,"x0=fts.propagation.propPropagation - offsetOverall;x=sqrt(sum(abs(x0),2))"
+Propagation - offset - one direction,"x0=fts.propagation.propPropagation - offsetOverall(:,xxDi);x=sqrt(abs(x0))"
+Propagation - offset - one direction - ratio,"x0=abs(fts.propagation.propPropagation - offsetOverall); xAll=sum(x0,2); xSel=x0(:,xxDi); x=xSel./xAll"
+Region - event distance to border,"x0=fts.region.cell.dist2border;x=nanmin(x0,2)"
+Region - event distance to border - normalized by region radius,"x0=fts.region.cell.dist2borderNorm;x=nanmin(x0,2)"
+Landmark - event average distance,"x=fts.region.landmarkDist.distAvg(:,xxLmk)"
+Landmark - event minimum distance,"x=fts.region.landmarkDist.distMin(:,xxLmk)"
+Landmark - event toward,"x=fts.region.landmarkDir.chgToward(:,xxLmk)"
+Landmark - event away,"x=fts.region.landmarkDir.chgAway(:,xxLmk)"
+Landmark - event toward before reaching,"x=fts.region.landmarkDir.chgTowardBefReach(:,xxLmk)"
+Landmark - event away after reaching,"x=fts.region.landmarkDir.chgAwayAftReach(:,xxLmk)"
+

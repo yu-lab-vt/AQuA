@@ -24,7 +24,7 @@ if strcmp(cType,'Random')
     end
 end
 
-if strcmp(cType,'Linear')
+if strcmp(cType,'GreenRed')
     if ~exist('cMap','var') || isempty(cMap)
         cmin = [0,1,0];
         cmax = [1,0,0];

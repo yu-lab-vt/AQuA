@@ -1,4 +1,4 @@
-function [ftsLst,evtLst,dffMat,dMat,riseLst,datR,datL] = evtTop(dat,dF,lblMapS,riseMap,opts)
+function [ftsLst,evtLst,dffMat,dMat,riseLst,datR,datL,seMap] = evtTop(dat,dF,lblMapS,riseMap,opts)
 % evtTop super voxels to super events and optionally, to events
 
 gtwSmo = opts.gtwSmo; % 0.5
@@ -56,7 +56,7 @@ for nn=1:numel(c1x)
     % GTW on super pixels
     % group super pixels to events
     if numel(ihw0)>30
-        [spLst,cx,dlyMap,distMat,rgtSel,xFail,evtMemC,evtMemCMap] = gtw.spgtw(dF0,seMap0,seSel,gtwSmo,maxStp,cDelay,spSz,spT);
+        [spLst,cx,dlyMap,distMat,rgtSel,xFail,~,~] = gtw.spgtw(dF0,seMap0,seSel,gtwSmo,maxStp,cDelay,spSz,spT);
         if xFail==0
             [evtMap0,evtMemC,evtMemCMap] = burst.riseMap2evt(spLst,dlyMap,distMat,maxRiseUnc,cDelay,0);
             if 1
