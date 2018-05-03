@@ -12,10 +12,11 @@ ofstGap = 0.3;
 xx = double(reshape((dffMat(evtIdxVec,:,2)),numel(evtIdxVec),[]));
 xxMin = min(xx(:));
 xxMax = max(xx(:))+ofstGap*(numel(evtIdxVec)-1);
+xxRg = xxMax-xxMin;
 
 ax = fh.curve;
 ax.XLim = [0,sz(3)];
-ax.YLim = [xxMin-0.2,xxMax*1.2];
+ax.YLim = [xxMin-xxRg*0.1,xxMax+xxRg*0.2];
 
 % delete existing curves
 hh = findobj(ax,'Type','line');

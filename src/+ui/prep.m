@@ -6,6 +6,7 @@ function prep(~,~,f,op,res)
 % 2: load from workspace
 
 fprintf('Loading ...\n');
+ff = waitbar(0,'Loading ...');
 
 cfgFile = './cfg/uicfg.mat';
 if ~exist(cfgFile,'file')
@@ -40,7 +41,7 @@ if op==0
         pf0 = fh.fIn.String;
         [filepath,name,ext] = fileparts(pf0);
         %opts.outPath = fh.pOut.String;
-        [dat,dF,opts,H,W,T] = burst.prep1(filepath,[name,ext],[],opts); %#ok<ASGLU>
+        [dat,dF,opts,H,W,T] = burst.prep1(filepath,[name,ext],[],opts,ff); %#ok<ASGLU>
         
         % save folder
         cfg0.file = pf0;
@@ -83,6 +84,7 @@ if op>0
     
     % int to double
     res.dat = double(res.dat)/(2^res.opts.bitNum-1);
+    waitbar(0.5,ff);
     
     if ~isfield(res,'scl')
         [~,res.bd,res.scl,res.btSt] = ui.prepInitUIStruct(res.dat,res.opts);
@@ -108,10 +110,13 @@ if op>0
     end
 end
 
+waitbar(1,ff);
+
 % UI
 ui.prepInitUI(f,fh,opts,scl,ov,stg,op);
 
 fprintf('Done ...\n');
+delete(ff);
 
 end
 

@@ -30,10 +30,8 @@ end
 
 bd(lbl) = bd0;
 setappdata(f,'bd',bd);
-
-ui.movStep(f);
-
 f.Pointer = 'arrow';
+ui.movStep(f);
 
 end
 

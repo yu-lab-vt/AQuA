@@ -26,12 +26,10 @@ if ~strcmp(st.overlayDatSel,'None')
     c0 = ov0.col;
     
     % remap color
-    scl.minOv;
-    scl.maxOv;
-    if isfield(ov0,'colVal') && strcmp(st.overlayColorSel,'Linear')
+    if isfield(ov0,'colVal') && strcmp(st.overlayColorSel,'Random')==0
         v0 = ov0.colVal;
-        [vmin,ix] = min(v0); cmin = c0(ix,:);
-        [vmax,ix] = max(v0); cmax = c0(ix,:);
+        [~,ix] = min(v0); cmin = c0(ix,:);
+        [~,ix] = max(v0); cmax = c0(ix,:);
         for ii=1:numel(v0)
             if v0(ii)<scl.minOv
                 c0(ii,:) = cmin;
@@ -41,7 +39,7 @@ if ~strcmp(st.overlayDatSel,'None')
                 c0(ii,:) = cmax;
                 continue
             end
-            c0(ii,:) = cmin+(v0(ii)-vmin)/(vmax-vmin)*(cmax-cmin);
+            c0(ii,:) = cmin+(v0(ii)-scl.minOv)/(scl.maxOv-scl.minOv)*(cmax-cmin);
         end
     end
     
@@ -136,7 +134,7 @@ if ~isempty(lst) && strcmp(st.overlayDatSel,'Events')
                         xy = xyC{jj};
                         patch(fh.mov,'XData',xy(:,2),'YData',H-xy(:,1)+1,'FaceColor','none','EdgeColor','g');
                         if jj==1
-                            text(fh.mov,xy(1,2)+1,H-xy(1,1),num2str(idx(ii)),'Color','g');
+                            text(fh.mov,xy(1,2)+1,H-xy(1,1),num2str(idx(ii)),'Color',[1 0.5 0],'FontSize',18);
                         end
                     end
                 end

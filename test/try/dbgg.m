@@ -33,6 +33,11 @@ param = gtw.initGtwParam( validMap,tstVarMap,zeros(H,W),cell(H,W),opts );
 v0 = var(tst,[],2);
 v1 = var(ref,[],2);
 
-
-
+%%
+tic
+foptions.MaxIter=100;
+for ii=1:100
+    ff = fit(x,y,'exp1',foptions);
+end
+toc
 

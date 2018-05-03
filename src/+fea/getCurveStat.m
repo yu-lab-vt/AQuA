@@ -39,17 +39,19 @@ if ~isreal(y)
 end
 
 if numel(y)>=2 && sum(isnan(y))==0 && sum(isinf(y))==0 && isreal(y) && ignoreTau==0
+    y = reshape(double(y),[],1);
     if numel(y)==2
         y = [y;y(end)];
     end
     y = y-min(y);
-    y = y/max(y)+0.05;
+    y = y/max(y)+0.05;    
     x = (0:1:(numel(y)-1))';
     f = fit(x,y,'exp1',foptions);
     c0 = coeffvalues(f);
     decayTau = -1/c0(2)*spf;
-    if decayTau<0 || decayTau>50
-        fprintf('Tau: %f\n',decayTau)
+    if decayTau<0 || decayTau>0
+        %figure;plot(y);
+        fprintf('Decay Tau: %f\n',decayTau)
         %keyboard
     end
 end

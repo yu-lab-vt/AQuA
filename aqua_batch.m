@@ -21,13 +21,13 @@ for nn=1:numel(tb.pathName)
     opts.frameRate = tb.frameRate(nn);
     opts.spatialRes = tb.spatialRes(nn);
     
-    [dat,dF,opts,H,W,T] = burst.prep1(p0,f0,[],opts);
-    [dat,datSmo,dL,arLst,lmLoc,lmLocR] = burst.actTop(dat,dF,opts);
-    [lblMapS,~,~,riseMap] = burst.spTop(dat,dF,dL,datSmo,lmLoc,lmLocR,opts);
-    [fts,evt,dffMat,dRecon,~,~,lblMapE] = burst.evtTop(...
-        dat,datSmo,dF,dL,lblMapS,riseMap,opts);
-    res = burst.gatherRes(dat,opts,evt,fts,dffMat,lblMapE,dRecon);
-    save([outputFolder,opts.fileName,'_res.mat'],'res');
+    % [dat,dF,opts,H,W,T] = burst.prep1(p0,f0,[],opts);
+    % [dat,datSmo,dL,arLst,lmLoc,lmLocR] = burst.actTop(dat,dF,opts);
+    % [lblMapS,~,~,riseMap] = burst.spTop(dat,dF,dL,datSmo,lmLoc,lmLocR,opts);
+    % [fts,evt,dffMat,dRecon,~,~,lblMapE] = burst.evtTop(...
+    %     dat,datSmo,dF,dL,lblMapS,riseMap,opts);
+    % res = burst.gatherRes(dat,opts,evt,fts,dffMat,lblMapE,dRecon);
+    % save([outputFolder,opts.fileName,'_res.mat'],'res');
 end
 
 

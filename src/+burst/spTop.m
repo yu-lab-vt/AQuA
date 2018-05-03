@@ -1,4 +1,4 @@
-function [lblMap,dReconSp,riseX,riseMap] = spTop(dat,dF,lmLoc,opts)
+function [lblMap,dReconSp,riseX,riseMap] = spTop(dat,dF,lmLoc,opts,ff)
 
 thrSpSig = 4;
 
@@ -15,12 +15,19 @@ lmAll(lmLoc) = true;
 [resCell,lblMap] = burst.growSeed(dat,dF,resCell,lblMap,lmLoc,lmAll,opts1,0);
 for pp=1:40
     fprintf('Grow %d\n',pp);
+    if exist('ff','var')
+        waitbar(0.1+pp/80,ff);
+    end
     [resCell,lblMap] = burst.growSeed(dat,dF,resCell,lblMap,lmLoc,lmAll,opts1,pp);
 end
 
 % clean super voxels
 fprintf('Cleaning super voxels by size ...\n')
 lblMap = burst.filterAndFillSp(lblMap);
+
+if exist('ff','var')
+    waitbar(0.7,ff);
+end
 
 fprintf('Cleaning super voxels by z score...\n')
 zVec1 = stat.getSpZ(dat,lblMap,opts.varEst);
@@ -31,9 +38,18 @@ for nn=1:numel(spLst)
     lblMap(spLst{nn}) = nn;
 end
 
+if exist('ff','var')
+    waitbar(0.8,ff);
+end
+
 % Extend and re-fit each patch, estimate delay, reconstruct signal
 fprintf('Extending super voxels ...\n')
 [lblMap,riseMap,riseX] = burst.getSpDelay(dat,lblMap,opts);
+
+if exist('ff','var')
+    waitbar(1,ff);
+end
+
 % [lblMapS,~,riseX,riseMap] = burst.alignPatchShort1(dat,datSmo,lblMap,dL,opts);
 
 % use significant super voxels only

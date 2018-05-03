@@ -1,4 +1,4 @@
-function [ftsLst,evtLst,dffMat,dMat,riseLst,datR,datL,seMap] = evtTop(dat,dF,lblMapS,riseMap,opts)
+function [riseLst,datR,datL,seMap] = evtTop(dat,dF,lblMapS,riseMap,opts,ff)
 % evtTop super voxels to super events and optionally, to events
 
 gtwSmo = opts.gtwSmo; % 0.5
@@ -25,6 +25,9 @@ else
     seMap = burst.sp2evtStp1(lblMapS,xx,0,10,0.2,dat);
 end
 c1x = label2idx(seMap);
+if exist('ff','var')
+    waitbar(0.2,ff);
+end
 
 % load('D:\neuro_WORK\glia_kira\tmp\ttx_test_20180426\matlab.mat');
 
@@ -41,6 +44,9 @@ for nn=1:numel(c1x)
         continue
     end
     fprintf('SE %d \n',nn)
+    if exist('ff','var')
+        waitbar(0.2+nn/numel(c1x)*0.55,ff);
+    end    
     
     [ih0,iw0,it0] = ind2sub([H,W,T],se0);    
     rgh = min(ih0):max(ih0);
@@ -127,15 +133,8 @@ end
 
 % merge and filter small events
 datL = burst.mergeEvt(datL,opts.mergeEventDiscon);
-
-% features
-fprintf('Extrating features ...\n')
-try
-    [evtLst,ftsLst,dffMat,dMat] = fea.getFeaturesTop(dat,datL,datR,opts);
-    ftsLst.network = fea.getEvtNetworkFeatures(evtLst,[H,W,T]);
-catch
-    fprintf('Feature extraction error\n')
-    keyboard
+if exist('ff','var')
+    waitbar(0.8,ff);
 end
 
 end

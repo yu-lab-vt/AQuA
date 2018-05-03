@@ -47,7 +47,7 @@ for ii=1:nEvt
     
     % occur at same spatial location
     isSel = h0<=ex(:,2) & h1>=ex(:,1) & w0<=ex(:,4) & w1>=ex(:,3);
-    isSel(ii) = 0;
+    %isSel(ii) = 0;
     if sum(isSel)>0
         szCo = evtSize(isSel);
         szMe = evtSize(ii);
@@ -64,19 +64,9 @@ for ii=1:nEvt
     tIdx0 = tIdx(t0:t1);
     [x,ix] = max(tLen0);
     tIdx0 = tIdx0{ix};
-    nOccurSameTime(ii) = x-1;
-    if x>1
-        occurSameTimeList{ii} = tIdx0;
-    end
+    nOccurSameTime(ii) = x;
+    occurSameTimeList{ii} = tIdx0;
 end
-
-% % region properties ----
-% % distance of each event or ROI to a user defined region
-% % The region could be a cell, or just a branch of process
-% if ~exist('polyLst','var') || isempty(polyLst)
-%     polyLst = [];
-% end
-% fts = burst.getDistRegionBorder(fts,evts,polyLst,sz);
 
 % output ----
 res = [];
@@ -85,7 +75,6 @@ res.nOccurSameTime = nOccurSameTime;
 res.occurSameLocList = occurSameLocList;
 res.occurSameTimeList = occurSameTimeList;
 
-% fprintf('Done\n')
 end
 
 

@@ -1,9 +1,12 @@
-function saveExp(~,~,f,file0,path0)
+function res=saveExp(~,~,f,file0,path0,modex)
 % saveExp save experiment (and export results)
 
 fprintf('Saving ...\n')
 
 fts = getappdata(f,'fts');
+if ~exist('modex','var')
+    modex = 0;
+end
 if isempty(fts)
     msgbox('Please save after event detection\n');
     return
@@ -14,7 +17,7 @@ ff = waitbar(0,'Saving ...');
 %% save
 % variables to save
 % vSave = {'opts','scl','btSt','ov','bd','dat'};
-vSave = {'opts','scl','btSt','ov','bd','dat','evt','fts','dffMat','dMat','riseLst'};
+vSave = {'opts','scl','btSt','ov','bd','dat','evt','fts','dffMat','dMat','riseLst','featureTable'};
 res = [];
 for ii=1:numel(vSave)
     v0 = vSave{ii};
@@ -58,7 +61,13 @@ end
 res.stg.post = 1;
 res.stg.detect = 0;
 
-% opts = getappdata(f,'opts');
+if modex>0
+    waitbar(1,ff);
+    delete(ff);
+    return
+end
+
+%% export
 fout = [path0,filesep,file0];
 [fpath,fname,ext] = fileparts(fout);
 if isempty(ext)
@@ -66,11 +75,11 @@ if isempty(ext)
 end
 save(fout,'res');
 
-%% export
 waitbar(0.5,ff,'Writing movie ...');
 
 fh = guidata(f);
 opts = getappdata(f,'opts');
+
 % export movie
 if fh.expMov.Value==1
     ov1 = zeros(opts.sz(1),opts.sz(2),3,opts.sz(3));
@@ -83,6 +92,13 @@ if fh.expMov.Value==1
     io.writeTiffSeq(fmov,ov1,8);
 end
 
+% export feature table
+ftTb = getappdata(f,'featureTable');
+cc = ftTb{:,1};
+cc = cc(:,xSel);
+ftTb1 = table(cc,'RowNames',ftTb.Row);
+ftb = [fpath,filesep,fname,'_feature.xlsx'];
+writetable(ftTb1,ftb,'WriteVariableNames',0,'WriteRowNames',1);
 fprintf('Done\n')
 
 delete(ff);

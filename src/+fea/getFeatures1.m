@@ -3,9 +3,6 @@ function [ftsBase,ftsPg] = getFeatures1(voli0,volr0,muPerPix,nEvt,ftsBase,ftsPg)
 
 [H,W,T] = size(voli0);
 
-% ftsBase = [];
-% ftsPg = [];
-
 % basic features
 ftsBase.map{nEvt} = sum(voli0,3);
 cc = regionprops(ftsBase.map{nEvt}>0,'Perimeter');

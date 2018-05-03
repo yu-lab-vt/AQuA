@@ -4,27 +4,15 @@ function updtFeature(~,~,f)
 
 thrxx = 0;  % FIXME let user adjust threshold
 
-fprintf('Updating network, region and landmark features\n')
-
-ff = waitbar(0,'Updating features ...');
-
-% % remove appdatas
-% var2Rm = {'dF','datSmo','lblMapS','dL'};
-% for ii=1:numel(var2Rm)
-%     var0 = var2Rm{ii};
-%     if isappdata(f,var0)
-%         rmappdata(f,var0);
-%     end
-% end
-% fh = guidata(f);
-% fh.wkflEvtRun.Enable = 'off'; 
-% fh.wkflPhaseRun.Enable = 'off';
+fprintf('Updating basic, network, region and landmark features\n')
 
 % read data
 ov = getappdata(f,'ov');
 opts = getappdata(f,'opts');
 btSt = getappdata(f,'btSt');
 bd = getappdata(f,'bd');
+
+gg = waitbar(0,'Updating features ...');
 
 sz = opts.sz;
 fm = btSt.filterMsk;
@@ -46,19 +34,17 @@ end
 if bd.isKey('landmk')
     bd1 = bd('landmk');
     lmkLst = cell(numel(bd1),1);
-    %lmkMsk = cell(numel(bd1),1);
     for ii=1:numel(bd1)
         lmkLst{ii} = bd1{ii}{1};
-        %lmkMsk{ii} = bd1{ii}{2};
     end
 else
     lmkLst = [];
 end
 
-% choose bright part for propagation calculation
+% reconstruct for propagation calculation
 fprintf('Gathering data ...\n')
 ov0 = ov('Events');
-evtMap = zeros(sz,'uint32');
+evtMap = zeros(sz,'uint32');  % binarize for network features
 lblMapE = zeros(sz,'uint32');
 dRecon = zeros(sz,'uint8');
 for tt=1:sz(3)
@@ -83,20 +69,17 @@ for tt=1:sz(3)
 end
 
 % basic features
-waitbar(0.5,ff);
-if 1
-    fprintf('Updating basic features ...\n')
-    dat = getappdata(f,'dat');
-    [evt,fts,dffMat,dMat] = fea.getFeaturesTop(dat,lblMapE,dRecon,opts);
-    setappdata(f,'evt',evt);
-    setappdata(f,'dffMat',dffMat);
-    setappdata(f,'dMat',dMat);
-else
-    fts = getappdata(f,'fts');
-end
+waitbar(0.2,gg);
+fprintf('Updating basic features ...\n')
+dat = getappdata(f,'dat');
+[evtLst,ftsLst,dffMat,dMat] = fea.getFeaturesTop(dat,lblMapE,dRecon,opts);
+setappdata(f,'evt',evtLst);
+setappdata(f,'dffMat',dffMat);
+setappdata(f,'dMat',dMat);
 
 % only use events inside region and is filtered
 % update network features, all filtered events
+waitbar(0.6,gg);
 evtx = label2idx(evtMap);
 clear evtMap
 if ~isempty(fm)
@@ -106,46 +89,100 @@ if ~isempty(fm)
         end
     end
 end
-fts.networkAll = fea.getEvtNetworkFeatures(evtx,sz);
+ftsLst.networkAll = fea.getEvtNetworkFeatures(evtx,sz);
 
 % events inside cells only
 if ~isempty(regLst)
     for ii=1:numel(evtx)
-        if isfield(fts,'loc2D')
-            loc00 = fts.loc2D{ii};
+        if isfield(ftsLst,'loc2D')
+            loc00 = ftsLst.loc2D{ii};
         else
-            loc00 = fts.loc.x2D{ii};
+            loc00 = ftsLst.loc.x2D{ii};
         end
         if sum(evtSpatialMask(loc00))==0
             evtx{ii} = [];
         end
     end
 end
-fts.network = fea.getEvtNetworkFeatures(evtx,sz);
+ftsLst.network = fea.getEvtNetworkFeatures(evtx,sz);
 
 % update features
-waitbar(0.75,ff);
+waitbar(0.7,gg);
 if ~isempty(regLst) || ~isempty(lmkLst)
     fprintf('Updating region and landmark features ...\n')
-    %fts.lmk = fea.getDistRegionBorderMIMO(evtx,regLst,lmkLst,sz);
-    fts.region = fea.getDistRegionBorderMIMO(evtx,dRecon,regLst,lmkLst);
+    ftsLst.region = fea.getDistRegionBorderMIMO(evtx,dRecon,regLst,lmkLst);
 else
-    fts.region = [];
+    ftsLst.region = [];
 end
-setappdata(f,'fts',fts);
+setappdata(f,'fts',ftsLst);
 
 % update events to show
-waitbar(1,ff);
+waitbar(1,gg);
 if ~isempty(regLst)
-    btSt.regMask = sum(fts.region.cell.memberIdx>0,2);
+    btSt.regMask = sum(ftsLst.region.cell.memberIdx>0,2);
 else
-    btSt.regMask = ones(numel(fts.loc.x3D),1);
+    btSt.regMask = ones(numel(ftsLst.loc.x3D),1);
 end
 setappdata(f,'btSt',btSt);
 ui.updtEvtOvShowLst([],[],f);
 
+% feature table
+% show in event manager and for exporting
+fts = getappdata(f,'fts');
+tb = getappdata(f,'userFeatures');
+nEvt = numel(fts.basic.area);
+nFt = numel(tb.Name);
+ftsTb = nan(nFt,nEvt);
+ftsName = cell(nFt,1);
+ftsCnt = 1;
+dixx = fts.notes.propDirectionOrder;
+for ii=1:nFt
+    cmdSel0 = tb.Script{ii};
+    ftsName0 = tb.Name{ii};
+    % if find landmark or direction
+    if ~isempty(strfind(cmdSel0,'xxLmk')) %#ok<STREMP>
+        for xxLmk=1:numel(lmkLst)
+            try
+                eval([cmdSel0,';']);
+            catch
+                fprintf('Feature "%s" not used\n',ftsName0)
+                x = nan(nEvt,1);
+            end
+            ftsTb(ftsCnt,:) = reshape(x,1,[]);
+            ftsName1 = [ftsName0,' - landmark ',num2str(xxLmk)];
+            ftsName{ftsCnt} = ftsName1;
+            ftsCnt = ftsCnt + 1;
+        end
+    elseif ~isempty(strfind(cmdSel0,'xxDi')) %#ok<STREMP>
+        for xxDi=1:4
+            try
+                eval([cmdSel0,';']);
+            catch
+                fprintf('Feature "%s" not used\n',ftsName0)
+                x = nan(nEvt,1);
+            end
+            ftsTb(ftsCnt,:) = reshape(x,1,[]);
+            ftsName1 = [ftsName0,' - ',dixx{xxDi}];
+            ftsName{ftsCnt} = ftsName1;
+            ftsCnt = ftsCnt + 1;
+        end
+    else
+        try
+            eval([cmdSel0,';']);
+        catch
+            fprintf('Feature "%s" not used\n',ftsName0)
+            x = nan(nEvt,1);
+        end
+        ftsTb(ftsCnt,:) = reshape(x,1,[]);
+        ftsName{ftsCnt} = ftsName0;
+        ftsCnt = ftsCnt + 1;        
+    end
+end
+featureTable = table(ftsTb,'RowNames',ftsName);
+setappdata(f,'featureTable',featureTable);
+
 fprintf('Done.\n')
-delete(ff)
+delete(gg)
 
 end
 

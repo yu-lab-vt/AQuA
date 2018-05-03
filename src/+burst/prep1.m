@@ -1,4 +1,4 @@
-function [dat,dF,opts,H,W,T] = prep1(p0,f0,rgT,opts)
+function [dat,dF,opts,H,W,T] = prep1(p0,f0,rgT,opts,ff)
 %PREP1 load data and estimation noise
 % TODO: use segment by segment processing to reduce the impact of bleaching
 
@@ -22,6 +22,12 @@ dat(dat<0) = 0;
 if opts.usePG==1
     dat = sqrt(dat);
 end
+if exist('ff','var')
+    waitbar(0.4,ff);
+end
+
+mskSig = var(dat,0,3)>1e-8;
+
 dat = dat + randn(size(dat))*1e-4;
 [H,W,T] = size(dat);
 opts.sz = [H,W,T];
@@ -32,7 +38,8 @@ opts.maxValueDat = maxDat;
 xx = (dat(:,:,2:end)-dat(:,:,1:end-1)).^2;
 stdMap = sqrt(median(xx,3)/0.9133);
 stdMapGau = double(imgaussfilt(stdMap));
-stdEst = double(sqrt(median(xx(:))/0.9133));
+stdMapGau(~mskSig) = nan;
+stdEst = double(nanmedian(stdMapGau(:)));
 % [~,stdEst,stdMapGau] = estNoisePerBlk(dat,opts.cut,opts.movAvgWin);
 
 % slightly smooth the data
@@ -41,9 +48,12 @@ for tt=1:T
     dat(:,:,tt) = imgaussfilt(dat(:,:,tt),opts.smoXY);
 end
 
-dF = getDfBlk(dat,opts.cut,opts.movAvgWin);
+dF = getDfBlk(dat,opts.cut,opts.movAvgWin,stdEst);
 idx00 = find(dF<=0);
 dF(idx00) = randn(numel(idx00),1)*stdEst;
+if exist('ff','var')
+    waitbar(0.8,ff);
+end
 
 % noise and threshold
 opts.varEst = stdEst.^2;
@@ -55,11 +65,16 @@ opts.varMap = stdMapGau.^2;
 end
 
 
-function dF = getDfBlk(datIn,cut,movAvgWin)
+function dF = getDfBlk(datIn,cut,movAvgWin,stdEst)
 % movAvg = load('./cfg/movAvgMin.mat');
 % tVecGap = movAvg.tVec(2)-movAvg.tVec(1);
 [H,W,T] = size(datIn);
 dF = zeros(H,W,T,'single');
+
+xx = randn(10000,cut)*stdEst;
+xxMA = movmean(xx,movAvgWin,3);
+xxMin = min(xxMA,[],3);
+xBias = nanmean(xxMin(:));
 
 % stdEstVec = zeros(1,1);
 % stdMapGauVec = zeros(H,W,1);
@@ -76,10 +91,11 @@ for ii=1:nBlk
         t1 = t0+cut-1;
     end
     dat = datIn(:,:,t0:t1);
-%     T1 = t1-t0+1;      
+    %T1 = t1-t0+1;      
+    %movAvgWin = T1/2;
     
     datMA = movmean(dat,movAvgWin,3);
-    datMin = min(datMA,[],3);
+    datMin = min(datMA,[],3)-xBias;
     dF0 = dat - datMin;
     
 %     % noise level estimation

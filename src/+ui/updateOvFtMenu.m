@@ -17,8 +17,15 @@ fh.overlayDat.String = ovName;
 fh.overlayDat.Value = idx;
 
 if strcmp(ovName,'Events')
-    fh.overlayFeature.Enable = 'on';
-    fh.overlayColor.Enable = 'on';
+    xxx = 'on';
+    fh.overlayFeature.Enable = xxx;
+    fh.overlayColor.Enable = xxx;
+    fh.overlayTrans.Enable = xxx;
+    fh.overlayScale.Enable = xxx;
+    fh.overlayPropDi.Enable = xxx;
+    fh.overlayLmk.Enable = xxx;
+    fh.sldMinOv.Enable = xxx;
+    fh.sldMaxOv.Enable = xxx;
 end
 
 end

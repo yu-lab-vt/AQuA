@@ -1,29 +1,21 @@
-function [arLst,lmLoc] = actTop(dat,dF,opts)
+function [arLst,lmLoc] = actTop(dat,dF,opts,evtSpatialMask,ff)
 
-% T = size(dat,3);
+[H,W,~] = size(dat);
 
-% datSmo = zeros(size(dat),'single');
-% datSmo1 = zeros(size(dat));
-% for tt=1:T
-%     %datSmo(:,:,tt) = imgaussfilt(dat(:,:,tt),2);
-%     dat(:,:,tt) = imgaussfilt(dat(:,:,tt),opts.smoXY);
-% end
-% if opts.usePG>0
-%     datOrg = dat.^2*2;
-% else
-%     datOrg = dat;
-% end
-% dat = datSmo1;
+if ~exist('evtSpatialMask','var')
+    evtSpatialMask = ones(H,W);
+end
 
 % get seeds
-[arLst,dActVox] = burst.getAr(dF,opts);
+[arLst,dActVox] = burst.getAr(dF,opts,evtSpatialMask);
+if exist('ff','var')
+    waitbar(0.5,ff);
+end
 fsz = [1 1 0.5];  % smoothing for seed detection
 % fsz = [0.5 0.5 0.5];
 lmLoc = burst.getLmAll(dat,arLst,dActVox,fsz);
-
-% dL = zeros(size(dat),'logical');
-% for nn=1:numel(arLst)
-%     dL(arLst{nn}) = true;
-% end
+if exist('ff','var')
+    waitbar(1,ff);
+end
 
 end

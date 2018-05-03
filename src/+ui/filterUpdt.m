@@ -6,13 +6,12 @@ fts = getappdata(f,'fts');
 tb = fh.filterTable;
 
 btSt = getappdata(f,'btSt');
-fVar = btSt.ftsFilter;
 fCmd = btSt.ftsCmd;
 
 nEvt = numel(fts.basic.area);
 xSel = ones(nEvt,1);
 
-for ii=1:numel(fVar)
+for ii=1:numel(fCmd)
     s0 = tb.Data{ii,1};
     if s0==0
         continue
@@ -27,12 +26,8 @@ for ii=1:numel(fVar)
             return
         end
     end
-    if isfield(fts,fVar{ii})
-        f0 = fts.(fVar{ii});
-    else
-        cmd0 = ['f0=',fCmd{ii},';'];
-        eval(cmd0);
-    end
+    cmd0 = ['f0=',fCmd{ii},';'];
+    eval(cmd0);
     xSel(isnan(f0)) = 0;
     xSel(f0<xmin | f0>xmax) = 0;
 end

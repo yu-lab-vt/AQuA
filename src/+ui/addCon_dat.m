@@ -19,14 +19,14 @@ pMov.DataAspectRatio = [1 1 1];
 uix.Empty('Parent',bDat);
 pImgCon = uix.HBox('Parent',bDat);  % play, scroll bar ...
 uix.Empty('Parent',bDat);
-pCurveTool = uix.HBox('Parent',bDat);  % select curve, zoom curve ...
+% pCurveTool = uix.HBox('Parent',bDat);  % select curve, zoom curve ...
 
 pCurve = axes('Parent',bDat,'ActivePositionProperty','Position','Tag','curve');
 pCurve.XTick = [];
 pCurve.YTick = [];
 pCurve.YLim = [-0.1,0.1];
 % xx = 1:1000; yy = sin(xx*0.1); line(xx,yy);
-bDat.Heights = [15,5,-1,5,20,15,15,200];
+bDat.Heights = [15,5,-1,5,20,15,200];
 
 % image tools
 uix.Empty('Parent',pImgTool);
@@ -55,11 +55,11 @@ uix.Empty('Parent',pImgCon);
 pImgCon.Widths = [15,50,50,-1,15];
 
 % curve tool
-uicontrol(pCurveTool,'String','Select');
-uicontrol(pCurveTool,'String','Inspect value');
-uix.Empty('Parent',pCurveTool);
-pCurveTool.Widths = [50,100,-1];
-pCurveTool.Spacing = 10;
+% uicontrol(pCurveTool,'String','Select');
+% uicontrol(pCurveTool,'String','Inspect value');
+% uix.Empty('Parent',pCurveTool);
+% pCurveTool.Widths = [50,100,-1];
+% pCurveTool.Spacing = 10;
 end
 
 % -------------------------------------------------------------------- %

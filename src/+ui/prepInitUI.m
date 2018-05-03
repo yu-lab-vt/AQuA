@@ -73,6 +73,8 @@ ui.updateOvFtMenu([],[],f);
 % User defined features
 ui.chgOv([],[],f,0);
 ui.chgOv([],[],f,1);
+ui.chgOv([],[],f,2);
+ui.evtMngrRefresh([],[],f);
 
 % resize GUI
 fh.g.Selection = 3;
@@ -85,9 +87,9 @@ if stg.detect==0
     fh.pEvt.Visible = 'off';
     szTmp = fh.bWkfl.Heights;
     if op>0  % do not show detection panel at all
-        szTmp(1) = 0;
+        szTmp(2) = 0;
     else
-        szTmp(1) = 410;
+        szTmp(2) = 410;
     end
     fh.bWkfl.Heights = szTmp;
 end

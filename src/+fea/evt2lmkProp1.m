@@ -1,6 +1,8 @@
 function res = evt2lmkProp1(datS,lmkMsk)
 % distances and directions between events and landmarks
 % Multiple threshold frontier based
+%
+% TODO: allow landmark to be outside datS (input as (x,y) pairs)
 
 [H,W,T] = size(datS);
 nLmk = numel(lmkMsk);
