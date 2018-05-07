@@ -10,12 +10,12 @@ Curve - Duration 10% to 10%,x=fts.curve.width11
 Curve - Rising duration 10% to 90%,x=fts.curve.rise19
 Curve - Decaying duration 90% to 10%,x=fts.curve.fall91
 Curve - Decay tau,x=fts.curve.decayTau
-Propagation - onset - overall,"x0=fts.propagation.propGrowPixOverall; x=sum(x0,2)"
-Propagation - onset - one direction,"x0=fts.propagation.propGrowPixOverall(:,xxDi); x=x0"
-Propagation - onset - one direction - ratio,"x0=fts.propagation.propGrowPixOverall; xAll=sum(x0,2); xSel=x0(:,xxDi); x=xSel./xAll"
-Propagation - offset - overall,"x0=fts.propagation.propShrinkPixOverall; x=sum(abs(x0),2)"
-Propagation - offset - one direction,"x0=fts.propagation.propShrinkPixOverall(:,xxDi); x=abs(x0)"
-Propagation - offset - one direction - ratio,"x0=abs(fts.propagation.propShrinkPixOverall); xAll=sum(x0,2); xSel=x0(:,xxDi); x=xSel./xAll"
+Propagation - onset - overall,"x0=fts.propagation.propGrowOverall; x=sum(x0,2)"
+Propagation - onset - one direction,"x0=fts.propagation.propGrowOverall(:,xxDi); x=x0"
+Propagation - onset - one direction - ratio,"x0=fts.propagation.propGrowOverall; xAll=sum(x0,2); xSel=x0(:,xxDi); x=xSel./xAll"
+Propagation - offset - overall,"x0=fts.propagation.propShrinkOverall; x=sum(abs(x0),2)"
+Propagation - offset - one direction,"x0=fts.propagation.propShrinkOverall(:,xxDi); x=abs(x0)"
+Propagation - offset - one direction - ratio,"x0=abs(fts.propagation.propShrinkOverall); xAll=sum(x0,2); xSel=x0(:,xxDi); x=xSel./xAll"
 Landmark - event average distance,"x=fts.region.landmarkDist.distAvg(:,xxLmk)"
 Landmark - event minimum distance,"x=fts.region.landmarkDist.distMin(:,xxLmk)"
 Landmark - event toward landmark,"x=fts.region.landmarkDir.chgToward(:,xxLmk)"

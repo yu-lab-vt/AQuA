@@ -20,13 +20,16 @@ d2lmkAvg = nan(nEvt,nLmk);
 d2lmkMin = nan(nEvt,nLmk);
 
 % propagation direction toward or away from landmark
-dir2lmk = cell(nEvt,1);
-dir2lmkAvg = nan(nEvt,nLmk);
-dir2lmkAvgPos = nan(nEvt,nLmk);
-dir2lmkAvgNeg = nan(nEvt,nLmk);
+% dir2lmk = cell(nEvt,1);
+% dir2lmkAvg = nan(nEvt,nLmk);
+% dir2lmkAvgPos = nan(nEvt,nLmk);
+% dir2lmkAvgNeg = nan(nEvt,nLmk);
 
 % fprintf('Calculating distances to landmarks ...\n')
 for ii=1:length(evts)
+    if mod(ii,100)==0
+        fprintf('lmkDist: %d\n',ii)
+    end
     loc0 = evts{ii};
     if isempty(loc0)
         continue
@@ -83,20 +86,20 @@ for ii=1:length(evts)
     d2lmkAvg(ii,:) = nanmean(distPix,1);  % average distance to the landmark
     d2lmkMin(ii,:) = nanmin(distPix,[],1);  % minimum distance to the landmark
     
-    % direction, positive values are propagating away from soma
-    if numel(tRg)>1
-        difx0 = distPix(2:end,:) - distPix(1:end-1,:);
-        difx0(isnan(difx0)) = 0;
-        difx = [zeros(1,size(difx0,2));difx0];
-    else
-        difx = distPix*0;
-    end
-    dir2lmk{ii} = difx;  % distance change at each frame comparing with the previous frame
-    dir2lmkAvg(ii,:) = nanmean(difx,1); % averge distance change
-    difx1 = difx; difx1(difx1<0) = nan;
-    dir2lmkAvgPos(ii,:) = nanmean(difx1,1);  % average positive distance change
-    difx2 = difx; difx2(difx2>0) = nan;
-    dir2lmkAvgNeg(ii,:) = nanmean(abs(difx2),1);  % average negative distance change
+%     % direction, positive values are propagating away from soma
+%     if numel(tRg)>1
+%         difx0 = distPix(2:end,:) - distPix(1:end-1,:);
+%         difx0(isnan(difx0)) = 0;
+%         difx = [zeros(1,size(difx0,2));difx0];
+%     else
+%         difx = distPix*0;
+%     end
+%     dir2lmk{ii} = difx;  % distance change at each frame comparing with the previous frame
+%     dir2lmkAvg(ii,:) = nanmean(difx,1); % averge distance change
+%     difx1 = difx; difx1(difx1<0) = nan;
+%     dir2lmkAvgPos(ii,:) = nanmean(difx1,1);  % average positive distance change
+%     difx2 = difx; difx2(difx2>0) = nan;
+%     dir2lmkAvgNeg(ii,:) = nanmean(abs(difx2),1);  % average negative distance change
 end
 
 rLmk = [];
@@ -105,10 +108,10 @@ rLmk.distAvg = d2lmkAvg;
 rLmk.distMin = d2lmkMin;
 
 % !!! below features unreliable !!!
-rLmk.distChgPerFrame = dir2lmk;
-rLmk.distChgAvg = dir2lmkAvg;
-rLmk.distChgAvgPos = dir2lmkAvgPos;
-rLmk.distChgAvgNeg = dir2lmkAvgNeg;
+% rLmk.distChgPerFrame = dir2lmk;
+% rLmk.distChgAvg = dir2lmkAvg;
+% rLmk.distChgAvgPos = dir2lmkAvgPos;
+% rLmk.distChgAvgNeg = dir2lmkAvgNeg;
 
 end
 

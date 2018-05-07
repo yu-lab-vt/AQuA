@@ -21,7 +21,7 @@ pixTwd = cell(nEvts,1);
 pixAwy = cell(nEvts,1);
 
 for nn=1:numel(evts)
-    if mod(nn,100)==0; fprintf('%d\n',nn); end    
+    if mod(nn,100)==0; fprintf('EvtLmk: %d\n',nn); end    
     evt0 = evts{nn};
     if isempty(evt0)
         continue
@@ -55,13 +55,11 @@ for nn=1:numel(evts)
     for ii=1:nLmk
         [h0k,w0k] = ind2sub([H,W],lmkLst{ii});
         msk0 = zeros(H1,W1);
-        for jj=1:numel(h0k)
-            h1k = h0k - min(rgH) + 1;
-            w1k = w0k - min(rgW) + 1;            
-            h1ks = min(max(h1k,1),H1);
-            w1ks = min(max(w1k,1),W1);            
-            msk0(h1ks,w1ks) = 1;
-        end
+        h1k = h0k - min(rgH) + 1;
+        w1k = w0k - min(rgW) + 1;
+        h1ks = min(max(h1k,1),H1);
+        w1ks = min(max(w1k,1),W1);
+        msk0(h1ks,w1ks) = 1;
         lmkMsk1{ii} = msk0;
     end
     

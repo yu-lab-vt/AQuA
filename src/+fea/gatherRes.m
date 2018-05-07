@@ -1,4 +1,4 @@
-function res = gatherRes(dat,opts,evt,fts,dffMat,dMat,riseLst,lblMapE,dRecon)
+function res = gatherRes(dat,opts,evt,fts,dffMat,dMat,riseLst,datL,dRecon)
 
 opts.bitNum = 8;
 dat1 = dat*(2^opts.bitNum-1);
@@ -12,8 +12,10 @@ res = [];
 res.opts = opts;
 res.dat = dat1;
 res.evt = evt;
+% res.seLst = seLst;
 res.fts = fts;
 res.riseLst = riseLst;
+% res.evtRiseLink = evtRiseLink;
 res.dffMat = dffMat;
 res.dMat = dMat;
 
@@ -37,13 +39,21 @@ ov('None') = [];
 % end
 
 fprintf('Overlay for events...\n')
-ov0 = ui.getOv(label2idx(lblMapE),size(dRecon),dRecon);
+ov0 = ui.over.getOv(label2idx(datL),size(dRecon),dRecon);
 ov0.name = 'Events';
 ov0.colorCodeType = {'Random'};
 ov(ov0.name) = ov0;
+
+% fprintf('Overlay for events...\n')
+% ov0 = ui.getOv(seLst,size(dRecon),dRecon);
+% ov0.name = 'Super events';
+% ov0.colorCodeType = {'Random'};
+% ov(ov0.name) = ov0;
 
 res.ov = ov;
 
 fprintf('Done\n')
 
 end
+
+

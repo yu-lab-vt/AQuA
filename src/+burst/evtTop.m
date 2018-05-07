@@ -1,4 +1,4 @@
-function [riseLst,datR,datL,seMap] = evtTop(dat,dF,lblMapS,riseMap,opts,ff)
+function [riseLst,datR,datL,c1x] = evtTop(dat,dF,lblMapS,riseMap,opts,ff)
 % evtTop super voxels to super events and optionally, to events
 
 gtwSmo = opts.gtwSmo; % 0.5
@@ -64,9 +64,11 @@ for nn=1:numel(c1x)
     if numel(ihw0)>30
         [spLst,cx,dlyMap,distMat,rgtSel,xFail,~,~] = gtw.spgtw(dF0,seMap0,seSel,gtwSmo,maxStp,cDelay,spSz,spT);
         if xFail==0
-            [evtMap0,evtMemC,evtMemCMap] = burst.riseMap2evt(spLst,dlyMap,distMat,maxRiseUnc,cDelay,0);
+            % smooth propagation first
+            [evtMap,evtMemC,evtMemCMap] = burst.riseMap2evt(spLst,dlyMap,distMat,maxRiseUnc,cDelay,0);
             if 1
-                evtMap0 = zeros(size(dlyMap));
+                evtMap = zeros(size(dlyMap));
+                % detect in each smooth component
                 for ii=1:max(evtMemC(:))
                     idx0 = evtMemC==ii;
                     spLst0 = spLst(idx0);
@@ -74,8 +76,8 @@ for nn=1:numel(c1x)
                     dlyMap0 = dlyMap;
                     dlyMap0(evtMemCMap~=ii) = Inf;
                     evtMap00 = burst.riseMap2evt(spLst0,dlyMap0,distMat0,maxRiseUnc,cDelay,1);
-                    evtMap00(evtMap00>0) = evtMap00(evtMap00>0) + max(evtMap0(:));
-                    evtMap0 = max(evtMap0,evtMap00);
+                    evtMap00(evtMap00>0) = evtMap00(evtMap00>0) + max(evtMap(:));
+                    evtMap = max(evtMap,evtMap00);
                 end
                 %figure;imagesc(evtMemCMap);
                 %figure;imagesc(evtMap0);
@@ -86,11 +88,11 @@ for nn=1:numel(c1x)
 
     % for small events, do not use GTW
     if numel(ihw0)<=30 || xFail==1
-        dlyMap = [];
         rgtSel = 1:numel(rgt);
         spLst = {ihw0};
-        evtMap0 = zeros(numel(rgh),numel(rgw));
-        evtMap0(spLst{1}) = 1;
+        evtMap = zeros(numel(rgh),numel(rgw));
+        evtMap(spLst{1}) = 1;
+        dlyMap = evtMap;
         dF0Vec = reshape(dF0,[],numel(rgt));
         cx = nanmean(dF0Vec(spLst{1},:),1);                
         cx = imgaussfilt(cx,1);
@@ -104,7 +106,7 @@ for nn=1:numel(c1x)
     cx1 = cxAll(:,rgtx);
 
     % events
-    [evtL,evtRecon] = gtw.evtRecon(spLst,cx1,evtMap0);
+    [evtL,evtRecon] = gtw.evtRecon(spLst,cx1,evtMap);
     evtRecon = evtRecon.^2;
     evtRecon = uint8(evtRecon*255);
     nEvt0 = max(evtL(:));
@@ -119,13 +121,27 @@ for nn=1:numel(c1x)
     datR(rgh,rgw,rgtx) = max(datR(rgh,rgw,rgtx),evtRecon);
     datL(rgh,rgw,rgtx) = evtL;
     
+    % split the rising time map to different events
+    for ii=1:nEvt0
+        [ihr,iwr] = find(evtMap==ii);
+        if ~isempty(ihr)
+            rghr = min(ihr):max(ihr);
+            rgwr = min(iwr):max(iwr);
+            evtMapr = evtMap(rghr,rgwr);
+            dlyMapr = (dlyMap(rghr,rgwr)+rgt(1)-1).*(evtMapr==ii);
+            dlyMapr(dlyMapr==0) = nan;
+            rr = [];
+            rr.dlyMap = dlyMapr;
+            rr.rgh = min(rgh)+rghr-1;
+            rr.rgw = min(rgw)+rgwr-1;
+            riseLst{nEvt+ii} = rr;
+        end
+    end
     nEvt = nEvt + nEvt0;
-    
-    riseLst{nn} = dlyMap;
     
     if mod(nn,50)==0
         fprintf('');
-    end    
+    end
 end
 
 % ov1 = plt.regionMapWithData(spLst,zeros(H,W),0.3); zzshow(ov1);

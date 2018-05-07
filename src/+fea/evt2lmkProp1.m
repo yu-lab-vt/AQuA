@@ -4,8 +4,18 @@ function res = evt2lmkProp1(datS,lmkMsk)
 %
 % TODO: allow landmark to be outside datS (input as (x,y) pairs)
 
-[H,W,T] = size(datS);
+[H,W,~] = size(datS);
 nLmk = numel(lmkMsk);
+
+sck = min(sqrt(5000/H/W),0.5);
+datSx = imresize(datS,sck);
+lmkMskx = cell(0);
+for kk=1:nLmk
+    m0 = lmkMsk{kk};
+    m0s = imresize(m0,sck);
+    lmkMskx{kk} = m0s>0;
+end
+[H,W,T] = size(datSx);
 
 if H*W*T>100^3
     isBig = 1;
@@ -27,7 +37,7 @@ for kk=1:numel(thrRg)
         fprintf('%d ',kk)
     end
     
-    evt0 = datS>thrRg(kk);
+    evt0 = datSx>thrRg(kk);
     loc0 = find(evt0>0);
     
     % meet an empty event, should not happen
@@ -56,7 +66,7 @@ for kk=1:numel(thrRg)
     D = cell(nLmk,1);
     evt0s = squeeze(sum(evt0,3)>0);
     for ii=1:nLmk
-        msk00 = lmkMsk{ii};
+        msk00 = lmkMskx{ii};
         [h0,w0] = find(msk00>0);
         %h00 = mean(h0); w00 = mean(w0);
         %msk00 = zeros(H,W); msk00(max(round(h00),1),max(round(w00),1)) = 1;
@@ -93,7 +103,7 @@ for kk=1:numel(thrRg)
         % check reach the landmark or not
         lblCur = lblMap(:,:,ii);
         for jj=1:nLmk
-            n11 = sum(lblCur(lmkMsk{jj}>0));
+            n11 = sum(lblCur(lmkMskx{jj}>0));
             insideLmk = n11>0;
             if insideLmk && isnan(tReach(jj))
                 tReach(jj) = ii;
@@ -221,12 +231,14 @@ for kk=1:numel(thrRg)
     end
 end
 
-res.chgToward = chgToward;
-res.chgAway = chgAway;
-res.chgTowardBefReach = chgTowardBefReach;
-res.chgAwayAftReach = chgAwayAftReach;
-res.pixelToward = reshape(pixTwd,H,W,nLmk);
-res.pixelAway = reshape(pixAwy,H,W,nLmk);
+scl1 = sck.^3;
+
+res.chgToward = chgToward/scl1;
+res.chgAway = chgAway/scl1;
+res.chgTowardBefReach = chgTowardBefReach/scl1;
+res.chgAwayAftReach = chgAwayAftReach/scl1;
+res.pixelToward = reshape(pixTwd,H,W,nLmk)/scl1;
+res.pixelAway = reshape(pixAwy,H,W,nLmk)/scl1;
 
 if isBig>0
     fprintf(' OK\n')

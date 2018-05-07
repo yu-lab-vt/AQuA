@@ -1,8 +1,7 @@
-function [evtLst,ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtMap,evtRec,opts)
+function [evtLst,ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtMap,opts)
 % getFeaturesTop extract curve related features, basic features and propagation
 % dat: single (0 to 1)
 % evtMap: single ( integer)
-% evtRec: uint8 ( integer)
 
 [H,W,T] = size(evtMap);
 
@@ -11,6 +10,12 @@ if opts.usePG
 end
 secondPerFrame = opts.frameRate;
 muPerPix = opts.spatialRes;
+
+% impute events
+fprintf('Imputing ...\n')
+datx = dat; 
+datx(evtMap>0) = nan;
+datx = img.imputeMov(datx);
 
 if ~isfield(opts,'maxValueDat')
     opts.maxValueDat = 1;
@@ -31,8 +36,8 @@ foptions.MaxIter = 100;
 dMat = zeros(numel(evtLst),T,2,'single');
 dffMat = zeros(numel(evtLst),T,2,'single');
 for ii=1:numel(evtLst)
-    if mod(ii,100)==0
-        fprintf('%d\n',ii)
+    if mod(ii,10)==0
+        fprintf('%d/%d\n',ii,numel(evtLst))
     end
     pix0 = evtLst{ii};
     if isempty(pix0)
@@ -63,9 +68,12 @@ for ii=1:numel(evtLst)
     s00 = sqrt(median((dff1(2:end)-dff1(1:end-1)).^2)/0.9113);
     
     % dff without other events
-    voxd1(voxi1>0 & voxi1~=ii) = nan;
-    voxd1 = img.imputeMovVec(voxd1);
-    charxIn = nanmean(voxd1,1);
+    voxd2 = reshape(datx(rgH,rgW,:),[],T);
+    idx = sub2ind([numel(rgH),numel(rgW),T],ih-min(rgH)+1,iw-min(rgW)+1,it);
+    voxd2(idx) = voxd1(idx);  % bring current event back
+    %voxd1 = img.imputeMovVec(voxd1);
+    
+    charxIn = nanmean(voxd2,1);
     charx2 = fea.curvePolyDeTrend(charxIn,sigx,opts.correctTrend);    
     dff2 = (charx2-charxBg)/charxBg;    
     [dffMax,tMax] = max(dff2(rgT));
@@ -91,6 +99,7 @@ for ii=1:numel(evtLst)
     ftsLst.loc.t1(ii) = max(it);
     ftsLst.loc.x3D{ii} = pix0;
     ftsLst.loc.x2D{ii} = ihw;
+    ftsLst.loc.rgt1(ii,:) = [min(rgT1),max(rgT1)];
     ftsLst.curve.dffMax(ii) = dffMax;
     ftsLst.curve.dffMaxFrame(ii) = (tMax+min(rgT)-1)*secondPerFrame;
     ftsLst.curve.dffMaxZ(ii) = dffMaxZ;
@@ -103,7 +112,7 @@ for ii=1:numel(evtLst)
     ftsLst.curve.width11(ii) = width11;
     ftsLst.curve.decayTau(ii) = decayTau;
     
-    % basic and propagation features
+    % basic features
     ih1 = ih-min(rgH)+1;
     iw1 = iw-min(rgW)+1;
     it1 = it-min(rgT1)+1;
@@ -111,21 +120,10 @@ for ii=1:numel(evtLst)
     voxi = zeros(size(voxd));
     pix1 = sub2ind(size(voxd),ih1,iw1,it1);
     voxi(pix1) = 1;
-    voxr = evtRec(rgH,rgW,rgT1);
-    voxr = double(voxr)/255;
-    if ii==203
-        fprintf('');
-    else
-        %continue
-    end
-    [ftsLst.basic,ftsLst.propagation] = fea.getFeatures1(...
-        voxi,voxr,muPerPix,ii,ftsLst.basic,ftsLst.propagation);
-    ftsLst.propagation = fea.getPropagation(voxi,voxr,muPerPix,ii,ftsLst.propagation,0);
-    ftsLst.propagation = fea.getPropagation(voxi,voxr,muPerPix,ii,ftsLst.propagation,1);
+    ftsLst.basic = fea.getBasicFeatures(voxi,muPerPix,ii,ftsLst.basic);
 end
 
 ftsLst.bds = img.getEventBorder(evtLst,[H,W,T]);
-ftsLst.notes.propDirectionOrder = {'north', 'south', 'west', 'east'};
 
 end
 

@@ -10,13 +10,10 @@ if ~exist('cfgSel','var')
 end
 
 if ~exist('cfgFile','var')
-    %cfgFile = './cfg/default_parameters.txt';
-    %cfgFile = './cfg/parameters0.xlsx';
     cfgFile = './cfg/parameters1.xlsx';
 end
 
 opts = [];
-% optsLit = [];
 optsInfo = [];
 optsName = [];
 
@@ -54,7 +51,6 @@ vName0 = cfg{:,1};
 
 for ii=1:numel(vName)
     opts.(vName{ii}) = val0(ii);
-%     optsLit.(vName{ii}) = num2str(val0(ii));
     optsInfo.(vName{ii}) = vInfo0{ii};
     optsName.(vName{ii}) = vName0{ii};
 end
