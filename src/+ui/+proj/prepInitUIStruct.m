@@ -1,11 +1,21 @@
-function [ov,bd,scl,btSt] = prepInitUIStruct(dat,opts)
+function [ov,bd,scl,btSt] = prepInitUIStruct(dat,opts,btSt)
+
+if ~exist('btSt','var')
+    btSt = [];
+end
+if ~exist('opts','var')
+    opts = []; opts.usePG = 1;
+end
+if ~exist('dat','var')
+    dat = rand(100,100,10);
+end
 
 [H,W,T] = size(dat);
 
 % initial overlays and boundaries
 ov = containers.Map('UniformValues',0);
 ov('None') = [];
-bd = containers.Map('UniformValues',0);  % foregrnd, backgrnd, region, landmk
+bd = containers.Map('UniformValues',0);  % foregrnd, backgrnd, region, landmk, maskLst
 bd('None') = [];
 
 % set layer scale
@@ -29,7 +39,7 @@ scl.H = H;
 scl.W = W;
 scl.T = T;
 
-btSt = ui.proj.initStates();
+btSt = ui.proj.initStates(btSt);
 
 
 end

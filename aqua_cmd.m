@@ -16,10 +16,10 @@ startup;  % initialize
 % f0 = '2826451(4)_1_2_4x_140um_dualwv-001.tif';
 
 preset = 2;
-% p0 = 'D:\neuro_WORK\glia_kira\raw\TTXDataSetRegistered_32Bit\';
-% f0 = 'FilteredNRMCCyto16m_slice1_baseline2_L2 3-002cycle1channel1.tif';
-p0 = 'D:\neuro_WORK\glia_kira\tmp\Feb26\';
-f0 = 'FilteredNRMCCyto16m_slice2_TTX3_L2 3-012cycle1channel1.tif';
+p0 = 'D:\neuro_WORK\glia_kira\raw\TTXDataSetRegistered_32Bit\';
+f0 = 'FilteredNRMCCyto16m_slice1_baseline3_L2 3-003cycle1channel1.tif';
+% p0 = 'D:\neuro_WORK\glia_kira\tmp\Feb26\';
+% f0 = 'FilteredNRMCCyto16m_slice2_TTX3_L2 3-012cycle1channel1.tif';
 
 % preset = 3;
 % p0 = 'D:\neuro_WORK\glia_kira\raw\GluSnFR_20170330\GluSnFR_slice_hsyn_and_gfap\';
@@ -34,6 +34,13 @@ opts = util.parseParam(preset,0,'./cfg/parameters1.xlsx');
 opts.frameRate = frameRate;
 opts.spatialRes = spatialRes;
 
+% =======
+try
+    resx = res; opts = resx.opts;
+catch
+end
+% =======
+
 % read data
 opts.minSize = 8;  % minimum size of events (in pixels)
 %opts.crop = 10;  % avoid near boundary pixels (useful after motion correction)
@@ -45,26 +52,26 @@ opts.minSize = 8;  % minimum size of events (in pixels)
 
 %% foreground and seed detection
 % if activities missed, decrease opts.thrARScl and/or increase opts.smoXY
-opts.thrARScl = 3;  % if many signal missed in coarse detection, set a small value (like 2)
+% opts.thrARScl = 3;  % if many signal missed in coarse detection, set a small value (like 2)
 % opts.smoXY = 0.5;  % spatial smoothing. Larger value for noisier data. Default is 0.5
 [arLst,lmLoc] = burst.actTop(dat,dF,opts);
 ov0 = plt.regionMapWithData(arLst,dat.^2,0.5); zzshow(ov0); clear ov0
 
 %% super voxel detection
-opts.thrTWScl = 2;  % temporal separation threshold in fine detection
-opts.thrExtZ = 1;  % set smaller to incluede noiser pixels
+% opts.thrTWScl = 2;  % temporal separation threshold in fine detection
+% opts.thrExtZ = 1;  % set smaller to incluede noiser pixels
 [lblMapS,~,riseX,riseMap] = burst.spTop(dat,dF,lmLoc,opts);
 ov1 = plt.regionMapWithData(lblMapS,dat.^2,0.25); zzshow(ov1); clear ov1
 
 %% super events and events
-opts.cRise = 2;  % set a larger value for larger events in fine detection
-opts.cDelay = 2;
+% opts.cRise = 2;  % set a larger value for larger events in fine detection
+% opts.cDelay = 2;
 [riseLst,datR,datL,seLst] = burst.evtTop(dat,dF,lblMapS,riseMap,opts);
 ov1 = plt.regionMapWithData(datL,dat,0.5,double(datR)/255); zzshow(ov1); clear ov1
 
 %% feature extraction
-% opts.correctTrend = 3;  % larger value for glutamate data
-opts.northx = 0; opts.northy = 1;
+% opts.correctTrend = 0;  % larger value for glutamate data
+% opts.northx = 0; opts.northy = 1;
 [evtLst,ftsLst,dffMat,dMat] = fea.getFeaturesTop(dat,datL,opts);
 ftsLst = fea.getFeaturesPropTop(dat,datR,evtLst,ftsLst,opts);
 

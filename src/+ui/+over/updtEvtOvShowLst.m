@@ -14,6 +14,11 @@ end
 if ~isempty(btSt.regMask)
     xSel = xSel.*btSt.regMask;
 end
+if ~isempty(btSt.rmLst)
+    msk00 = ones(numel(ov0.sel),1);
+    msk00(btSt.rmLst) = 0;
+    xSel = xSel.*msk00;
+end
 
 ov0.sel = xSel>0;
 ov('Events') = ov0;

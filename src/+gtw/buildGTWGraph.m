@@ -24,10 +24,13 @@ function [ ss,ee,gInfo ] = buildGTWGraph( ref, tst, s, t, smoBase, winSize, s2)
 % freemanwyz@gmail.com
 % Apr.12, 2018
 
+[nNode,T] = size(tst);
+winSize = max(min(winSize,T-1),1);
+% winSize = max(min(winSize,round(T/2)),1);
+
 capRev = 1e8;
 pmCost = (0:winSize)*1e8;
 
-[nNode,T] = size(tst);
 if numel(s2)==1
     s2 = zeros(nNode,1)+s2;
 end

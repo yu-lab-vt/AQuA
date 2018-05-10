@@ -17,6 +17,7 @@ else
 end
 setappdata(f,'btSt',btSt);
 if n>0
+    ui.over.adjMov([],[],f,1)
     ui.movStep(f,n);
 end
 end

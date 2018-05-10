@@ -1,6 +1,6 @@
 function datxCol = addOv(f,datx,n)
 
-datxCol = zeros(size(datx));
+datxCol = datx;
 [H,W,~] = size(datx);
 
 scl = getappdata(f,'scl');
@@ -16,19 +16,7 @@ if ~strcmp(btSt.overlayDatSel,'None')
     % remap color
     if isfield(ov0,'colVal') && strcmp(btSt.overlayColorSel,'Random')==0
         v0 = ov0.colVal;
-        [~,ix] = min(v0); cmin = c0(ix,:);
-        [~,ix] = max(v0); cmax = c0(ix,:);
-        for ii=1:numel(v0)
-            if v0(ii)<scl.minOv
-                c0(ii,:) = cmin;
-                continue
-            end
-            if v0(ii)>scl.maxOv
-                c0(ii,:) = cmax;
-                continue
-            end
-            c0(ii,:) = cmin+(v0(ii)-scl.minOv)/(scl.maxOv-scl.minOv)*(cmax-cmin);
-        end
+        c0 = ui.over.reMapCol(c0,v0,scl);
     end
     
     % show movie with overlay
@@ -49,9 +37,9 @@ if ~strcmp(btSt.overlayDatSel,'None')
                 reCon(pix0) = val0;
             end
         end
-        datxCol(:,:,1) = rPlane*sclOv.*reCon + datx(:,:,1);
-        datxCol(:,:,2) = gPlane*sclOv.*reCon + datx(:,:,2);
-        datxCol(:,:,3) = bPlane*sclOv.*reCon + datx(:,:,3);
+        datxCol(:,:,1) = rPlane*sclOv.*reCon + datxCol(:,:,1);
+        datxCol(:,:,2) = gPlane*sclOv.*reCon + datxCol(:,:,2);
+        datxCol(:,:,3) = bPlane*sclOv.*reCon + datxCol(:,:,3);
     end
 end
 

@@ -25,6 +25,8 @@ if ~isfield(opts,'correctTrend')
     opts.correctTrend = 1;
 end
 
+Tww = min(opts.movAvgWin,T/4);
+
 evtLst = label2idx(evtMap);
 ftsLst = [];
 ftsLst.basic = [];
@@ -36,7 +38,7 @@ foptions.MaxIter = 100;
 dMat = zeros(numel(evtLst),T,2,'single');
 dffMat = zeros(numel(evtLst),T,2,'single');
 for ii=1:numel(evtLst)
-    if mod(ii,10)==0
+    if mod(ii,100)==0
         fprintf('%d/%d\n',ii,numel(evtLst))
     end
     pix0 = evtLst{ii};
@@ -55,16 +57,16 @@ for ii=1:numel(evtLst)
     voxi1 = evtMap(rgH,rgW,:);
     voxi1 = reshape(voxi1,[],T);
     
-    charxIn = mean(voxd1,1);
+    charxIn1 = mean(voxd1,1);
     sigx = sum(voxi1,1)>0;
     if sum(sigx)>T/2
         sigx = sum(voxi1==ii,1)>0;
     end
-    charx1 = fea.curvePolyDeTrend(charxIn,sigx,opts.correctTrend);    
+    charx1 = fea.curvePolyDeTrend(charxIn1,sigx,opts.correctTrend);    
     %figure;plot(charxIn);hold on;plot(charx1);title(num2str(ii));keyboard;close    
     %charxBg = min(movmean(charx1,opts.movAvgWin));
-    charxBg = min(movmean(charx1,T/2));
-    dff1 = (charx1-charxBg)/charxBg; 
+    charxBg1 = max(min(movmean(charx1,Tww)),nanmin(charxIn1));
+    dff1 = (charx1-charxBg1)/charxBg1; 
     s00 = sqrt(median((dff1(2:end)-dff1(1:end-1)).^2)/0.9113);
     
     % dff without other events
@@ -73,13 +75,19 @@ for ii=1:numel(evtLst)
     voxd2(idx) = voxd1(idx);  % bring current event back
     %voxd1 = img.imputeMovVec(voxd1);
     
-    charxIn = nanmean(voxd2,1);
-    charx2 = fea.curvePolyDeTrend(charxIn,sigx,opts.correctTrend);    
-    dff2 = (charx2-charxBg)/charxBg;    
+    charxIn2 = nanmean(voxd2,1);
+    charx2 = fea.curvePolyDeTrend(charxIn2,sigx,opts.correctTrend);    
+    charxBg2 = max(min(movmean(charx2,Tww)),nanmin(charxIn2));
+    dff2 = (charx2-charxBg2)/charxBg2;    
     [dffMax,tMax] = max(dff2(rgT));
     dffMaxZ = dffMax/s00;
     dffMaxPval = 1-normcdf(dffMaxZ);
-    %figure;plot(dff1);hold on;plot(dff2);
+    
+%     figure;subplot(2,1,1);
+%     plot(charxIn1/max(charxIn1));hold on;plot(charx1/max(charx1));plot(dff1/max(dff1(:)));
+%     subplot(2,1,2);
+%     plot(charxIn2/max(charxIn2));hold on;plot(charx2/max(charx2));plot(dff2/max(dff2(:)));
+%     keyboard;close
     
     % extend event window in the curve
     voxi1(voxi1==ii) = 0;

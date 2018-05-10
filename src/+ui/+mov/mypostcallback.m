@@ -9,10 +9,10 @@ try
     H = scl.H;
     
     % do not zoom outside bound
-    w1 = min(max(scl.wrg(1),1),W);
-    w2 = min(max(scl.wrg(2),1),W);
-    h1 = min(max(scl.hrg(1),1),H);
-    h2 = min(max(scl.hrg(2),1),H);
+    w1 = min(max(scl.wrg(1),0.5),W+0.5);
+    w2 = min(max(scl.wrg(2),0.5),W+0.5);
+    h1 = min(max(scl.hrg(1),0.5),H+0.5);
+    h2 = min(max(scl.hrg(2),0.5),H+0.5);
     w = w2-w1;
     h = h2-h1;
     w = min(h,w);

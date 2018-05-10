@@ -78,8 +78,16 @@ ui.evt.evtMngrRefresh([],[],f);
 
 % resize GUI
 fh.g.Selection = 3;
-f.Position = [90 90 1400 850];
 f.Resize = 'on';
+f.Position = getappdata(f,'guiMainSz');
+% warning('off','all');
+% try
+%     pause(0.00001);
+%     frame_h = get(f,'JavaFrame');
+%     set(frame_h,'Maximized',1);
+% catch    
+% end
+% warning('on','all');
 
 % UI visibility according to steps
 if stg.detect==0

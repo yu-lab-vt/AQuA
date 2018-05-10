@@ -4,13 +4,13 @@ bL1 = uix.VBox('Parent',bLayer,'Spacing',1,'Padding',3);
 uicontrol(bL1,'Style','text','String','--- Movie brightness/contrast ---');
 % uix.Empty('Parent',bL1);
 uicontrol(bL1,'Style','text','String','Min','HorizontalAlignment','left');
-uicontrol(bL1,'Style','slider','Tag','sldMin','Callback',{@adjMov,f});
+uicontrol(bL1,'Style','slider','Tag','sldMin','Callback',{@ui.over.adjMov,f});
 uix.Empty('Parent',bL1);
 uicontrol(bL1,'Style','text','String','Max','HorizontalAlignment','left');
-uicontrol(bL1,'Style','slider','Tag','sldMax','Callback',{@adjMov,f});
+uicontrol(bL1,'Style','slider','Tag','sldMax','Callback',{@ui.over.adjMov,f});
 uix.Empty('Parent',bL1);
 uicontrol(bL1,'Style','text','String','Brightness','HorizontalAlignment','left');
-uicontrol(bL1,'Style','slider','Tag','sldBri','Callback',{@adjMov,f});
+uicontrol(bL1,'Style','slider','Tag','sldBri','Callback',{@ui.over.adjMov,f});
 bL1.Heights = [18,15,15,3,15,15,3,15,15];
 
 uix.Empty('Parent',bLayer);
@@ -49,30 +49,19 @@ uicontrol(bDrawBt,'String','Read user feature','Tag','addUserFeature','Callback'
 uix.Empty('Parent',bL2);
 x2 = [20,12];
 
-uicontrol(bL2,'Style','text','String','Min','HorizontalAlignment','left','Tag','txtMinOv','ForegroundColor',[0 0.5 0]);
-uicontrol(bL2,'Style','slider','Tag','sldMinOv','Callback',{@adjMov,f},'Enable','off');
-uicontrol(bL2,'Style','text','String','Max','HorizontalAlignment','left','Tag','txtMaxOv','ForegroundColor','r');
-uicontrol(bL2,'Style','slider','Tag','sldMaxOv','Callback',{@adjMov,f},'Enable','off');
+uicontrol(bL2,'Style','text','String','Min','HorizontalAlignment','left','Tag','txtMinOv');
+uicontrol(bL2,'Style','slider','Tag','sldMinOv','Callback',{@ui.over.adjMov,f,1},'Enable','off');
+uicontrol(bL2,'Style','text','String','Max','HorizontalAlignment','left','Tag','txtMaxOv');
+uicontrol(bL2,'Style','slider','Tag','sldMaxOv','Callback',{@ui.over.adjMov,f,1},'Enable','off');
 uicontrol(bL2,'Style','text','String','Brightness','HorizontalAlignment','left');
-uicontrol(bL2,'Style','slider','Tag','sldBriOv','Callback',{@adjMov,f});
+uicontrol(bL2,'Style','slider','Tag','sldBriOv','Callback',{@ui.over.adjMov,f,1});
 x3 = [15,15,15,15,15,15];
 
 bL2.Heights = [x0,x1,x2,x3];
 bLayer.Heights = [130,-1,440];
 end
 
-function adjMov(~,~,f)
-fh = guidata(f);
-scl = getappdata(f,'scl');
-scl.min = fh.sldMin.Value;
-scl.max = fh.sldMax.Value;
-scl.bri = fh.sldBri.Value;
-scl.minOv = fh.sldMinOv.Value;
-scl.maxOv = fh.sldMaxOv.Value;
-scl.briOv = fh.sldBriOv.Value;
-setappdata(f,'scl',scl);
-ui.movStep(f);
-end
+
 
 
 

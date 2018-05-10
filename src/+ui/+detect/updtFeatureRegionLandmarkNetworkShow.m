@@ -11,8 +11,9 @@ if bd.isKey('cell')
     evtSpatialMask = zeros(sz(1),sz(2));
     regLst = cell(numel(bd0),1);
     for ii=1:numel(bd0)
-        regLst{ii} = bd0{ii}{1};
-        spaMsk0 = bd0{ii}{2};
+        poly00 = bd0{ii}{1};
+        regLst{ii} = poly00;
+        spaMsk0 = poly2mask(poly00(:,1),poly00(:,2),sz(1),sz(2));
         evtSpatialMask(spaMsk0>0) = 1;
     end
 else

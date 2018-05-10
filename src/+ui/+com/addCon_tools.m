@@ -2,7 +2,7 @@ function addCon_tools(f,pTool)
 % tools panels
 bTool = uix.VBox('Parent',pTool,'Spacing',10);
 pLayer = uix.BoxPanel('Parent',bTool,'Title','Layers');
-pEvtMngr = uix.BoxPanel('Parent',bTool,'Title','Event manager','Tag','pEvtMngr');
+pEvtMngr = uix.BoxPanel('Parent',bTool,'Title','Favourite','Tag','pEvtMngr');
 bTool.Heights = [580,-1];
 
 % layer manager

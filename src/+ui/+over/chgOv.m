@@ -122,6 +122,9 @@ end
 
 setappdata(f,'btSt',btSt);
 
+% update color map
+ui.over.adjMov([],[],f,1);
+
 % show movie with overlay
 ui.movStep(f);
 end

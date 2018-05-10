@@ -1,4 +1,4 @@
-function [im1,im2a,im2b] = addCon_dat(f,pDat)
+function ims = addCon_dat(f,pDat)
 
 % top level panels
 bDat = uix.VBox('Parent',pDat);
@@ -13,7 +13,11 @@ bDat.Heights = [15,5,-1,5,20,15,200];
 
 % movie views ---------------
 % single movie view
-pMov1 = axes('Parent',pMovTop,'ActivePositionProperty','Position','Tag','mov');
+bMov1Top = uix.VBox('Parent',pMovTop);
+pMov1 = axes('Parent',bMov1Top,'ActivePositionProperty','Position','Tag','mov');
+pMov1ColMap = uix.HBox('Parent',bMov1Top);
+bMov1Top.Heights = [-1,50];
+
 pMov1.XTick = [];
 pMov1.YTick = [];
 d0 = zeros(100,100);
@@ -21,14 +25,22 @@ pMov1.XLim = [1 100];
 pMov1.YLim = [1 100];
 im1 = image(pMov1,'CData',flipud(d0));
 im1.CDataMapping = 'scaled';
-im1.ButtonDownFcn = {@ui.mov.movClick,f,'sel','evt'};  % show clicked event
+% im1.ButtonDownFcn = {@ui.mov.movClick,f,'sel','evt'};  % show clicked event
 pMov1.DataAspectRatio = [1 1 1];
+
+pCol1 = axes('Parent',pMov1ColMap,'Tag','movColMap');
+% pCol1 = axes('Parent',pMov1ColMap,'ActivePositionProperty','Position','Tag','movColMap');
+c0 = 1:100; pCol1.XLim = [1 100]; %pCol1.YLim = [1 1];
+pCol1.YTick = [];
+im1Col = image(pCol1,'CData',c0);
+pCol1.DataAspectRatio = [1 1 1];
 
 % side by side view
 bMov2Top = uix.VBox('Parent',pMovTop);
 bMov2Pop = uix.HBox('Parent',bMov2Top);
 bMov2 = uix.HBox('Parent',bMov2Top);
-bMov2Top.Heights = [25,-1];
+pMov2ColMap = uix.HBox('Parent',bMov2Top);
+bMov2Top.Heights = [25,-1,50];
 
 pMov2a = axes('Parent',bMov2,'ActivePositionProperty','Position','Tag','movL');
 pMov2a.XTick = [];
@@ -38,7 +50,7 @@ pMov2a.XLim = [1 100];
 pMov2a.YLim = [1 100];
 im2a = image(pMov2a,'CData',flipud(d0));
 im2a.CDataMapping = 'scaled';
-im2a.ButtonDownFcn = {@ui.mov.movClick,f,'sel','evt'};  % show clicked event
+% im2a.ButtonDownFcn = {@ui.mov.movClick,f,'sel','evt'};  % show clicked event
 pMov2a.DataAspectRatio = [1 1 1];
 
 pMov2b = axes('Parent',bMov2,'ActivePositionProperty','Position','Tag','movR');
@@ -49,9 +61,22 @@ pMov2b.XLim = [1 100];
 pMov2b.YLim = [1 100];
 im2b = image(pMov2b,'CData',flipud(d0));
 im2b.CDataMapping = 'scaled';
-im2b.ButtonDownFcn = {@ui.mov.movClick,f,'sel','evt'};  % show clicked event
+% im2b.ButtonDownFcn = {@ui.mov.movClick,f,'sel','evt'};  % show clicked event
 pMov2b.DataAspectRatio = [1 1 1];
 bMov2.Spacing = 3;
+
+pCol2a = axes('Parent',pMov2ColMap,'Tag','movLColMap');
+c0 = 1:100; pCol2a.XLim = [1 100];
+pCol2a.YTick = [];
+im2aCol = image(pCol2a,'CData',c0);
+pCol2a.DataAspectRatio = [1 1 1];
+
+pCol2b = axes('Parent',pMov2ColMap,'Tag','movRColMap');
+c0 = 1:100; pCol2b.XLim = [1 100];
+pCol2b.YTick = [];
+im2bCol = image(pCol2b,'CData',c0);
+pCol2b.DataAspectRatio = [1 1 1];
+
 pMovTop.Selection = 1;
 
 % controls --------------
@@ -93,6 +118,15 @@ pImgCon.Widths = [15,50,50,-1,15];
 pCurve.XTick = [];
 pCurve.YTick = [];
 pCurve.YLim = [-0.1,0.1];
+
+% images
+ims = [];
+ims.im1 = im1;
+ims.im2a = im2a;
+ims.im2b = im2b;
+ims.im1Col = im1Col;
+ims.im2aCol = im2aCol;
+ims.im2bCol = im2bCol;
 
 end
 

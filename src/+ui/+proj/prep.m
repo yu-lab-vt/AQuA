@@ -93,15 +93,11 @@ if op>0
         res.stg.detect = 0;
         res.stg.post = 1;
     else
-        [~,~,res.scl] = ui.proj.prepInitUIStruct(res.dat,res.opts);
+        [~,~,res.scl,res.btSt] = ui.proj.prepInitUIStruct(res.dat,res.opts,res.btSt);
     end
     
     % reset some settings
     res.btSt.overlayDatSel = 'Events';
-    res.btSt.overlayColorSel = 'Random';
-    res.btSt.sbs = 0;
-    res.btSt.leftView = 'Raw';
-    res.btSt.rightView = 'Raw + overlay';
     
     opts = res.opts;
     scl = res.scl;

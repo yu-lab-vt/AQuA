@@ -1,19 +1,33 @@
-function [spLst,cx,dlyMap,distMat,rgt00,isFail,evtMemC,evtMemCMap] = spgtw(dF,seMap,seSel,smoBase,maxStp,cDelay,spSz,spT)
+function [spLst,cx,dlyMap,distMat,rgt00,isFail,evtMemC,evtMemCMap] = spgtw(...
+    dF,seMap,seSel,smoBase,maxStp,cDelay,spSz,spT,opts)
 % spgtw super pixel GTW 
 % make one burst to super pixels and run gtw
 
+if ~isfield(opts,'gtwGapSeedMin') || ~isfield(opts,'gtwGapSeedRatio')
+    opts.gtwGapSeedRatio = 4;
+    opts.gtwGapSeedMin = 5;
+end
+
 [H,W,T] = size(dF);
 isFail = 0;
+maxStp = max(min(maxStp,round(T/2)),1);
 
 % dF and local noise
 dFDif = (dF(:,:,1:end-1)-dF(:,:,2:end)).^2;
 s00 = double(sqrt(median(dFDif(:))/0.9113));
 
+%% super pixels
 % extract one event
 validMap = sum(seMap==seSel,3)>0;
 
 dFip = dF;
+% s00 = sqrt(opts.varEst);
+
+pk = nanmedian(dF(seMap==seSel)/s00);
+thrpk = 0.5*pk;
+
 dFip(seMap>0 & seMap~=seSel) = nan;
+dFip(dF>thrpk*s00 & seMap~=seSel) = nan;
 dFip = gtw.imputeMov(dFip);
 
 dFmax = max(movmean(dFip,5,3),[],3);
@@ -91,9 +105,10 @@ if numel(spLst)<2
 end
 fprintf('Node %d, SNR %d dB Ratio %.2f\n',numel(spLst),20*log10(snrThr),sum(spSz)/nPixTot)
 
+%% alignment
 % graph
 [ih0,iw0] = find(validMap>0);
-gapSeed = max(ceil(max(max(ih0)-min(ih0),max(iw0)-min(iw0))/10/2),5);
+gapSeed = max(ceil(max(max(ih0)-min(ih0),max(iw0)-min(iw0))/opts.gtwGapSeedRatio),opts.gtwGapSeedMin);
 [ref,tst,refBase,s,t,idxGood] = gtw.sp2graph(dat,validMap,spLst,spSeedVec(1),gapSeed);
 
 % gtw
@@ -103,11 +118,7 @@ s2 = spStd(idxGood).^2;
 s2(s2==0) = median(s2);
 if numel(spLst)>3 && numel(refBase)>5
     tic
-    try
-        [ ss,ee,gInfo ] = gtw.buildGTWGraph( ref, tst, s, t, smoBase, maxStp, s2);
-    catch
-        keyboard
-    end
+    [ ss,ee,gInfo ] = gtw.buildGTWGraph( ref, tst, s, t, smoBase, maxStp, s2);
     [~, labels1] = aoIBFS.graphCutMex(ss,ee);
     path0 = gtw.label2path4Aosokin( labels1, ee, ss, gInfo );
     t00 = toc;

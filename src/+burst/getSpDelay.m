@@ -63,6 +63,11 @@ ixLow = find(isnan(riseX(:,2)));
 riseX(ixLow,2) = riseX(ixLow,1);
 riseX = riseX(:,2:end);
 
+% % remove the 1 term
+% ixLow = find(isnan(riseX(:,2)));
+% riseX(ixLow,2) = riseX(ixLow,1);
+% riseX = riseX(:,2:end);
+
 % riseX0 = riseX(:,1);
 % riseX0 = nanmean(riseX(:,1:3),2);
 riseX0 = nanmedian(riseX,2);

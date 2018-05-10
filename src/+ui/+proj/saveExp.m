@@ -93,13 +93,17 @@ if fh.expMov.Value==1
 end
 
 % export feature table
-ftTb = getappdata(f,'featureTable');
-cc = ftTb{:,1};
-cc = cc(:,xSel);
-ftTb1 = table(cc,'RowNames',ftTb.Row);
-ftb = [fpath,filesep,fname,'_feature.xlsx'];
-writetable(ftTb1,ftb,'WriteVariableNames',0,'WriteRowNames',1);
-fprintf('Done\n')
+% ftTb = getappdata(f,'featureTable');
+% if isempty(ftTb)
+%     ui.detect.getFeatureTable(f);
+%     ftTb = getappdata(f,'featureTable');
+% end
+% cc = ftTb{:,1};
+% cc = cc(:,xSel);
+% ftTb1 = table(cc,'RowNames',ftTb.Row);
+% ftb = [fpath,filesep,fname,'_feature.xlsx'];
+% writetable(ftTb1,ftb,'WriteVariableNames',0,'WriteRowNames',1);
+% fprintf('Done\n')
 
 delete(ff);
 
