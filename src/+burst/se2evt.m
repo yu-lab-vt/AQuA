@@ -1,4 +1,5 @@
-function [evtRecon,evtL,evtMap,dlyMap,nEvt0,rgtx,rgtSel] = se2evt(dF0,seMap0,seSel,ihw0,rgh,rgw,rgt,it0,T,opts)
+function [evtRecon,evtL,evtMap,dlyMap,nEvt0,rgtx,rgtSel] = se2evt(...
+        dF0,seMap0,seSel,ihw0,rgh,rgw,rgt,it0,T,opts,stg)
 
 gtwSmo = opts.gtwSmo; % 0.5
 maxStp = opts.maxStp; % 11
@@ -11,7 +12,8 @@ spT = 30;  % super pixel number scale (larger for more)
 % GTW on super pixels
 % group super pixels to events
 if numel(ihw0)>30
-    [spLst,cx,dlyMap,distMat,rgtSel,xFail,~,~] = gtw.spgtw(dF0,seMap0,seSel,gtwSmo,maxStp,cDelay,spSz,spT,opts);
+    [spLst,cx,dlyMap,distMat,rgtSel,xFail,~,~] = gtw.spgtw(...
+        dF0,seMap0,seSel,gtwSmo,maxStp,cDelay,spSz,spT,opts);
     if xFail==0
         % smooth propagation first
         [~,evtMemC,evtMemCMap] = burst.riseMap2evt(spLst,dlyMap,distMat,maxRiseUnc,cDelay,0);
@@ -55,7 +57,16 @@ cxAll(:,rgt(rgtSel)) = cx;
 cx1 = cxAll(:,rgtx);
 
 % events
-[evtL,evtRecon] = gtw.evtRecon(spLst,cx1,evtMap);
+if ~isfield(opts,'minShow1') || ~isfield(opts,'minShow2')
+    minShow = 0.1;
+else
+    if stg==1
+        minShow = opts.minShow1;
+    else
+        minShow = opts.minShow2;
+    end
+end
+[evtL,evtRecon] = gtw.evtRecon(spLst,cx1,evtMap,minShow);
 evtRecon = evtRecon.^2;
 evtRecon = uint8(evtRecon*255);
 nEvt0 = max(evtL(:));

@@ -1,4 +1,4 @@
-function rLmk = evt2lmkProp(evts,lmkBorder,sz,opSig,opPix)
+function rLmk = evt2lmkProp(evts,lmkBorder,sz,opSig,opPix,muPerPix)
 % distances and directions between events and landmarks
 %
 % !!! Direction features are unreliable !!!
@@ -82,7 +82,7 @@ for ii=1:length(evts)
     end
     
     % distance to landmark
-    d2lmk{ii} = distPix;  % shortest distance to landmark at each frame
+    d2lmk{ii} = distPix*muPerPix;  % shortest distance to landmark at each frame
     d2lmkAvg(ii,:) = nanmean(distPix,1);  % average distance to the landmark
     d2lmkMin(ii,:) = nanmin(distPix,[],1);  % minimum distance to the landmark
     
@@ -104,8 +104,8 @@ end
 
 rLmk = [];
 rLmk.distPerFrame = d2lmk;
-rLmk.distAvg = d2lmkAvg;
-rLmk.distMin = d2lmkMin;
+rLmk.distAvg = d2lmkAvg*muPerPix;
+rLmk.distMin = d2lmkMin*muPerPix;
 
 % !!! below features unreliable !!!
 % rLmk.distChgPerFrame = dir2lmk;

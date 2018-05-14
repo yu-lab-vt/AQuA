@@ -1,4 +1,4 @@
-function resReg = getDistRegionBorderMIMO(evts,datS,regLst,lmkLst)
+function resReg = getDistRegionBorderMIMO(evts,datS,regLst,lmkLst,muPerPix)
 % getDistRegionBorder extract features related to regions drawn by user
 % allow multiple landmark and multiple regions
 %
@@ -20,12 +20,12 @@ if ~isempty(lmkLst)
     resReg.landMark.mask = lMask;
     resReg.landMark.center = lCenter;
     resReg.landMark.border = lBorder;
-    resReg.landMark.centerBorderAvgDist = lAvgDist;
+    resReg.landMark.centerBorderAvgDist = lAvgDist*muPerPix;
     % distances to landmarks
-    resReg.landmarkDist = fea.evt2lmkProp(evts,lBorder,sz,0,0);
+    resReg.landmarkDist = fea.evt2lmkProp(evts,lBorder,sz,0,0,muPerPix);
     
     % frontier based propagation features related to landmark
-    rr = fea.evt2lmkProp1Wrap(datS,evts,lMask);
+    rr = fea.evt2lmkProp1Wrap(datS,evts,lMask,muPerPix);
     resReg.landmarkDir = rr;
 else
     resReg.landMark = [];
@@ -86,11 +86,11 @@ if ~isempty(regLst)
     resReg.cell.mask = rMask;
     resReg.cell.center = rCenter;
     resReg.cell.border = rBorder;
-    resReg.cell.centerBorderAvgDist = rAvgDist;
+    resReg.cell.centerBorderAvgDist = rAvgDist*muPerPix;
     resReg.cell.incluLmk = incluLmk;
     resReg.cell.memberIdx = memberIdx;
-    resReg.cell.dist2border = dist2border;
-    resReg.cell.dist2borderNorm = dist2borderNorm;
+    resReg.cell.dist2border = dist2border*muPerPix;
+    resReg.cell.dist2borderNorm = dist2borderNorm*muPerPix;
 else
     resReg.cell = [];
 end

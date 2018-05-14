@@ -1,4 +1,4 @@
-function [lblMapEx,riseMap,riseX] = getSpDelay(dat,lblMap,opts)
+function [lblMapEx,riseX] = getSpDelay(dat,lblMap,opts)
 % getSpDelay get the delay of each super pixel
 
 [H,W,T] = size(dat);
@@ -14,7 +14,11 @@ datSmoBase = min(movmean(datSmo,K,3),[],3);
 dfSmo = datSmo - datSmoBase;
 
 % extend super voxels
-lblMapEx = burst.extendVoxGrp(lblMap,dfSmo,ones(size(lblMap),'uint8'),opts.varEst);
+if isfield(opts,'extendSV') && opts.extendSV==0
+    lblMapEx = lblMap;
+else
+    lblMapEx = burst.extendVoxGrp(lblMap,dfSmo,ones(size(lblMap),'uint8'),opts.varEst);
+end
 
 % rising time
 s0 = sqrt(opts.varEst);
@@ -70,14 +74,14 @@ riseX = riseX(:,2:end);
 
 % riseX0 = riseX(:,1);
 % riseX0 = nanmean(riseX(:,1:3),2);
-riseX0 = nanmedian(riseX,2);
-riseMap = zeros(size(dat),'uint16');
-for nn=1:nSp
-    t00 = riseX0(nn);
-    if ~isnan(t00)
-        riseMap(spLst{nn}) = t00;
-    end
-end
+% riseX0 = nanmedian(riseX,2);
+% riseMap = zeros(size(dat),'uint16');
+% for nn=1:nSp
+%     t00 = riseX0(nn);
+%     if ~isnan(t00)
+%         riseMap(spLst{nn}) = t00;
+%     end
+% end
 
 end
 

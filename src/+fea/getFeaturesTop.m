@@ -1,9 +1,13 @@
-function [evtLst,ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtMap,opts)
+function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
 % getFeaturesTop extract curve related features, basic features and propagation
 % dat: single (0 to 1)
 % evtMap: single ( integer)
 
-[H,W,T] = size(evtMap);
+[H,W,T] = size(dat);
+evtMap = zeros(size(dat),'uint32');
+for ii=1:numel(evtLst)
+    evtMap(evtLst{ii}) = ii;
+end
 
 if opts.usePG
     dat = dat.^2;
@@ -13,7 +17,7 @@ muPerPix = opts.spatialRes;
 
 % impute events
 fprintf('Imputing ...\n')
-datx = dat; 
+datx = dat;
 datx(evtMap>0) = nan;
 datx = img.imputeMov(datx);
 
@@ -27,7 +31,7 @@ end
 
 Tww = min(opts.movAvgWin,T/4);
 
-evtLst = label2idx(evtMap);
+% evtLst = label2idx(evtMap);
 ftsLst = [];
 ftsLst.basic = [];
 ftsLst.propagation = [];
@@ -49,7 +53,16 @@ for ii=1:numel(evtLst)
     ihw = unique(sub2ind([H,W],ih,iw));    
     rgH = max(min(ih)-1,1):min(max(ih)+1,H);
     rgW = max(min(iw)-1,1):min(max(iw)+1,W);
-    rgT = min(it):max(it);
+    rgT = max(min(it)-1,1):min(max(it)+1,T);
+    %rgT = min(it):max(it);
+    
+    if numel(rgT)==1
+%         keyboard
+        continue
+    end
+    if ii==223
+%         keyboard
+    end       
     
     % dff
     voxd1 = dat(rgH,rgW,:);
@@ -67,7 +80,7 @@ for ii=1:numel(evtLst)
     %charxBg = min(movmean(charx1,opts.movAvgWin));
     charxBg1 = max(min(movmean(charx1,Tww)),nanmin(charxIn1));
     dff1 = (charx1-charxBg1)/charxBg1; 
-    s00 = sqrt(median((dff1(2:end)-dff1(1:end-1)).^2)/0.9113);
+    %s00 = sqrt(median((dff1(2:end)-dff1(1:end-1)).^2)/0.9113);
     
     % dff without other events
     voxd2 = reshape(datx(rgH,rgW,:),[],T);
@@ -76,23 +89,40 @@ for ii=1:numel(evtLst)
     %voxd1 = img.imputeMovVec(voxd1);
     
     charxIn2 = nanmean(voxd2,1);
-    charx2 = fea.curvePolyDeTrend(charxIn2,sigx,opts.correctTrend);    
-    charxBg2 = max(min(movmean(charx2,Tww)),nanmin(charxIn2));
+    charx2 = fea.curvePolyDeTrend(charxIn2,sigx,opts.correctTrend);
+    charx2Na = charx2; charx2Na(sigx>0) = nan; charxBg2 = nanmedian(charx2Na);
+    %charxBg2 = max(min(movmean(charx2,Tww)),nanmin(charxIn2));
     dff2 = (charx2-charxBg2)/charxBg2;    
-    [dffMax,tMax] = max(dff2(rgT));
-    dffMaxZ = dffMax/s00;
-    dffMaxPval = 1-normcdf(dffMaxZ);
+    dff2a = (charx1-charxBg2)/charxBg2;
+    s00 = sqrt(median((dff2a(2:end)-dff2a(1:end-1)).^2)/0.9113);
     
-%     figure;subplot(2,1,1);
-%     plot(charxIn1/max(charxIn1));hold on;plot(charx1/max(charx1));plot(dff1/max(dff1(:)));
-%     subplot(2,1,2);
-%     plot(charxIn2/max(charxIn2));hold on;plot(charx2/max(charx2));plot(dff2/max(dff2(:)));
-%     keyboard;close
+    dff2Sel = dff2(rgT);
+    [dffMax,tMax] = max(dff2Sel);
+    xMinPre = max(min(dff2Sel(1:tMax)),s00);
+    xMinPost = max(min(dff2Sel(tMax:end)),s00);
+    dffMaxZ = max((dffMax-xMinPre+dffMax-xMinPost)/s00/2,0);
+    %dffMaxZ = mean(dffMax-xMinPre,dffMax-xMinPost)/s00;    
+    %dffMaxZ = dffMax/s00;
+    dffMaxPval = 1-normcdf(dffMaxZ);
+
+    if 0
+        figure;subplot(2,1,1);
+        plot(charxIn1/max(charxIn1));hold on;plot(charx1/max(charx1));plot(dff1/max(dff1(:)));
+        subplot(2,1,2);
+        plot(charxIn2/max(charxIn2));hold on;plot(charx2/max(charx2));plot(dff2/max(dff2(:)));
+        keyboard;close
+    end
     
     % extend event window in the curve
     voxi1(voxi1==ii) = 0;
     sigxOthers = sum(voxi1>0,1)>0;
     [dff2e,rgT1] = fea.extendEventTimeRangeByCurve(dff2,sigxOthers,it);
+    
+    if 0
+        fprintf('z: %f\n',dffMaxZ)
+        figure;plot(dff2);hold on;plot(rgT1,dff2Sel,'r');
+        keyboard;close
+    end
 
     % curve features
     [ rise19,fall91,width55,width11,decayTau ] = fea.getCurveStat( ...
@@ -107,7 +137,7 @@ for ii=1:numel(evtLst)
     ftsLst.loc.t1(ii) = max(it);
     ftsLst.loc.x3D{ii} = pix0;
     ftsLst.loc.x2D{ii} = ihw;
-    ftsLst.loc.rgt1(ii,:) = [min(rgT1),max(rgT1)];
+    ftsLst.curve.rgt1(ii,:) = [min(rgT1),max(rgT1)];
     ftsLst.curve.dffMax(ii) = dffMax;
     ftsLst.curve.dffMaxFrame(ii) = (tMax+min(rgT)-1)*secondPerFrame;
     ftsLst.curve.dffMaxZ(ii) = dffMaxZ;
@@ -129,11 +159,23 @@ for ii=1:numel(evtLst)
     pix1 = sub2ind(size(voxd),ih1,iw1,it1);
     voxi(pix1) = 1;
     ftsLst.basic = fea.getBasicFeatures(voxi,muPerPix,ii,ftsLst.basic);
+    
+    % p values
+    %[p0,z0] = fea.getPval(voxd,voxi,1,0,0,4,4,sqrt(opts.varEst));
+    %ftsLst.basic.p0(ii) = p0;
+    %ftsLst.basic.z0(ii) = z0;
 end
 
 ftsLst.bds = img.getEventBorder(evtLst,[H,W,T]);
 
 end
+
+
+
+
+
+
+
 
 
 

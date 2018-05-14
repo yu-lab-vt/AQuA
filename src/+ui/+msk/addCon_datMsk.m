@@ -18,8 +18,8 @@ d0 = ones(100,100,3);
 pMov1.XLim = [1 100];
 pMov1.YLim = [1 100];
 im1 = image(pMov1,'CData',flipud(d0));
-text(pMov1,30,60,'Open a mask,','FontSize',24);
-text(pMov1,30,50,'or get from current movie','FontSize',24);
+% text(pMov1,10,60,'Open a mask','FontSize',24);
+% text(pMov1,30,50,'or get from current movie','FontSize',24);
 im1.CDataMapping = 'scaled';
 pMov1.DataAspectRatio = [1 1 1];
 

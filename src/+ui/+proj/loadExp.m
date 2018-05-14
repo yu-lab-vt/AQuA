@@ -10,6 +10,6 @@ end
 [FileName,PathName] = uigetfile({'*.mat'},'Choose saved results',p0);
 if ~isnumeric(FileName)
     setappdata(f,'fexp',[PathName,filesep,FileName]);
-    ui.prep([],[],f,1);
+    ui.proj.prep([],[],f,1);
 end
 end

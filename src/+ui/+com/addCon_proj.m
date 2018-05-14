@@ -16,7 +16,8 @@ uix.Empty('Parent',bNew);
 
 % event detection: data settings
 pDeProp = uix.Grid('Parent',bNew);
-uicontrol(pDeProp,'Style','popupmenu','String',{'in vivo','ex vivo','GluSnFR'},'Tag','preset');
+uicontrol(pDeProp,'Style','popupmenu','String',...
+    {'GCaMP: in vivo','GCaMP: ex vivo','GluSnFR: glutamate'},'Tag','preset');
 uicontrol(pDeProp,'Style','edit','String','1','Tag','tmpRes');
 uicontrol(pDeProp,'Style','edit','String','1','Tag','spaRes');
 uicontrol(pDeProp,'Style','edit','String','5','Tag','bdSpa');

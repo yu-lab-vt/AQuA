@@ -24,7 +24,7 @@ ov0.sel = xSel>0;
 ov('Events') = ov0;
 setappdata(f,'ov',ov);
 
-ui.movStep(f);
+ui.movStep(f,[],[],1);
 
 end
 

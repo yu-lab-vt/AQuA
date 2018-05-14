@@ -25,7 +25,7 @@ fh = guidata(f);
 % new project
 if op==0
     preset = fh.preset.Value;
-    opts = util.parseParam(preset,0,'./cfg/parameters1.xlsx');
+    opts = util.parseParam(preset,0);
     opts.preset = preset;
     
     % read user input
@@ -56,8 +56,7 @@ if op==0
     [ov,bd,scl,btSt] = ui.proj.prepInitUIStruct(dat,opts); %#ok<ASGLU>
     
     % data and settings
-    vBasic = {'opts','scl','btSt','ov','bd','dat','evt','fts','dffMat','dMat','riseLst',...
-        'dF','datSmo','lmLocR','lmLoc','lblMapS','riseMap','arLst'};
+    vBasic = {'opts','scl','btSt','ov','bd','dat','dF'};
     for ii=1:numel(vBasic)
         v0 = vBasic{ii};
         if exist(v0,'var')
@@ -68,7 +67,6 @@ if op==0
     end
     stg = [];
     stg.detect = 0;
-    stg.post = 0;
 end
 
 % read existing project or mat file

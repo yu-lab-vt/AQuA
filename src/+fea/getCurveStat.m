@@ -49,7 +49,7 @@ if numel(y)>=2 && sum(isnan(y))==0 && sum(isinf(y))==0 && isreal(y) && ignoreTau
     f = fit(x,y,'exp1',foptions);
     c0 = coeffvalues(f);
     decayTau = -1/c0(2)*spf;
-    if decayTau<0 || decayTau>0
+    if decayTau<0 || decayTau>30
         %figure;plot(y);
         fprintf('Decay Tau: %f\n',decayTau)
         %keyboard

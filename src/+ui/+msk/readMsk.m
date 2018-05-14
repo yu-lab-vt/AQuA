@@ -38,6 +38,10 @@ function readMsk(~,~,f,srcType,mskType)
         else
             return
         end
+    elseif strcmp(srcType,'self')
+        PathName = p0;
+        dat = getappdata(f,'dat');
+        ffName = 'Project data';
     else
         return
     end

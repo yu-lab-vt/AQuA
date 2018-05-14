@@ -1,39 +1,57 @@
-function mOut = mergeEvt(mIn,mergeEventDiscon)
-% mergeEvt merge spatially close events, for Glutamate or some noisy invivo data
-% if events already adjacent, do not merge them
-%
-% TODO: use a distance measure using intensity to control merging
-
-minDist = mergeEventDiscon;
-
-if minDist<=0
-    mOut = mIn;
-    return
-end
-
-se0 = ones(minDist,minDist);
-evtLst = label2idx(mIn);
-
-mDi = zeros(size(mIn),'uint32');
-for tt=1:size(mIn,3)
-    tmp = mIn(:,:,tt);
-    mDi(:,:,tt) = imdilate(tmp>0,strel(se0));
-end
-% mDi = imdilate(mIn>0,strel(se0));
-mL = bwlabeln(mDi);
-mskLst = label2idx(mL);
-
-mOut = zeros(size(mIn),'uint32');
-nCnt = 1;
-for ii=1:numel(mskLst)
-    vox0 = mskLst{ii};
-    idx = mIn(vox0);
-    idx = idx(idx>0);
-    idx = unique(idx);
-    for jj=1:numel(idx)
-        mOut(evtLst{idx(jj)}) = uint32(nCnt);
+function evtLstOut = mergeEvt(evtLst,dffMat,tBegin,opts)
+    % mergeEvt merge spatially close events, for Glutamate or some noisy invivo data
+    % if events already adjacent, do not merge them
+    
+    fprintf('Merging...\n')
+    
+    sz = opts.sz;
+    minDist = opts.mergeEventDiscon;
+    minCorr = opts.mergeEventCorr;
+    maxTimeDif = opts.mergeEventMaxTimeDif;
+    
+    mIn = zeros(sz,'uint32');
+    for ii=1:numel(evtLst)
+        mIn(evtLst{ii}) = ii;
+    end
+    
+    % do not need to merge
+    if minDist<=0
+        evtLstOut = evtLst;
+        return
+    end
+    
+    % dilate events
+    se0 = ones(minDist,minDist);
+    for tt=1:size(mIn,3)
+        tmp = mIn(:,:,tt);
+        mIn(:,:,tt) = imdilate(tmp,strel(se0));
+    end  
+    
+    % neighbor graphs
+    G = burst.evtNeibCorr(mIn,dffMat,tBegin,minCorr,maxTimeDif);
+    
+    % connect events
+    cc = conncomp(G,'OutputForm','cell');
+    evtLstOut = cell(numel(cc),1);
+    for ii=1:numel(cc)
+        m0 = cc{ii};
+        tmp = [];
+        for jj=1:numel(m0)
+            tmp = union(tmp,evtLst{m0(jj)});
+        end  
+        evtLstOut{ii} = tmp;
     end    
-    nCnt = nCnt + 1;
-end
 
 end
+
+
+
+
+
+
+
+
+
+
+
+

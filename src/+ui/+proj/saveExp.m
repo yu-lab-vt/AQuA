@@ -15,9 +15,19 @@ end
 ff = waitbar(0,'Saving ...');
 
 %% save
-% variables to save
-% vSave = {'opts','scl','btSt','ov','bd','dat'};
-vSave = {'opts','scl','btSt','ov','bd','dat','evt','fts','dffMat','dMat','riseLst','featureTable'};
+vSave0 = {...  % basic variables for results analysis
+    'opts','scl','btSt','ov','bd','dat','evt','fts','dffMat','dMat',...
+    'riseLst','featureTable','userFeatures'...
+    };
+
+vSave1 = {...  % extra variables for event detection
+    'arLst','lmLoc','svLst','riseX','riseLstAll','evtLstAll','ftsLstAll',...
+    'dffMatAll','datRAll','evtLstFilterZ','dffMatFilterZ','tBeginFilterZ',...
+    'riseLstFilterZ','evtLstMerge','dF'...
+};
+
+vSave = [vSave0,vSave1];
+
 res = [];
 for ii=1:numel(vSave)
     v0 = vSave{ii};
@@ -59,7 +69,7 @@ else
 end
 
 res.stg.post = 1;
-res.stg.detect = 0;
+res.stg.detect = 1;
 
 if modex>0
     waitbar(1,ff);

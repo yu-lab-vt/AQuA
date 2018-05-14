@@ -28,7 +28,7 @@ for ii=1:numel(evtLst)
     [ih,iw,it] = ind2sub([H,W,T],pix0);
     rgH = max(min(ih)-1,1):min(max(ih)+1,H);
     rgW = max(min(iw)-1,1):min(max(iw)+1,W);
-    rgT = ftsLst.loc.rgt1(ii,1):ftsLst.loc.rgt1(ii,2);
+    rgT = ftsLst.curve.rgt1(ii,1):ftsLst.curve.rgt1(ii,2);
     
     % basic and propagation features
     ih1 = ih-min(rgH)+1;

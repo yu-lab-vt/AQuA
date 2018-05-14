@@ -37,6 +37,7 @@ if t0a>=t1a
 end
 
 dff1 = dff(t0a:t1a);
-rgT1 = t0:t1;
+% rgT1 = t0:t1;
+rgT1 = t0a:t1a;
 
 end

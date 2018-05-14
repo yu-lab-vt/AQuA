@@ -1,8 +1,11 @@
-function [rr,res1] = evt2lmkProp1Wrap(dRecon,evts,lmkMsk)
+function [rr,res1] = evt2lmkProp1Wrap(dRecon,evts,lmkMsk,muPerPix)
 % evt2lmkProp1Wrap extract propagation direciton related to landmarks
 % call evt2lmkProp1 on each data patch
 
 [H,W,T] = size(dRecon);
+
+m2 = muPerPix^2;
+m3 = muPerPix^3;
 
 % landmarks
 nEvts = numel(evts);
@@ -68,14 +71,14 @@ for nn=1:numel(evts)
     chgAway(nn,:) = res1.chgAway;
     chgTowardBefReach(nn,:) = res1.chgTowardBefReach;
     chgAwayAftReach(nn,:) = res1.chgAwayAftReach;
-    pixTwd{nn} = res1.pixelToward;
-    pixAwy{nn} = res1.pixelAway;    
+    pixTwd{nn} = res1.pixelToward*m2;
+    pixAwy{nn} = res1.pixelAway*m2;    
 end
 
-rr.chgToward = chgToward;
-rr.chgAway = chgAway;
-rr.chgTowardBefReach = chgTowardBefReach;
-rr.chgAwayAftReach = chgAwayAftReach;
+rr.chgToward = chgToward*m3;
+rr.chgAway = chgAway*m3;
+rr.chgTowardBefReach = chgTowardBefReach*m3;
+rr.chgAwayAftReach = chgAwayAftReach*m3;
 rr.pixelToward = pixTwd;
 rr.pixelAway = pixAwy;
 

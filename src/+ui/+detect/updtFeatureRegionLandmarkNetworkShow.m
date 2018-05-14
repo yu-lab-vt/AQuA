@@ -2,8 +2,12 @@ function updtFeatureRegionLandmarkNetworkShow(f,datR,evtLst,ftsLst,gg)
 
 btSt = getappdata(f,'btSt');
 bd = getappdata(f,'bd');
+opts = getappdata(f,'opts');
 fm = btSt.filterMsk;
 sz = size(datR);
+
+% secondPerFrame = opts.frameRate;
+muPerPix = opts.spatialRes;
 
 % polygons
 if bd.isKey('cell')
@@ -46,7 +50,7 @@ end
 waitbar(0.7,gg);
 if ~isempty(regLst) || ~isempty(lmkLst)
     fprintf('Updating region and landmark features ...\n')
-    ftsLst.region = fea.getDistRegionBorderMIMO(evtx,datR,regLst,lmkLst);
+    ftsLst.region = fea.getDistRegionBorderMIMO(evtx,datR,regLst,lmkLst,muPerPix);
 else
     ftsLst.region = [];
 end

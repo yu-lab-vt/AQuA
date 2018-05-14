@@ -10,7 +10,7 @@ wofst = [zeros(1,5)-2,-1,-1,0,0,1,1,zeros(1,5)+2];
 % figure;plot(hofst,wofst)
 
 if ~exist('useMean','var')
-    useMean = 0;
+    useMean = 0;  % only relavent for mthd=1
 end
 
 if length(size(vid))==2
@@ -102,6 +102,9 @@ function res=mycorrcoef(x,y)
 x = (x - mean(x))/std(x);
 y = (y - mean(y))/std(y);
 res = mean(x.*y);
+if res>0.3
+%     keyboard
+end
 end
 
 

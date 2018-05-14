@@ -51,9 +51,11 @@ function viewImgMsk(~, ~, f)
         mskb(ix) = 1;
     end 
 
-    datx = cat(3, datAvg + mskb * 0.3, datAvg, datAvg);
+    d1 = datAvg;
+    d1(mskb>0) = d1(mskb>0)*0.7+mskb(mskb>0)*0.5;    
+    datx = cat(3, d1, datAvg, datAvg);
 
-    im.CData = datx;
+    im.CData = datx(end:-1:1,:,:);
     ax.XLim = [1, W];
     ax.YLim = [1, H];
 

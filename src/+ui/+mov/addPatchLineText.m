@@ -27,14 +27,8 @@ function addPatchLineText(f,axNow,n,updtAll)
             bd0 = bd('cell');
             for ii=1:numel(bd0)
                 xy = bd0{ii}{1};
-                if numel(xy(:,1))>1e8
-                    gap0 = ceil(numel(xy(:,1))/20);
-                    patch(axNow,'XData',xy(1:gap0:end,1),'YData',xy(1:gap0:end,2),...
-                        'FaceColor','none','LineStyle','-','EdgeColor',[0 0 0.4],'Tag','fix');
-                else
-                    patch(axNow,'XData',xy(:,1),'YData',xy(:,2),...
-                        'FaceColor','none','LineStyle','-','EdgeColor',[0 0 0.4],'Tag','fix');
-                end
+                patch(axNow,'XData',xy(:,1),'YData',xy(:,2),...
+                    'FaceColor','none','LineStyle','-','EdgeColor',[0.2 0.2 0.5],'Tag','fix');
                 text(axNow,xy(1,1)+2,xy(1,2)+2,num2str(ii),'Color','b','Tag','fix');
             end
         end
@@ -43,14 +37,8 @@ function addPatchLineText(f,axNow,n,updtAll)
             bd0 = bd('landmk');
             for ii=1:numel(bd0)
                 xy = bd0{ii}{1};
-                if numel(xy(:,1))>1e8
-                    gap0 = ceil(numel(xy(:,1))/20);
-                    patch(axNow,'XData',xy(1:gap0:end,1),'YData',xy(1:gap0:end,2),...
-                        'FaceColor','none','LineStyle','-','EdgeColor',[0.4 0.4 0],'Tag','fix');
-                else
-                    patch(axNow,'XData',xy(:,1),'YData',xy(:,2),...
-                        'FaceColor','none','LineStyle','-','EdgeColor',[0.4 0.4 0],'Tag','fix');
-                end
+                patch(axNow,'XData',xy(:,1),'YData',xy(:,2),...
+                    'FaceColor','none','LineStyle','-','EdgeColor',[0.4 0.4 0],'Tag','fix');
                 text(axNow,xy(1,1)+2,xy(1,2)+2,num2str(ii),'Color','y','Tag','fix');
             end
         end

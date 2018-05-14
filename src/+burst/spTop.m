@@ -1,4 +1,4 @@
-function [lblMap,dReconSp,riseX,riseMap] = spTop(dat,dF,lmLoc,opts,ff)
+function [svLst,dReconSp,riseX] = spTop(dat,dF,lmLoc,opts,ff)
 
 thrSpSig = 4;
 
@@ -44,26 +44,16 @@ end
 
 % Extend and re-fit each patch, estimate delay, reconstruct signal
 fprintf('Extending super voxels ...\n')
-[lblMap,riseMap,riseX] = burst.getSpDelay(dat,lblMap,opts);
+[lblMap,riseX] = burst.getSpDelay(dat,lblMap,opts);
 
 if exist('ff','var')
     waitbar(1,ff);
 end
 
-% [lblMapS,~,riseX,riseMap] = burst.alignPatchShort1(dat,datSmo,lblMap,dL,opts);
+poolobj = gcp('nocreate');
+delete(poolobj);
 
-% use significant super voxels only
-% !! better to do this before extending?
-
-% zVec1 = stat.getSpZ(dat,lblMapS,varEst);
-% spLst = label2idx(lblMapS);
-% spLst = spLst(zVec1>thrSpSig);
-% lblMapS = zeros(size(lblMapS));
-% for nn=1:numel(spLst)
-%     lblMapS(spLst{nn}) = nn;
-% end
-% riseX = riseX(zVec1>thrSpSig,:);
-% riseMap(lblMapS==0) = nan;
+svLst = label2idx(lblMap);
 
 end
 

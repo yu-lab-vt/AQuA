@@ -10,7 +10,7 @@ if ~exist('cfgSel','var')
 end
 
 if ~exist('cfgFile','var')
-    cfgFile = './cfg/parameters1.xlsx';
+    cfgFile = './cfg/parameters1.csv';
 end
 
 opts = [];

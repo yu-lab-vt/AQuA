@@ -14,7 +14,7 @@ if ~exist('n','var') || isempty(n)
 end
 if ~exist('updtAll','var') || isempty(updtAll)
     updtAll = 0;
-endd
+end
 
 % re-scale movie
 dat0 = dat(:,:,n);

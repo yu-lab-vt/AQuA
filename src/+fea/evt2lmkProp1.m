@@ -7,7 +7,7 @@ function res = evt2lmkProp1(datS,lmkMsk)
 [H,W,~] = size(datS);
 nLmk = numel(lmkMsk);
 
-sck = min(sqrt(5000/H/W),0.5);
+sck = min(sqrt(3000/H/W),0.5);
 datSx = imresize(datS,sck);
 lmkMskx = cell(0);
 for kk=1:nLmk

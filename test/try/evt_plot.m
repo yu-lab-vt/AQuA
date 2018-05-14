@@ -20,7 +20,7 @@ zzshow(difx);
 
 ov1 = plt.regionMapWithData(c1x,dat.^2*0.3,0.25); zzshow(ov1);
 
-ov1 = plt.regionMapWithData(datL,double(dat),0.5,double(datR)/255); zzshow(ov1);
+ov1 = plt.regionMapWithData(datL,double(dat),0.5,datR); zzshow(ov1);
 % ov1 = plt.regionMapWithData(evtL,double(dat).^2*0.5,0.25,double(datR)/255); zzshow(ov1);
 
 ov1 = plt.regionMapWithData(evtLst,dat,0.5); zzshow(ov1);

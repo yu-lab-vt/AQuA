@@ -7,7 +7,7 @@ function addCon_wkflMsk(f, pWkfl)
     pMsk = uix.BoxPanel('Parent', bWkfl, 'Title', '  Load masks');
     pSave = uix.BoxPanel('Parent', bWkfl, 'Title', '  Save regions/landmarks');
     uix.Empty('Parent', bWkfl);
-    bWkfl.Heights = [390, 110, -1];
+    bWkfl.Heights = [390, 120, -1];
     % bWkfl.Heights = [80,330,130,-1];
 
     % % draw or edit regions ----
@@ -27,14 +27,20 @@ function addCon_wkflMsk(f, pWkfl)
     % load masks ---
     bLoad = uix.VBox('Parent', pMsk, 'Spacing', 5, 'Padding', 5);
     gLoad = uix.Grid('Parent', bLoad, 'Spacing', 5, 'Padding', 5);
-    uicontrol(gLoad, 'Style', 'text', 'String', 'Region mask', 'HorizontalAlignment', 'left');
-    uicontrol(gLoad, 'Style', 'text', 'String', 'Landmark mask', 'HorizontalAlignment', 'left');
-    uicontrol(gLoad, 'String', 'Add folder', 'Callback', {@ui.msk.readMsk, f, 'folder', 'region'});
-    uicontrol(gLoad, 'String', 'Add folder', 'Callback', {@ui.msk.readMsk, f, 'folder', 'landmark'});
-    uicontrol(gLoad, 'String', 'Add file', 'Callback', {@ui.msk.readMsk, f, 'file', 'region'});
-    uicontrol(gLoad, 'String', 'Add file', 'Callback', {@ui.msk.readMsk, f, 'file', 'landmark'});
-    gLoad.Widths = [-1, 80, 80];
-    gLoad.Heights = [20, 20];
+    uicontrol(gLoad, 'Style', 'text', 'String', 'Region', 'HorizontalAlignment', 'left');
+    uicontrol(gLoad, 'Style', 'text', 'String', 'Region maker', 'HorizontalAlignment', 'left');
+    uicontrol(gLoad, 'Style', 'text', 'String', 'Landmark', 'HorizontalAlignment', 'left');
+    uicontrol(gLoad, 'String', 'Self', 'Callback', {@ui.msk.readMsk, f, 'self', 'region'});
+    uicontrol(gLoad, 'String', 'Self', 'Callback', {@ui.msk.readMsk, f, 'self', 'regionMarker'});
+    uicontrol(gLoad, 'String', 'Self', 'Callback', {@ui.msk.readMsk, f, 'self', 'landmark'});
+    uicontrol(gLoad, 'String', 'Folder', 'Callback', {@ui.msk.readMsk, f, 'folder', 'region'});
+    uicontrol(gLoad, 'String', 'Folder', 'Callback', {@ui.msk.readMsk, f, 'folder', 'regionMarker'});
+    uicontrol(gLoad, 'String', 'Folder', 'Callback', {@ui.msk.readMsk, f, 'folder', 'landmark'});
+    uicontrol(gLoad, 'String', 'File', 'Callback', {@ui.msk.readMsk, f, 'file', 'region'});
+    uicontrol(gLoad, 'String', 'File', 'Callback', {@ui.msk.readMsk, f, 'file', 'regionMarker'});
+    uicontrol(gLoad, 'String', 'File', 'Callback', {@ui.msk.readMsk, f, 'file', 'landmark'});
+    gLoad.Widths = [-1, 60, 60, 60];
+    gLoad.Heights = [20, 20, 20];
     % uix.Empty('Parent', bLoad);
 
     % % use current movie
@@ -57,16 +63,16 @@ function addCon_wkflMsk(f, pWkfl)
     uicontrol(bLoadBtn, 'String', 'Remove', 'Callback', {@ui.msk.mskLstViewer, f, 'remove'});
     uix.Empty('Parent', bLoad);
 
-    bLoad.Heights = [60, -1, 3, 20, 5];
+    bLoad.Heights = [90, -1, 3, 20, 5];
     % bLoad.Heights = [60,5,20,25,10,-1,20];
 
     % save masks and back to main UI ----
     bSave = uix.VBox('Parent', pSave, 'Spacing', 5, 'Padding', 5);
     gSave = uix.Grid('Parent', bSave, 'Spacing', 3, 'Padding', 3);
-    uicontrol(gSave, 'Style', 'text', 'String', 'Save region using:', 'HorizontalAlignment', 'left');
-    uicontrol(gSave, 'Style', 'text', 'String', 'Save landmark using:', 'HorizontalAlignment', 'left');
-    uicontrol(gSave, 'Style', 'popupmenu', 'String', {'AND', 'OR'}, 'Value', 1, 'Tag', 'saveMskRegOp');
-    uicontrol(gSave, 'Style', 'popupmenu', 'String', {'AND', 'OR'}, 'Value', 1, 'Tag', 'saveMskLmkOp');
+    uicontrol(gSave, 'Style', 'text', 'String', 'Combine region masks:', 'HorizontalAlignment', 'left');
+    uicontrol(gSave, 'Style', 'text', 'String', 'Combine landmark masks:', 'HorizontalAlignment', 'left');
+    uicontrol(gSave, 'Style', 'popupmenu', 'String', {'OR', 'AND'}, 'Value', 1, 'Tag', 'saveMskRegOp');
+    uicontrol(gSave, 'Style', 'popupmenu', 'String', {'OR', 'AND'}, 'Value', 1, 'Tag', 'saveMskLmkOp');
     gSave.Widths = [-1, 60];
     gSave.Heights = [20, 20];
     uix.Empty('Parent', bSave);
@@ -74,6 +80,7 @@ function addCon_wkflMsk(f, pWkfl)
     uicontrol(bSaveBtn, 'String', 'Apply & back', 'Callback', {@ui.msk.saveMsk, f, 0});
     uicontrol(bSaveBtn, 'String', 'Discard & back', 'Callback', {@ui.msk.saveMsk, f, 1});
     bSaveBtn.ButtonSize = [100, 20];
-    bSave.Heights = [50, -1, 20];
+    uix.Empty('Parent', bSave);
+    bSave.Heights = [50, -1, 20, 5];
 
 end 

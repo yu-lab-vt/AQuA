@@ -1,4 +1,4 @@
-function [evtL,evtRecon,datWarpInt] = evtRecon(spLst,cx,evtMap0)
+function [evtL,evtRecon,datWarpInt] = evtRecon(spLst,cx,evtMap0,minShow)
 
 [H,W] = size(evtMap0);
 [nSp,T] = size(cx);
@@ -12,8 +12,8 @@ for ii=1:nSp
     x0 = cx(ii,:);
     evtRecon(sp0,:) = repmat(x0,numel(sp0),1);
     l0 = mode(evtMap0(sp0));
-    t0 = find(x0>0.1,1);
-    t1 = find(x0>0.1,1,'last');
+    t0 = find(x0>minShow,1);
+    t1 = find(x0>minShow,1,'last');
     evtL(sp0,t0:t1) = l0;
     [ih,iw] = ind2sub([H,W],sp0);
     datWarp(round(mean(ih)),round(mean(iw)),:) = x0;
