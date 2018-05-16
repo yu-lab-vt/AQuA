@@ -1,4 +1,4 @@
-function [lmLoc,lmLocR,lmVal] = getLmAll(dat,arLst,dActVox,fsz)
+function [lmLoc,lmVal] = getLmAll(dat,arLst,dActVox,fsz)
 % detect all local maximums in a movie
 
 gaph = 3;
@@ -34,20 +34,10 @@ for ii=1:nAR
     [~,~,lm3Idx] = burst.getLocalMax3D(dInST,mskSTSeed,mskST,fsz);    
     lmAll(rgH,rgW,rgT) = max(lmAll(rgH,rgW,rgT),lm3Idx>0);    
 end
-nLm = sum(lmAll(:)>0);
 lmLoc = find(lmAll>0);
 lmVal = dat(lmLoc);
 [lmVal,ix] = sort(lmVal,'descend');
 lmLoc = lmLoc(ix);
-lmLocR = containers.Map(lmLoc,1:nLm);  % use location to look up index
-
-% lmAll(lmLoc) = 1:nLm;  % prioritize strong peak
-
-% tmp = zeros(H,W,3,T); 
-% tmp(:,:,1,:) = lmAll; 
-% tmp(:,:,2,:) = dat;
-% tmp(:,:,3,:) = (dL>0)/3;
-% zzshow(tmp);
 
 end
 

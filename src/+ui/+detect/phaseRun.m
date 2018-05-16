@@ -26,7 +26,7 @@ end
 setappdata(f,'svLst',svLst);
 setappdata(f,'riseX',riseX);
 
-ui.detect.postRun([],[],f,svLst,[],'Super voxels');
+ui.detect.postRun([],[],f,svLst,[],'Step 2: super voxels');
 
 delete(ff);
 fprintf('Done\n')

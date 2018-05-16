@@ -7,8 +7,8 @@ fh = guidata(f);
 ff = waitbar(0,'Detecting ...');
 
 bd = getappdata(f,'bd');
-dF = getappdata(f,'dF');
-dat = getappdata(f,'dat');
+% dF = getappdata(f,'dF');
+datOrg = getappdata(f,'datOrg');
 opts = getappdata(f,'opts');
 
 % only inside user drawn cells
@@ -37,13 +37,17 @@ catch
     msgbox('Error setting parameters')
 end
 
-[arLst,lmLoc] = burst.actTop(dat,dF,opts,evtSpatialMask,ff);
+[dat,dF,arLst,lmLoc,opts] = burst.actTop(datOrg,opts,evtSpatialMask,ff);
+% [arLst,lmLoc] = burst.actTop(dat,dF,opts,evtSpatialMask,ff);
 waitbar(1,ff);
 
+setappdata(f,'dat',dat);
+setappdata(f,'dF',dF);
 setappdata(f,'arLst',arLst);
 setappdata(f,'lmLoc',lmLoc);
+setappdata(f,'opts',opts);
 
-ui.detect.postRun([],[],f,arLst,[],'Active voxels');
+ui.detect.postRun([],[],f,arLst,[],'Step 1: active voxels');
 
 delete(ff);
 fprintf('Done\n')

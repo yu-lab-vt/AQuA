@@ -151,10 +151,11 @@ for ii=1:numel(evtLst)
     ftsLst.curve.decayTau(ii) = decayTau;
     
     % basic features
+    rgT = min(it):max(it);
     ih1 = ih-min(rgH)+1;
     iw1 = iw-min(rgW)+1;
-    it1 = it-min(rgT1)+1;
-    voxd = dat(rgH,rgW,rgT1);
+    it1 = it-min(rgT)+1;
+    voxd = dat(rgH,rgW,rgT);
     voxi = zeros(size(voxd));
     pix1 = sub2ind(size(voxd),ih1,iw1,it1);
     voxi(pix1) = 1;

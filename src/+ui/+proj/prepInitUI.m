@@ -58,6 +58,8 @@ function prepInitUI(f,fh,opts,scl,~,stg,~)
     fh.mergeEventDiscon.String = num2str(opts.mergeEventDiscon);
     fh.mergeEventCorr.String = num2str(opts.mergeEventCorr);
     fh.mergeEventMaxTimeDif.String = num2str(opts.mergeEventMaxTimeDif);
+
+    fh.extendEvtRe.Value = 1*(opts.extendEvtRe>0);
     
     fh.ignoreTau.Value = 1*(opts.ignoreTau>0);
     

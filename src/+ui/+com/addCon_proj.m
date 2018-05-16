@@ -17,7 +17,7 @@ uix.Empty('Parent',bNew);
 % event detection: data settings
 pDeProp = uix.Grid('Parent',bNew);
 uicontrol(pDeProp,'Style','popupmenu','String',...
-    {'GCaMP: in vivo','GCaMP: ex vivo','GluSnFR: glutamate'},'Tag','preset');
+    {'GCaMP: in vivo','GCaMP: ex vivo','GluSnFR: glutamate','GluSnFR: noisier'},'Tag','preset');
 uicontrol(pDeProp,'Style','edit','String','1','Tag','tmpRes');
 uicontrol(pDeProp,'Style','edit','String','1','Tag','spaRes');
 uicontrol(pDeProp,'Style','edit','String','5','Tag','bdSpa');
@@ -25,7 +25,7 @@ uicontrol(pDeProp,'Style','text','String','Data type (presets)','HorizontalAlign
 uicontrol(pDeProp,'Style','text','String','Temporal resolution: second per frame','HorizontalAlignment','left');
 uicontrol(pDeProp,'Style','text','String','Spatial resolution: um per pixel','HorizontalAlignment','left');
 uicontrol(pDeProp,'Style','text','String','Exclude pixels shorter than this distance to border','HorizontalAlignment','left');
-pDeProp.Widths = [80,-1];
+pDeProp.Widths = [100,-1];
 pDeProp.Heights = [20,20,20,20];
 % pDeProp.Padding = 10;
 pDeProp.Spacing = 8;
@@ -39,10 +39,8 @@ bNew.Heights = [-1,15,20,15,120,20,-1];
 
 uicontrol(bNew1,'Style','edit','Tag','fIn','HorizontalAlignment','left');
 uicontrol(bNew1,'String','...','Callback',{@ui.proj.getInputFile,f});
-% uicontrol(bNew2,'Style','edit','Tag','pOut','HorizontalAlignment','left');
-% uicontrol(bNew2,'String','...','Callback',{@getOutputFolder,f});
 bNew1.Widths = [-1,20];
-% bNew2.Widths = [-1,20];
+
 end
 
 

@@ -11,12 +11,7 @@ gap = 3;
 for tt=1:T
     datV(:,:,tt) = std(dat(:,:,max(tt-gap,1):min(tt+gap,T)),[],3);
 end
-% datV(:,:,1:gap) = repmat(datV(:,:,gap+1),1,1,gap);
-% datV(:,:,T-gap+1:T) = repmat(datV(:,:,gap+1),1,1,gap);
-
-% datSmo1 = imgaussfilt3(dat,[1 1 1]);
 datSmo1 = imgaussfilt3(dat,fsz);
-% datSmo1 = imgaussfilt3(dat,[2 2 0.5]);
 
 lm3 = imregionalmax(datSmo1);
 lm3(:,:,1) = zeros(H,W);

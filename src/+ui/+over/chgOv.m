@@ -118,6 +118,17 @@ if strcmp(ovSel,'Events')
     fh.sldMaxOv.Enable = 'on';
     fh.txtMinOv.String = ['Min:',num2str(scl.minOv)];
     fh.txtMaxOv.String = ['Max:',num2str(scl.maxOv)];
+else
+    % re-shuffle color code in other cases
+    if ~strcmp(ovSel,'None')
+        ov = getappdata(f,'ov');
+        ov0 = ov(ovSel);
+        nEvt = numel(ov0.colVal);
+        col0 = ui.over.getColorCode(nEvt,'Random');
+        ov0.col = col0;
+        ov(ovSel) = ov0;
+        setappdata(f,'ov',ov);
+    end
 end
 
 setappdata(f,'btSt',btSt);

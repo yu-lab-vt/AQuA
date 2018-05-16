@@ -2,7 +2,10 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
 % use btSt.sbs, btSt.leftView and btSt.rightView to determine what to show
 
 fh = guidata(f);
-dat = getappdata(f,'dat');
+dat = getappdata(f,'datOrg');
+if isempty(dat)
+    dat = getappdata(f,'dat');
+end
 scl = getappdata(f,'scl');
 btSt = getappdata(f,'btSt');
 

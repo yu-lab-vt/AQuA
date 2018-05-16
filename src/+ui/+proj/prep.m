@@ -41,11 +41,8 @@ if op==0
     try
         pf0 = fh.fIn.String;
         [filepath,name,ext] = fileparts(pf0);
-        %opts.outPath = fh.pOut.String;
-        [dat,dF,opts,H,W,T] = burst.prep1(filepath,[name,ext],[],opts,ff); %#ok<ASGLU>
-        
-        % save folder
-        cfg0.file = pf0;
+        [datOrg,opts] = burst.prep1(filepath,[name,ext],[],opts,ff);
+        cfg0.file = pf0;  % save folder
         save(cfgFile,'cfg0');
     catch
         msgbox('Fail to load file');
@@ -53,10 +50,10 @@ if op==0
     end
     
     % UI data structure
-    [ov,bd,scl,btSt] = ui.proj.prepInitUIStruct(dat,opts); %#ok<ASGLU>
+    [ov,bd,scl,btSt] = ui.proj.prepInitUIStruct(datOrg,opts); %#ok<ASGLU>
     
     % data and settings
-    vBasic = {'opts','scl','btSt','ov','bd','dat','dF'};
+    vBasic = {'opts','scl','btSt','ov','bd','datOrg'};
     for ii=1:numel(vBasic)
         v0 = vBasic{ii};
         if exist(v0,'var')
@@ -81,17 +78,23 @@ if op>0
         save(cfgFile,'cfg0');
     end
     
-    % int to double
+    % rescale int8 to [0,1] double
+    % dat is for detection, datOrg for viewing
     res.dat = double(res.dat)/(2^res.opts.bitNum-1);
+    if isfield(res,'datOrg')
+        res.datOrg = double(res.datOrg)/(2^res.opts.bitNum-1);
+    else
+        res.datOrg = res.dat;
+    end
     waitbar(0.5,ff);
     
     if ~isfield(res,'scl')
-        [~,res.bd,res.scl,res.btSt] = ui.proj.prepInitUIStruct(res.dat,res.opts);
+        [~,res.bd,res.scl,res.btSt] = ui.proj.prepInitUIStruct(res.datOrg,res.opts);
         res.stg = [];
         res.stg.detect = 0;
         res.stg.post = 1;
     else
-        [~,~,res.scl,res.btSt] = ui.proj.prepInitUIStruct(res.dat,res.opts,res.btSt);
+        [~,~,res.scl,res.btSt] = ui.proj.prepInitUIStruct(res.datOrg,res.opts,res.btSt);
     end
     
     % reset some settings

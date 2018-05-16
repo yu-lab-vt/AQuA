@@ -10,9 +10,11 @@ for nn=1:numel(seLst)
 end
 
 % extend event time windows
-opts.extendSV = 1;
-seMap = burst.getSpDelay(dat,seMap,opts);
-seLst = label2idx(seMap);
+if opts.extendEvtRe>0
+    opts.extendSV = 1;
+    seMap = burst.getSpDelay(dat,seMap,opts);
+    seLst = label2idx(seMap);
+end
 
 if exist('ff','var')
     waitbar(0.2,ff);
@@ -41,14 +43,11 @@ for nn=1:numel(seLst)
     
     dF0 = double(dF(rgh,rgw,rgt));
     seMap0 = seMap(rgh,rgw,rgt);
-    try
-        [evtRecon,evtL,evtMap,dlyMap,nEvt0,rgtx,rgtSel] = burst.se2evt(...
-            dF0,seMap0,nn,ihw0,rgh,rgw,rgt,it0,T,opts,2);
-    catch
-        keyboard
-    end
-    
-    evtL(seMap0~=nn) = 0;  % avoid interfering other events
+    [evtRecon,evtL,evtMap,dlyMap,nEvt0,rgtx,rgtSel] = burst.se2evt(...
+        dF0,seMap0,nn,ihw0,rgh,rgw,rgt,it0,T,opts,2);
+
+    seMap00 = seMap(rgh,rgw,rgtx);
+    evtL(seMap00~=nn) = 0;  % avoid interfering other events
     evtL(evtL>0) = nEvt+1;  % only one event for each super event
     dLNow = datL(rgh,rgw,rgtx);
     dRNow = datR(rgh,rgw,rgtx);

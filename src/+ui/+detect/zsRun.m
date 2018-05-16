@@ -35,7 +35,7 @@ setappdata(f,'riseLstFilterZ',riseLstFilterZ);
 
 waitbar(1,ff);
 
-ui.detect.postRun([],[],f,evtLstFilterZ,datR,'Events cleaned');
+ui.detect.postRun([],[],f,evtLstFilterZ,datR,'Step 4: events cleaned');
 
 delete(ff);
 fprintf('Done\n')

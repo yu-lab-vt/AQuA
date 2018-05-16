@@ -71,22 +71,31 @@ for ii=1:numel(evtLst)
     charxIn2 = nanmean(voxd2,1);
     charx2 = fea.curvePolyDeTrend(charxIn2,sigx,opts.correctTrend);
     charx2Na = charx2; charx2Na(sigx>0) = nan; charxBg2 = nanmedian(charx2Na);
-    dff2 = (charx2-charxBg2)/charxBg2;    
+    dff2 = (charx2-charxBg2)/charxBg2;
     dff2a = (charx1-charxBg2)/charxBg2;  % use raw df for noise
     s00 = sqrt(nanmedian((dff2a(2:end)-dff2a(1:end-1)).^2)/0.9113);
     
     % p value based on peak-base
     dff2Sel = dff2(rgT);
-    [dffMax,tMax] = max(dff2Sel);
+    dffMax = max(dff2Sel);
+    [~,tMax] = max(dff2Sel);
     xMinPre = min(dff2Sel(1:tMax));
     xMinPost = min(dff2Sel(tMax:end));
     if sum(sigx)<T*0.2
-        xMinPre = max(xMinPre,s00);
-        xMinPost = max(xMinPost,s00);
+       xMinPre = max(xMinPre,s00);
+       xMinPost = max(xMinPost,s00);
     end
+    %dffMaxZ = max(dffMax/s00,0);
     dffMaxZ = max(min(dffMax-xMinPre,dffMax-xMinPost)/s00/2,0);
     % dffMaxZ = max((dffMax-xMinPre+dffMax-xMinPost)/s00/2,0);
-    dffMaxPval = 1-normcdf(dffMaxZ);
+    dffMaxPval = 1-normcdf(dffMaxZ);    
+    
+    if 0
+    %if ii==81
+        figure;plot(dff2);hold on;plot(rgT,dff2Sel);
+        fprintf('Z:%f\n',dffMaxZ);
+        keyboard
+    end
     
     % extend time window
     voxi1(voxi1==ii) = 0;

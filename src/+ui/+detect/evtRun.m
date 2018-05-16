@@ -30,7 +30,7 @@ setappdata(f,'ftsLstAll',ftsLst);
 setappdata(f,'dffMatAll',dffMat);
 setappdata(f,'datRAll',datR);
 
-ui.detect.postRun([],[],f,evtLst,datR,'Events All');
+ui.detect.postRun([],[],f,evtLst,datR,'Step 3: events All');
 
 fprintf('Done\n')
 delete(ff);

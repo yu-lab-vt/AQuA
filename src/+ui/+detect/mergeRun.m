@@ -31,9 +31,7 @@ setappdata(f,'evtLstMerge',evtLstMerge);
 
 waitbar(1,ff);
 
-if opts.ignoreMerge==0
-    ui.detect.postRun([],[],f,evtLstMerge,[],'Events merged');
-end
+ui.detect.postRun([],[],f,evtLstMerge,[],'Step 5: events merged');
 
 delete(ff);
 fprintf('Done\n')

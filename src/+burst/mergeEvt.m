@@ -5,6 +5,7 @@ function evtLstOut = mergeEvt(evtLst,dffMat,tBegin,opts)
     fprintf('Merging...\n')
     
     sz = opts.sz;
+    ignoreMerge = opts.ignoreMerge;
     minDist = opts.mergeEventDiscon;
     minCorr = opts.mergeEventCorr;
     maxTimeDif = opts.mergeEventMaxTimeDif;
@@ -15,7 +16,7 @@ function evtLstOut = mergeEvt(evtLst,dffMat,tBegin,opts)
     end
     
     % do not need to merge
-    if minDist<=0
+    if ignoreMerge>0
         evtLstOut = evtLst;
         return
     end

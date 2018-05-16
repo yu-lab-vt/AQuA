@@ -36,7 +36,7 @@ function addDetectTab(f,pDeOut)
     gAct = uix.Grid('Parent',bAct,'Padding',10,'Spacing',8);
     uicontrol(gAct,'Style','edit','String','2','Tag','thrArScl');
     uicontrol(gAct,'Style','edit','String','0.5','Tag','smoXY');
-    uicontrol(gAct,'Style','edit','String','8','Tag','minSize');
+    uicontrol(gAct,'Style','edit','String','8','Tag','minSize','Visible','off');
     h{end+1} = uicontrol(gAct,'Style','text','String','Intensity threshold scaling factor');
     h{end+1} = uicontrol(gAct,'Style','text','String','Smoothing (sigma)');
     h{end+1} = uicontrol(gAct,'Style','text','String','Minimum size (pixels)');
@@ -85,8 +85,8 @@ function addDetectTab(f,pDeOut)
     
     % Re-align
     bEvtRe = uix.VBox('Parent',pEvtRe,'Padding',10);
-    h{end+1} = uicontrol(bEvtRe,'Style','text',...
-        'String','Click run to re-detect after merging');
+    uicontrol(bEvtRe,'Style','checkbox','String','Temporally extend events',...
+        'Value',1,'Tag','extendEvtRe');
     uix.Empty('Parent',bEvtRe);
     bEvtRe.Heights = [20,-1];
     
