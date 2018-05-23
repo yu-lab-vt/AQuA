@@ -8,8 +8,11 @@ pMovTop = uix.CardPanel('Parent',bDat,'Tag','movTop');  % movies
 uix.Empty('Parent',bDat);
 pImgCon = uix.HBox('Parent',bDat);  % play, scroll bar ...
 uix.Empty('Parent',bDat);
+% pCurveCon = uix.HBox('Parent',bDat);  % zoom in/out, pan, save ...
+% uix.Empty('Parent',bDat);
 pCurve = axes('Parent',bDat,'ActivePositionProperty','Position','Tag','curve');
 bDat.Heights = [15,5,-1,5,20,15,200];
+% bDat.Heights = [15,5,-1,5,20,15,20,15,200];
 
 % movie views ---------------
 % single movie view
@@ -113,6 +116,11 @@ h00.AdjustmentValueChangedCallback = {@ui.mov.stepOne,f};
 %     'Tag','sldMov','Callback',{@stepOne,f});
 uix.Empty('Parent',pImgCon);
 pImgCon.Widths = [15,50,50,-1,15];
+
+% curve tools
+% uix.Empty('Parent',pCurveCon);
+% uicontrol(pCurveCon,'String','Pan','Tag','curvePan','Callback',{@ui.mov.movPan,f});
+% uicontrol(pCurveCon,'String','Zoom','Tag','curveZoom','Callback',{@ui.mov.movZoom,f});
 
 % curves
 pCurve.XTick = [];

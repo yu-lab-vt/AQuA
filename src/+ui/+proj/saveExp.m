@@ -148,7 +148,7 @@ axNow.YLim = [0.5,size(dat,1)+0.5];
 axNow.DataAspectRatio = [1 1 1];
 colormap gray
 ui.mov.addPatchLineText(f,axNow,0,1)
-saveas(f00,[fpath,filesep,fname,'_landmark.fig']);
+% saveas(f00,[fpath,filesep,fname,'_landmark.fig']);
 saveas(f00,[fpath,filesep,fname,'_landmark.png'],'png');
 delete(f00);
 

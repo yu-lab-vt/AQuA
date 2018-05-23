@@ -8,7 +8,7 @@ if btSt.pan==0
     fh.zoom.BackgroundColor = col;  % change icon color
     h = pan;
     h.ActionPostCallback = {@ui.mov.mypostcallback,f};
-    setAllowAxesPan(h,fh.curve,0);  % zoom movie only, do not zoom the dff curve
+    %setAllowAxesPan(h,fh.curve,0);  % zoom movie only, do not zoom the dff curve
     %h.RightClickAction = 'InverseZoom';  % right click to zoom out
     h.Enable = 'on';
     h1 = zoom;  % disable zoom
