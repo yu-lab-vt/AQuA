@@ -16,8 +16,7 @@ uix.Empty('Parent',bNew);
 
 % event detection: data settings
 pDeProp = uix.Grid('Parent',bNew);
-uicontrol(pDeProp,'Style','popupmenu','String',...
-    {'GCaMP: in vivo','GCaMP: ex vivo','GluSnFR: glutamate','GluSnFR: noisier'},'Tag','preset');
+uicontrol(pDeProp,'Style','popupmenu','Tag','preset');
 uicontrol(pDeProp,'Style','edit','String','1','Tag','tmpRes');
 uicontrol(pDeProp,'Style','edit','String','1','Tag','spaRes');
 uicontrol(pDeProp,'Style','edit','String','5','Tag','bdSpa');
@@ -33,6 +32,8 @@ pDeProp.Spacing = 8;
 bload = uix.HButtonBox('Parent',bNew,'Spacing',25);
 uicontrol(bload,'String','< Back','Callback',{@ui.proj.welcome,f});
 uicontrol(bload,'String','Open','Callback',{@ui.proj.prep,f});
+uicontrol(bload,'String','Load presets','Callback',{@ui.proj.updtPreset,f});
+bload.ButtonSize = [110,20];
 uix.Empty('Parent',bNew);
 bNew.Heights = [-1,15,20,15,120,20,-1];
 % bNew.Heights = [-1,15,20,15,20,15,120,20,-1];

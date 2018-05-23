@@ -36,7 +36,7 @@ function addDetectTab(f,pDeOut)
     gAct = uix.Grid('Parent',bAct,'Padding',10,'Spacing',8);
     uicontrol(gAct,'Style','edit','String','2','Tag','thrArScl');
     uicontrol(gAct,'Style','edit','String','0.5','Tag','smoXY');
-    uicontrol(gAct,'Style','edit','String','8','Tag','minSize','Visible','off');
+    uicontrol(gAct,'Style','edit','String','8','Tag','minSize');
     h{end+1} = uicontrol(gAct,'Style','text','String','Intensity threshold scaling factor');
     h{end+1} = uicontrol(gAct,'Style','text','String','Smoothing (sigma)');
     h{end+1} = uicontrol(gAct,'Style','text','String','Minimum size (pixels)');

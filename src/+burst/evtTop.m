@@ -7,14 +7,22 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff)
     for nn=1:numel(svLst)
         lblMapS(svLst{nn}) = nn;
     end
+    riseMap = zeros(size(dat),'uint16');    
     riseX0 = nanmedian(riseX,2);
-    riseMap = zeros(size(dat),'uint16');
     for nn=1:numel(svLst)
         t00 = riseX0(nn);
         if ~isnan(t00)
             riseMap(svLst{nn}) = t00;
         end
     end
+%     for nn=1:numel(svLst)
+%         t00 = riseX(nn,:);
+%         if sum(~isnan(t00))>0
+%             t00a = t00(~isnan(t00));
+%             t00b = median(t00a(round(numel(t00a)/2):end));
+%             riseMap(svLst{nn}) = t00b;
+%         end
+%     end    
     
     % super voxels to super events
     fprintf('Detecting super events ...\n')

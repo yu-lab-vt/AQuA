@@ -1,4 +1,4 @@
-function resReg = getDistRegionBorderMIMO(evts,datS,regLst,lmkLst,muPerPix)
+function resReg = getDistRegionBorderMIMO(evts,datS,regLst,lmkLst,muPerPix,minThr)
 % getDistRegionBorder extract features related to regions drawn by user
 % allow multiple landmark and multiple regions
 %
@@ -25,7 +25,7 @@ if ~isempty(lmkLst)
     resReg.landmarkDist = fea.evt2lmkProp(evts,lBorder,sz,0,0,muPerPix);
     
     % frontier based propagation features related to landmark
-    rr = fea.evt2lmkProp1Wrap(datS,evts,lMask,muPerPix);
+    rr = fea.evt2lmkProp1Wrap(datS,evts,lMask,muPerPix,minThr);
     resReg.landmarkDir = rr;
 else
     resReg.landMark = [];

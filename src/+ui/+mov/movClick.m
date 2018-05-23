@@ -55,8 +55,8 @@ if strcmp(lbl,'viewFav')
                 tmp(pix00) = idx00;
             end
         end
-        y0 = min(max(sz(2)-y+1,1),sz(2));
-        x0 = min(max(x,1),sz(1));
+        y0 = min(max(sz(1)-y+1,1),sz(1));
+        x0 = min(max(x,1),sz(2));
         evtIdx = tmp(y0,x0);      
         fprintf('x %f y %f evt %d\n',xy(1),xy(2),evtIdx);
         

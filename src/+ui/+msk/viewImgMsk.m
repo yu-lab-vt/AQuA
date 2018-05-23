@@ -26,14 +26,16 @@ function viewImgMsk(~, ~, f)
     [H, W] = size(datAvg);
 
     % remove too small and too large
-    mskx = datAvg > rr.thr;
-    mskx = bwareaopen(mskx, rr.minSz);
-    mskx = imfill(mskx, 'holes');
-    cc = bwconncomp(mskx);
-    ccSz = cellfun(@numel, cc.PixelIdxList);
-    cc.PixelIdxList = cc.PixelIdxList(ccSz <= rr.maxSz);
-    cc.NumObjects = numel(cc.PixelIdxList);
-    mskx = labelmatrix(cc);
+    mskx = datAvg >= rr.thr;
+    if ~(strcmp(rr.type,'background') || strcmp(rr.type,'foreground'))
+        mskx = bwareaopen(mskx, rr.minSz);
+        mskx = imfill(mskx, 'holes');
+        cc = bwconncomp(mskx);
+        ccSz = cellfun(@numel, cc.PixelIdxList);
+        cc.PixelIdxList = cc.PixelIdxList(ccSz <= rr.maxSz);
+        cc.NumObjects = numel(cc.PixelIdxList);
+        mskx = labelmatrix(cc);
+    end
     bLst = bwboundaries(mskx > 0);
 
     % save mask

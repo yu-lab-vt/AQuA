@@ -16,11 +16,14 @@ function drawReg(~,~,f,op,lbl)
         tmp = [];
         hh = impoly(ax);
         if ~isempty(hh)
-            tmp{1} = hh.getPosition;
-            % tmp{2} = hh.createMask;
-            tmp{3} = 'manual';
-            bd0{end+1} = tmp;
-            delete(hh)
+            nPts = size(hh.getPosition,1);
+            if nPts>2
+                tmp{1} = hh.getPosition;
+                % tmp{2} = hh.createMask;
+                tmp{3} = 'manual';
+                bd0{end+1} = tmp;
+                delete(hh)
+            end
         end
     end
     

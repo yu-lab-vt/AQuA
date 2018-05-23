@@ -55,7 +55,7 @@ for ee=1:numel(maxRiseDlyVec)
                 riseDif = abs(rise0-rise1);
                 
                 xSel = x(idxSel);
-                xGood = xSel(riseDif<maxRiseDly0);
+                xGood = xSel(riseDif<=maxRiseDly0);
                 x = unique(xGood);
                 if ~isempty(x)
                     neib0 = union(neib0,x);

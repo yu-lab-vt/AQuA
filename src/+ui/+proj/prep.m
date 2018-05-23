@@ -80,18 +80,30 @@ if op>0
     
     % rescale int8 to [0,1] double
     % dat is for detection, datOrg for viewing
-    res.dat = double(res.dat)/(2^res.opts.bitNum-1);
+    %res.dat = double(res.dat)/(2^res.opts.bitNum-1);
     if isfield(res,'datOrg')
         res.datOrg = double(res.datOrg)/(2^res.opts.bitNum-1);
     else
-        res.datOrg = res.dat;
+        res.datOrg = double(res.dat);
     end
+    if isfield(res,'maxVal')
+        res.datOrg = res.datOrg*res.maxVal;
+    end
+    
+    dat = res.datOrg;
+    if res.opts.smoXY>0
+        for tt=1:size(dat,3)
+            dat(:,:,tt) = imgaussfilt(dat(:,:,tt),res.opts.smoXY);
+        end
+    end
+    res.dat = dat;
+    
     waitbar(0.5,ff);
     
     if ~isfield(res,'scl')
         [~,res.bd,res.scl,res.btSt] = ui.proj.prepInitUIStruct(res.datOrg,res.opts);
         res.stg = [];
-        res.stg.detect = 0;
+        res.stg.detect = 1;
         res.stg.post = 1;
     else
         [~,~,res.scl,res.btSt] = ui.proj.prepInitUIStruct(res.datOrg,res.opts,res.btSt);

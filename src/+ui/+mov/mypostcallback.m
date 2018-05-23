@@ -13,12 +13,12 @@ try
     w2 = min(max(scl.wrg(2),0.5),W+0.5);
     h1 = min(max(scl.hrg(1),0.5),H+0.5);
     h2 = min(max(scl.hrg(2),0.5),H+0.5);
-    w = w2-w1;
-    h = h2-h1;
-    w = min(h,w);
-    h = w;
-    w2 = w1+w;
-    h2 = h1+h;    
+    %w = w2-w1;
+    %h = h2-h1;
+    %w = min(h,w);
+    %h = w;
+    %w2 = w1+w;
+    %h2 = h1+h;    
     scl.wrg = [w1,w2];
     scl.hrg = [h1,h2];
 

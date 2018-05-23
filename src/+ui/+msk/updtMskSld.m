@@ -3,12 +3,12 @@ function updtMskSld(~,~,f,rr)
     
     fh = guidata(f);
     
-    gap0 = [0.01 0.1];
+    gap0 = [0.001 0.1];
     
     [H,W] = size(rr.datAvg);
     
-    fh.sldMskThr.Min = min(rr.datAvg(:));
-    fh.sldMskThr.Max = max(rr.datAvg(:));
+    fh.sldMskThr.Min = 0; %min(rr.datAvg(:));
+    fh.sldMskThr.Max = 1; %max(rr.datAvg(:));
     fh.sldMskThr.SliderStep = gap0;
     fh.sldMskThr.Value = rr.thr;
     

@@ -61,7 +61,7 @@ if btSt.sbs==1
                 fh.ims.(imName{ii}).CData = flipud(datxCol);
                 ui.mov.addPatchLineText(f,axNow,n,updtAll);
             case 'Rising map'
-                ui.mov.showRisingMap(f,imName{ii},n,updtAll);                                                                                                
+                ui.mov.showRisingMap(f,imName{ii},n);                                                                                                
         end        
     end    
 end

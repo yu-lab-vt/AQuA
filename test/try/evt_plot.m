@@ -1,14 +1,15 @@
 % local maximums
-lmAll = zeros(H,W,T); lmAll(lmLoc) = 1;
-tmp = zeros(H,W,3,T); tmp(:,:,1,:) = lmAll;
-tmp(:,:,2,:) = dat.^2; 
-% tmp(:,:,3,:) = 0.3*(lblMapS>0);
+[H,W,T] = size(dat);
+lmAllx = zeros(H,W,T); lmAllx(lmLoc) = 1:numel(lmLoc);
+tmp = zeros(H,W,3,T); tmp(:,:,1,:) = lmAllx;
+tmp(:,:,2,:) = dat.^2*5; 
 zzshow(tmp);
 
 % regions
 ov0 = plt.regionMapWithData(dL,dat,0.25); zzshow(ov0);
 
 ov1 = plt.regionMapWithData(lblMap,dat.^2,0.25); zzshow(ov1);
+ov1 = plt.regionMapWithData(lblMap,dat*2,0.5); zzshow(ov1);
 
 ov1 = plt.regionMapWithData(lblMapS,dat.^2,0.25); zzshow(ov1);
 

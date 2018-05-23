@@ -1,4 +1,4 @@
-function twObj = getTimeWindow2b(x,itS,thr0,df)
+function twObj = getTimeWindow2b(x,itS,thr0,df,maxExt)
 %getTimeWindow2B Find a time window for the peak of a seed to baseline
 
 twObj = [];
@@ -13,10 +13,9 @@ dfmax = nanmax(df(max(tPeak-1,1):min(tPeak+1,T)));
 
 % need big decrease, if the signal is already bright
 thr0 = max(dfmax*0.3,thr0);
-% peak0 = nanmax(x(max(tPeak-1,1):min(tPeak+1,T)));
 
 % search for first points lower than threshold
-maxOfst1 = 50;
+maxOfst1 = maxExt;
 t0 = max(tPeak-maxOfst1,1);
 base0 = x(tPeak);
 for tt=tPeak:-1:max(tPeak-maxOfst1,1)
@@ -27,13 +26,14 @@ for tt=tPeak:-1:max(tPeak-maxOfst1,1)
     end
 end
 
-maxOfst2 = 50;
+maxOfst2 = maxExt;
 t1 = min(tPeak+maxOfst2,T);
 base1 = x(tPeak);
 for tt=tPeak:min(tPeak+maxOfst2,T)
     if df(tt)<thr0
         base1 = x(tt);
         t1 = tt;
+        break
     end
 end
 

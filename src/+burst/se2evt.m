@@ -57,15 +57,7 @@ cxAll(:,rgt(rgtSel)) = cx;
 cx1 = cxAll(:,rgtx);
 
 % events
-if ~isfield(opts,'minShow1') || ~isfield(opts,'minShow2')
-    minShow = 0.1;
-else
-    if stg==1
-        minShow = opts.minShow1;
-    else
-        minShow = opts.minShow2;
-    end
-end
+minShow = sqrt(opts.minShow1);
 [evtL,evtRecon] = gtw.evtRecon(spLst,cx1,evtMap,minShow);
 evtRecon = evtRecon.^2;
 evtRecon = uint8(evtRecon*255);

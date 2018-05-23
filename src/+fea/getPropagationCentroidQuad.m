@@ -1,4 +1,4 @@
-function ftsPg = getPropagationCentroidQuad(voli0,volr0,muPerPix,nEvt,ftsPg,northDi)
+function ftsPg = getPropagationCentroidQuad(voli0,volr0,muPerPix,nEvt,ftsPg,northDi,minShow1)
 % getFeatures extract local features from events
 % specify direction of 'north', or anterior
 % not good at tracking complex propagation
@@ -21,23 +21,24 @@ kDi(3,:) = [-b,a];
 kDi(4,:) = [b,-a];
 
 % propagation features
-thr0 = 0.2:0.1:0.8;  % significant propagation (increase of reconstructed signal)
+thr0 = minShow1:0.1:0.8;  % significant propagation (increase of reconstructed signal)
+% thr0 = 0.2:0.1:0.8;
 nThr = numel(thr0);
 volr0(voli0==0) = 0;  % exclude values outside event
 volr0(volr0<min(thr0)) = 0;
-sigMap = sum(volr0>min(thr0),3);
+sigMap = sum(volr0>=min(thr0),3);
 nPix = sum(sigMap(:)>0);
 
 % time window for propagation
 volr0Vec = reshape(volr0,[],T);
-idx0 = find(max(volr0Vec,[],1)>min(thr0));
+idx0 = find(max(volr0Vec,[],1)>=min(thr0));
 t0 = min(idx0);
 t1 = max(idx0);
 
 % centroid of earlist frame as starting point
 sigt0 = volr0(:,:,t0);
-[ih,iw] = find(sigt0>min(thr0));
-wt = sigt0(sigt0>min(thr0));
+[ih,iw] = find(sigt0>=min(thr0));
+wt = sigt0(sigt0>=min(thr0));
 seedhInit = sum(ih.*wt)/sum(wt);
 seedwInit = sum(iw.*wt)/sum(wt);
 h0 = max(round(seedhInit),1);
@@ -73,7 +74,7 @@ pixNum = zeros(T,nThr);  % pixel number increase
 for tt=t0:t1
     imgCur = volr0(:,:,tt);
     for kk=1:nThr
-        imgCurThr = 1*(imgCur>thr0(kk));
+        imgCurThr = 1*(imgCur>=thr0(kk));
         pixNum(tt,kk) = sum(imgCurThr(:));
         for ii=1:4            
             img0 = imgCurThr.*msk(:,:,ii);

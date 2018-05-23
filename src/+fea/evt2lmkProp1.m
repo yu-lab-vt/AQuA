@@ -1,14 +1,15 @@
-function res = evt2lmkProp1(datS,lmkMsk)
+function res = evt2lmkProp1(datS,lmkMsk,thrRg)
 % distances and directions between events and landmarks
 % Multiple threshold frontier based
 %
+% !!! Time duration must be same as event
 % TODO: allow landmark to be outside datS (input as (x,y) pairs)
 
 [H,W,~] = size(datS);
 nLmk = numel(lmkMsk);
 
-sck = min(sqrt(3000/H/W),0.5);
-datSx = imresize(datS,sck);
+sck = min(sqrt(10000/H/W),1);
+datSx = imresize(datS,sck);  % !! resizing may introduce artifacts
 lmkMskx = cell(0);
 for kk=1:nLmk
     m0 = lmkMsk{kk};
@@ -24,11 +25,14 @@ else
     isBig = 0;
 end
 
-thrRg = 0.2:0.1:0.8;
 chgToward = zeros(1,nLmk);
 chgAway = zeros(1,nLmk);
 chgTowardBefReach = zeros(1,nLmk);
 chgAwayAftReach = zeros(1,nLmk);
+
+chgTowardThrFrame = zeros(numel(thrRg),T,nLmk);
+chgAwayThrFrame = zeros(numel(thrRg),T,nLmk);
+
 pixTwd = zeros(H*W,nLmk);
 pixAwy = zeros(H*W,nLmk);
 
@@ -158,6 +162,7 @@ for kk=1:numel(thrRg)
             % for each landmark, find the distance change for each pair
             % positive change is toward the landmark
             % if pixCur contains landmark, it is treated as two parts
+            
             dxPos = zeros(numel(bdCur),nLmk);
             dxNeg = zeros(numel(bdCur),nLmk);
             [h0,w0] = ind2sub([H,W],bdCur);
@@ -214,6 +219,10 @@ for kk=1:numel(thrRg)
             % combine results from pixels
             dxAllPos(ii,:) = dxAllPos(ii,:) + sum(dxPos,1);
             dxAllNeg(ii,:) = dxAllNeg(ii,:) + sum(dxNeg,1);
+            
+            % gather results
+            chgTowardThrFrame(kk,tRg(ii),:) = sum(dxPos,1);
+            chgAwayThrFrame(kk,tRg(ii),:) = sum(dxNeg,1);            
         end
     end
     
@@ -233,8 +242,13 @@ end
 
 scl1 = sck.^3;
 
-res.chgToward = chgToward/scl1;
-res.chgAway = chgAway/scl1;
+res.chgTowardThrFrame = chgTowardThrFrame/scl1;
+res.chgAwayThrFrame = chgAwayThrFrame/scl1;
+res.chgTowardThr = sum(chgTowardThrFrame,2)/scl1;
+res.chgAwayThr = sum(chgAwayThrFrame,2)/scl1;
+res.chgToward = sum(res.chgTowardThr,1);
+res.chgAway = sum(res.chgAwayThr,1);
+
 res.chgTowardBefReach = chgTowardBefReach/scl1;
 res.chgAwayAftReach = chgAwayAftReach/scl1;
 res.pixelToward = reshape(pixTwd,H,W,nLmk)/scl1;

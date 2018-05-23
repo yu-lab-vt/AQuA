@@ -24,4 +24,10 @@ else
 end
 tb.Data = dat;
 
+% update detailed features
+figFav = getappdata(f,'figFav');
+if ~isempty(figFav) && isvalid(figFav)
+    ui.evt.showDetails([],[],f);
+end
+
 end

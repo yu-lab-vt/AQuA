@@ -21,7 +21,7 @@ catch
     msgbox('Error setting parameters')
 end
 
-[riseLst,datR,evtLst] = burst.evtTop(dat,dF,svLst,riseX,opts,ff);
+[riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,ff);
 [ftsLst,dffMat] = fea.getFeatureQuick(dat,evtLst,opts);
 
 setappdata(f,'riseLstAll',riseLst);
@@ -30,7 +30,8 @@ setappdata(f,'ftsLstAll',ftsLst);
 setappdata(f,'dffMatAll',dffMat);
 setappdata(f,'datRAll',datR);
 
-ui.detect.postRun([],[],f,evtLst,datR,'Step 3: events All');
+ui.detect.postRun([],[],f,seLst,datR,'Step 3a: super events');
+ui.detect.postRun([],[],f,evtLst,datR,'Step 3b: events all');
 
 fprintf('Done\n')
 delete(ff);

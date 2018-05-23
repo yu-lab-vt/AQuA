@@ -35,6 +35,8 @@ guidata(f,fh);
 col = fh.pan.BackgroundColor;
 setappdata(f,'col',col);
 
+ui.proj.updtPreset([],[],f);
+
 Pix_SS = get(0,'screensize');
 h0 = Pix_SS(4)+22; w0 = Pix_SS(3);  % 50 is taskbar size
 
@@ -44,6 +46,8 @@ setappdata(f,'guiWelcomeSz',[w0/2-200,h0/2-150,400,300]);
 setappdata(f,'guiMainSz',[w0/2-700 h0/2-400 1400 800]);
 
 f.Position = getappdata(f,'guiWelcomeSz');
+
+f.CloseRequestFcn = {@ui.proj.closeMe,f};
 
 % debug UI
 if dbg>0

@@ -24,6 +24,8 @@ function saveMsk(~,~,f,op)
     % combine masks
     opReg = fh.saveMskRegOp.Value;
     opLmk = fh.saveMskLmkOp.Value;
+    fgMsk = ones(sz(1),sz(2));
+    bgMsk = zeros(sz(1),sz(2));
     regMskAll = [];
     %regDat = [];
     lmkMskAll = [];
@@ -59,6 +61,12 @@ function saveMsk(~,~,f,op)
         end
         if strcmp(rr0.type,'regionMarker')
             markerMap = rr0.mask;
+        end
+        if strcmp(rr0.type,'foreground')
+            fgMsk = rr0.mask;
+        end
+        if strcmp(rr0.type,'background')
+            bgMsk = rr0.mask;
         end
     end
     
@@ -181,6 +189,19 @@ function saveMsk(~,~,f,op)
     bd('landmk') = lmkAll;
     
     setappdata(f,'bd',bd);
+
+    % foreground and background
+    dat = getappdata(f,'datOrg');
+    datAvg = mean(dat,3);
+    if sum(bgMsk(:)==0)>0
+        bgFluo = median(datAvg(bgMsk==0));
+    else
+        bgFluo = 0;
+    end
+    opts.bgFluo = double(bgFluo);
+    opts.fgFluo = double(min(datAvg(fgMsk>0)));
+    setappdata(f,'opts',opts);
+
     fh.g.Selection = 3;
     
     ui.movStep(f,[],[],1);

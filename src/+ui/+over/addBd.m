@@ -2,8 +2,13 @@ function addBd(f,axNow,lst,bdCol,n)
 
 btSt = getappdata(f,'btSt');
 opts = getappdata(f,'opts');
+
+if ~isfield(opts,'minShowEvtGUI')
+    opts.minShowEvtGUI = 0.5;
+end
+
 H = opts.sz(1);
-if ~isempty(lst) && strcmp(btSt.overlayDatSel,'Events')
+if ~isempty(lst) && strcmp(btSt.overlayDatSel,'Events') && n>0
     ov = getappdata(f,'ov');
     ov0 = ov(btSt.overlayDatSel);
     x0 = ov0.frame{n};
@@ -17,7 +22,7 @@ if ~isempty(lst) && strcmp(btSt.overlayDatSel,'Events')
                 % only draw when area is large enough
                 nPixTot = numel(loc2D{idx(ii)});
                 nPixNow = numel(x0.pix{ii});
-                if nPixNow/nPixTot>0.5  % FIXME: do not make duration too long
+                if nPixNow/nPixTot>opts.minShowEvtGUI  % FIXME: do not make duration too long
                     xyC = bds{idx(ii)};
                     for jj=1:numel(xyC)
                         xy = xyC{jj};

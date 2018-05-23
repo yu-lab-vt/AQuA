@@ -1,4 +1,4 @@
-function actReg3 = regionMapWithData(regionMap,dat,sclOv,reCon,mskx,minSz,minAmp,seedx)
+function [actReg3,lblMapS] = regionMapWithData(regionMap,dat,sclOv,reCon,mskx,minSz,minAmp,seedx)
 % showActRegion3D draw spatial-temporal FIUs
 % use 8 bit for visualization
 
@@ -27,6 +27,7 @@ if ~exist('minAmp','var') || isempty(minAmp)
     minAmp = 0;
 end
 
+lblMapS = zeros(H,W,T);
 if ~iscell(regionMap)
     rPlane = regionMap*0;
     rgPixLst = label2idx(regionMap);
@@ -54,6 +55,7 @@ for nn=1:N
     if mean(dat(tmp))<minAmp
         continue
     end
+    lblMapS(tmp) = nn;
     x = randi(255,[1,3]);
     while (x(1)>0.8*255 && x(2)>0.8*255 && x(3)>0.8*255) || sum(x)<255
         x = randi(255,[1,3]);

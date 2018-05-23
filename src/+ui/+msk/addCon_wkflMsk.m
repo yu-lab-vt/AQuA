@@ -1,28 +1,14 @@
 function addCon_wkflMsk(f, pWkfl)
-    % masks ***********
 
     % workflow panels ----
     bWkfl = uix.VBox('Parent', pWkfl, 'Spacing', 5);
     % pDraw = uix.BoxPanel('Parent', bWkfl, 'Title', 'Manually add/remove regions/landmarks');
+    % pFgBg = uix.BoxPanel('Parent', bWkfl, 'Title', '  Foreground and background');
     pMsk = uix.BoxPanel('Parent', bWkfl, 'Title', '  Load masks');
     pSave = uix.BoxPanel('Parent', bWkfl, 'Title', '  Save regions/landmarks');
     uix.Empty('Parent', bWkfl);
     bWkfl.Heights = [390, 120, -1];
-    % bWkfl.Heights = [80,330,130,-1];
-
-    % % draw or edit regions ----
-    % bDraw = uix.VBox('Parent', pDraw, 'Spacing', 3, 'Padding', 3);
-    % gDraw = uix.Grid('Parent', bDraw, 'Spacing', 3, 'Padding', 3);
-    % uicontrol(gDraw,'Style', 'text', 'String', 'Region', 'HorizontalAlignment', 'left');
-    % uicontrol(gDraw,'Style', 'text', 'String', 'Landmark', 'HorizontalAlignment', 'left');
-    % uicontrol(gDraw,'String', 'Add', 'Tag', 'AddCellMsk', 'Callback', ...
-    %     {@ui.msk.drawReg,f,'add', 'cell'}, 'Interruptible', 'off', 'BusyAction', 'cancel');
-    % uicontrol(gDraw,'String', 'Add', 'Tag', 'AddLmMsk', 'Callback', ...
-    %     {@ui.msk.drawReg,f,'add', 'landmk'}, 'Interruptible', 'off', 'BusyAction', 'cancel');
-    % uicontrol(gDraw,'String', 'Remove', 'Tag', 'RmCellMsk', 'Callback', {@ui.msk.updtCursorFun, f, 'rm', 'cell'});
-    % uicontrol(gDraw,'String', 'Remove', 'Tag', 'RmLmMsk', 'Callback', {@ui.msk.updtCursorFun, f, 'rm', 'landmk'});
-    % gDraw.Widths = [-1,50,50];
-    % gDraw.Heights = [20,20];
+    % bWkfl.Heights = [130, 390, 120, -1];
 
     % load masks ---
     bLoad = uix.VBox('Parent', pMsk, 'Spacing', 5, 'Padding', 5);
@@ -43,15 +29,6 @@ function addCon_wkflMsk(f, pWkfl)
     gLoad.Heights = [20, 20, 20];
     % uix.Empty('Parent', bLoad);
 
-    % % use current movie
-    % uicontrol(bLoad,'Style', 'text', 'String', 'Mean project current movie as', 'HorizontalAlignment', 'left');
-    % bLoadCur = uix.HBox('Parent', bLoad);
-    % uicontrol(bLoadCur,'Style', 'popupmenu', 'String', {'Region mask', 'landmark mask'}, 'Value', 1, 'Tag', 'curMovAsMskType');
-    % uix.Empty('Parent', bLoadCur);
-    % uicontrol(bLoadCur,'String', 'Add');
-    % bLoadCur.Widths = [100,10,50];
-    % uix.Empty('Parent', bLoad);
-
     % list of added masks
     t = uitable(bLoad, 'Data', zeros(0, 3), 'Tag', 'mskTable');
     t.ColumnName = {'', 'Mask name', 'Type'};
@@ -62,9 +39,7 @@ function addCon_wkflMsk(f, pWkfl)
     bLoadBtn = uix.HButtonBox('Parent', bLoad);
     uicontrol(bLoadBtn, 'String', 'Remove', 'Callback', {@ui.msk.mskLstViewer, f, 'remove'});
     uix.Empty('Parent', bLoad);
-
     bLoad.Heights = [90, -1, 3, 20, 5];
-    % bLoad.Heights = [60,5,20,25,10,-1,20];
 
     % save masks and back to main UI ----
     bSave = uix.VBox('Parent', pSave, 'Spacing', 5, 'Padding', 5);

@@ -3,7 +3,7 @@ function dF = getDfBlk(datIn,evtSpatialMask,cut,movAvgWin,stdEst)
     if ~exist('stdEst','var') || isempty(stdEst)
         xx = (datIn(:,:,2:end)-datIn(:,:,1:end-1)).^2;
         stdMap = sqrt(median(xx,3)/0.9133);
-        stdMap(~evtSpatialMask) = nan;
+        stdMap(evtSpatialMask==0) = nan;
         stdEst = double(nanmedian(stdMap(:)));
     end
     

@@ -22,7 +22,7 @@ catch
 end
 
 % [ftsLst,dffMat] = fea.getFeatureQuick(dat,evtLst,opts);
-mskx = ftsLst.curve.dffMaxZ>opts.zThr;
+mskx = ftsLst.curve.dffMaxZ>=opts.zThr;
 evtLstFilterZ = evtLst(mskx);
 dffMatFilterZ = dffMat(mskx,:);
 tBeginFilterZ = ftsLst.curve.tBegin(mskx);

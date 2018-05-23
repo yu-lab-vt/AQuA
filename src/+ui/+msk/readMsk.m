@@ -1,4 +1,4 @@
-function readMsk(~,~,f,srcType,mskType)
+function readMsk(~,~,f,srcType,mskType,initThr)
     
     % read mask data
     btSt = getappdata(f,'btSt');
@@ -6,6 +6,9 @@ function readMsk(~,~,f,srcType,mskType)
         p0 = btSt.mskFolder;
     else
         p0 = '.';
+    end
+    if ~exist('initThr','var')
+        initThr = [];
     end
     
     if strcmp(srcType,'file')
@@ -40,7 +43,7 @@ function readMsk(~,~,f,srcType,mskType)
         end
     elseif strcmp(srcType,'self')
         PathName = p0;
-        dat = getappdata(f,'dat');
+        dat = getappdata(f,'datOrg');
         ffName = 'Project data';
     else
         return
@@ -59,10 +62,13 @@ function readMsk(~,~,f,srcType,mskType)
     datAvg = datAvg/nanmax(datAvg(:));
     
     % adjust contrast
-    datAvg = imadjust(datAvg,stretchlim(datAvg,0.001));
-    
     % thresholding and sizes of components
-    datLevel = graythresh(datAvg);
+    if isempty(initThr)
+        datAvg = imadjust(datAvg,stretchlim(datAvg,0.001));
+        datLevel = graythresh(datAvg);
+    else
+        datLevel = initThr;
+    end
     [H,W] = size(datAvg);
     
     % mask object

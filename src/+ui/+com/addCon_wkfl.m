@@ -29,7 +29,7 @@ function addCon_wkfl(f,pWkfl)
     uicontrol(bDrawBt,'String','Draw anterior','Tag','drawNorth','Callback',...
         {@ui.mov.drawReg,f,'arrow','diNorth'},'Interruptible','off','BusyAction','cancel');
     uicontrol(bDrawBt,'String','Mask builder',...
-        'Callback',{@mskBuilderOpen,f},'Enable','on');
+        'Callback',{@ui.msk.mskBuilderOpen,f},'Enable','on');
     uicontrol(bDrawBt,'String','Update features','Tag','updtFeature1',...
         'Callback',{@ui.detect.updtFeature,f,1},'Enable','off');
     uix.Empty('Parent',bDraw);
@@ -67,8 +67,5 @@ function addCon_wkfl(f,pWkfl)
     bSys.ButtonSize = [140,20];
 end
 
-function mskBuilderOpen(~,~,f)
-    fh = guidata(f);
-    fh.g.Selection = 4;
-end
+
 

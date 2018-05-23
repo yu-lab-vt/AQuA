@@ -1,7 +1,11 @@
 function getOutputFolder(~,~,f)
-opts = getappdata(f,'opts');
-[file0,path0] = uiputfile('*.mat','Save experiment',opts.fileName);
-if ~isnumeric(file0)
-    ui.proj.saveExp([],[],f,file0,path0);
-end
+    
+    opts = getappdata(f,'opts');
+    file0 = [opts.fileName,'_results'];
+    selpath = uigetdir('.','Choose output folder');
+    path0 = [selpath,filesep,opts.fileName];
+    if ~isnumeric(selpath)
+        ui.proj.saveExp([],[],f,file0,path0);
+    end
+    
 end

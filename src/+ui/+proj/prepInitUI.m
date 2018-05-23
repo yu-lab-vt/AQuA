@@ -91,12 +91,16 @@ function prepInitUI(f,fh,opts,scl,~,stg,~)
         fh.pSys.Visible = 'off';
     else  % finished
         ui.detect.filterInit([],[],f);
+        evtLst = getappdata(f,'evtLst');
+        if isempty(evtLst)
+            fh.bWkfl.Heights(2) = 0;  % never show detection part again
+        end
     end
     fh.deOutTab.Selection = 1;
     fh.deOutBack.Visible = 'off';
     
     % show movie
-    ui.movStep(f,1);
+    ui.movStep(f,1,[],1);
     
 end
 

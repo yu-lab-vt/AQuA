@@ -1,4 +1,4 @@
-function [rr,res1] = evt2lmkProp1Wrap(dRecon,evts,lmkMsk,muPerPix)
+function [rr,res1] = evt2lmkProp1Wrap(dRecon,evts,lmkMsk,muPerPix,minThr)
 % evt2lmkProp1Wrap extract propagation direciton related to landmarks
 % call evt2lmkProp1 on each data patch
 
@@ -6,6 +6,8 @@ function [rr,res1] = evt2lmkProp1Wrap(dRecon,evts,lmkMsk,muPerPix)
 
 m2 = muPerPix^2;
 m3 = muPerPix^3;
+
+thrRg = minThr:0.1:0.9;
 
 % landmarks
 nEvts = numel(evts);
@@ -22,6 +24,10 @@ chgTowardBefReach = zeros(nEvts,nLmk);
 chgAwayAftReach = zeros(nEvts,nLmk);
 pixTwd = cell(nEvts,1);
 pixAwy = cell(nEvts,1);
+chgTowardThr = zeros(nEvts,numel(thrRg),nLmk);
+chgAwayThr = zeros(nEvts,numel(thrRg),nLmk);
+chgTowardThrFrame = cell(nEvts,1);
+chgAwayThrFrame = cell(nEvts,1);
 
 for nn=1:numel(evts)
     if mod(nn,100)==0; fprintf('EvtLmk: %d\n',nn); end    
@@ -66,13 +72,21 @@ for nn=1:numel(evts)
         lmkMsk1{ii} = msk0;
     end
     
-    res1 = fea.evt2lmkProp1(datS,lmkMsk1);
+    if nn==39
+        %keyboard
+    end
+    
+    res1 = fea.evt2lmkProp1(datS,lmkMsk1,thrRg);
     chgToward(nn,:) = res1.chgToward;
     chgAway(nn,:) = res1.chgAway;
     chgTowardBefReach(nn,:) = res1.chgTowardBefReach;
     chgAwayAftReach(nn,:) = res1.chgAwayAftReach;
     pixTwd{nn} = res1.pixelToward*m2;
     pixAwy{nn} = res1.pixelAway*m2;    
+    chgTowardThr(nn,:,:) = res1.chgTowardThr;
+    chgAwayThr(nn,:,:) = res1.chgAwayThr;
+    chgTowardThrFrame{nn} = res1.chgTowardThrFrame*m3;
+    chgAwayThrFrame{nn} = res1.chgAwayThrFrame*m3;
 end
 
 rr.chgToward = chgToward*m3;
@@ -81,6 +95,11 @@ rr.chgTowardBefReach = chgTowardBefReach*m3;
 rr.chgAwayAftReach = chgAwayAftReach*m3;
 rr.pixelToward = pixTwd;
 rr.pixelAway = pixAwy;
+
+rr.chgTowardThr = chgTowardThr*m3;
+rr.chgAwayThr = chgAwayThr*m3;
+rr.chgTowardThrFrame = chgTowardThrFrame;
+rr.chgAwayThrFrame = chgAwayThrFrame;
 
 end
 
