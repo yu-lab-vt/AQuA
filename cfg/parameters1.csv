@@ -29,10 +29,10 @@ Area ratio to find seed curve,gtwGapSeedRatio,event,4,4,4,4,4,Larger for smaller
 Area to find seed curve,gtwGapSeedMin,event,5,5,5,5,5,
 Spatial overlap threshold,cOver,event,0.2,0.2,0,0,0.2,
 Event show threshold on raw data,minShow1,post,0.2,0.2,0.2,0.2,0.2,
-GUI event boundary threshold,minShowEvtGUI,post,0.5,0.5,0.5,0.5,0.5,Smaller to show boundary longer
+GUI event boundary threshold,minShowEvtGUI,post,0,0.5,0,0,0,Smaller to show boundary longer
 Ignore decay tau calculation,ignoreTau,post,1,1,0,0,1,
 Correct baseline trend,correctTrend,post,1,0,1,1,1,The order of the model to correct trend
-Extend evnet temporally after merging,extendEvtRe,post,0,0,1,0,0,
+Extend event temporally after merging,extendEvtRe,post,0,0,1,0,0,
 ,,,,,,,,
 Frame rate,frameRate,prep,1,1,1,1,1,Second per frame
 Spatial resolution,spatialRes,prep,1,1,1,1,1,Micrometer per pixel

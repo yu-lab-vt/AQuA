@@ -4,7 +4,7 @@ function postRun(~,~,f,evtLst,datR,ovName)
     
     % overlays object
     ov = getappdata(f,'ov');
-    ov0 = ui.over.getOv(evtLst,opts.sz,datR);
+    ov0 = ui.over.getOv(f,evtLst,opts.sz,datR);
     ov0.name = ovName;
     ov0.colorCodeType = {'Random'};
     ov(ov0.name) = ov0;

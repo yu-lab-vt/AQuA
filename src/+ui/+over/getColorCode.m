@@ -1,11 +1,12 @@
-function col0 = getColorCode(nEvt,cType,cVal,cMap)
+function [col0,cMap] = getColorCode(f,nEvt,cType,cVal)
 % getColorCode color codee each event
-% nEvt: number of events
-% cType: type of color code
-% cVal: strength of each event for the given feature
-% cMap: pre-defined color map
 %
-% TODO: support more than two base colors in colormap
+% nEvt: number of events
+% cType: color code name
+% cVal: strength of each event for the given feature
+% cMap: obsolete
+
+cMap = [];
 
 if ~exist('cType','var') || isempty(cType)
     cType = 'Random';
@@ -22,30 +23,29 @@ if strcmp(cType,'Random')
         x = x/max(x);
         col0(nn,:) = x;
     end
+    return
 end
 
-if strcmp(cType,'GreenRed')
-    if ~exist('cMap','var') || isempty(cMap)
-        cmin = [0,1,0];
-        cmax = [1,0,0];
-    else
-        cmin = cMap(1,:);
-        cmax = cMap(end,:);
-    end
-    vmin = nanmin(cVal);
-    vmax = nanmax(cVal);
-    for nn=1:nEvt
-        if ~isnan(cVal(nn))
-            if vmax>vmin
-                col0(nn,:) = cmin+(cVal(nn)-vmin)/(vmax-vmin)*(cmax-cmin);
-            else
-                col0(nn,:) = cmin;
-            end
-        end
-    end    
-end
+% other color schemes
+btSt = getappdata(f,'btSt');
+colName = btSt.colNames;
+colMapLst = btSt.colVals;
+
+idxGood = strcmp(cType,colName);
+idx = find(idxGood,1);
+cMap = colMapLst{idx};
+
+sclx = [];
+sclx.minOv = min(cVal);
+sclx.maxOv = max(cVal);
+
+col0 = ui.over.reMapCol(cMap,cVal,sclx);
 
 end
+
+
+
+
 
 
 

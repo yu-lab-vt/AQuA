@@ -16,7 +16,7 @@ if ~strcmp(btSt.overlayDatSel,'None')
     % remap color
     if isfield(ov0,'colVal') && strcmp(btSt.overlayColorSel,'Random')==0
         v0 = ov0.colVal;
-        c0 = ui.over.reMapCol(c0,v0,scl);
+        c0 = ui.over.reMapCol(btSt.mapNow,v0,scl);
     end
     
     % show movie with overlay

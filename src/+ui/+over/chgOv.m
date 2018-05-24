@@ -94,7 +94,8 @@ if strcmp(ovSel,'Events')
     cVal(isinf(cVal) & cVal<0) = min(cVal(~isinf(cVal)));
     
     % update overlay color
-    col0 = ui.over.getColorCode(nEvt,ovCol,cVal);
+    [col0,cMap0] = ui.over.getColorCode(f,nEvt,ovCol,cVal);
+    btSt.mapNow = cMap0;
     ov = getappdata(f,'ov');
     ov0 = ov('Events');
     ov0.col = col0;
@@ -124,7 +125,7 @@ else
         ov = getappdata(f,'ov');
         ov0 = ov(ovSel);
         nEvt = numel(ov0.colVal);
-        col0 = ui.over.getColorCode(nEvt,'Random');
+        col0 = ui.over.getColorCode(f,nEvt,'Random');
         ov0.col = col0;
         ov(ovSel) = ov0;
         setappdata(f,'ov',ov);

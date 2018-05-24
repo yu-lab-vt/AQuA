@@ -21,12 +21,10 @@ if updtOv
     ov = getappdata(f,'ov');
     ov0 = ov(btSt.overlayDatSel);
     if isfield(ov0,'colVal') && strcmp(btSt.overlayColorSel,'Random')==0
-        c0 = ov0.col;
         v0 = ov0.colVal;
-        [~,v0] = ui.over.reMapCol(c0,v0,scl);
         gap0 = (max(v0)-min(v0))/99;
         m0 = min(v0):gap0:max(v0);
-        cMap0 = ui.over.getColorCode(numel(m0),btSt.overlayColorSel,m0);
+        cMap0 = ui.over.reMapCol(btSt.mapNow,m0,scl);        
         if btSt.sbs==0
             ui.over.updtColMap(fh.movColMap,m0,cMap0,1);
         end

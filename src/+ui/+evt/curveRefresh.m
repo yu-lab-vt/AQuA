@@ -27,10 +27,10 @@ delete(hh);
 % draw new curves
 for ii=1:numel(evtIdxVec)
     evtIdx = evtIdxVec(ii);
-    t0 = fts.curve.rgt1(evtIdx,1);
-    t1 = fts.curve.rgt1(evtIdx,2);
-    %t0 = fts.curve.tBegin(evtIdx);
-    %t1 = fts.curve.tEnd(evtIdx);
+    % t0 = fts.curve.rgt1(evtIdx,1);
+    % t1 = fts.curve.rgt1(evtIdx,2);
+    t0 = fts.curve.tBegin(evtIdx);
+    t1 = fts.curve.tEnd(evtIdx);
     x = xx(ii,:);
     
     if numel(evtIdxVec)==1

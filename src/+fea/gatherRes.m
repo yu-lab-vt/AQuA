@@ -21,7 +21,7 @@ ov = containers.Map('UniformValues',0);
 ov('None') = [];
 
 fprintf('Overlay for events...\n')
-ov0 = ui.over.getOv(evt,size(dRecon),dRecon);
+ov0 = ui.over.getOv([],evt,size(dRecon),dRecon);
 ov0.name = 'Events';
 ov0.colorCodeType = {'Random'};
 ov(ov0.name) = ov0;

@@ -57,7 +57,8 @@ if dbg>0
     setappdata(f,'scl',scl);
 end
 if dbg==1
-    fh.g.Selection = 3;    
+    fh.g.Selection = 3;
+    fh.overlayColor.Enable = 'on';
 end
 if dbg==2
     fh.g.Selection = 4;

@@ -1,4 +1,4 @@
-function ov = getOv(arLst,sz,reCon)
+function ov = getOv(f,arLst,sz,reCon)
 % getOv color code each 3D region
 % Returns an overlay object
 % ov.frame.idx:  vector of region index
@@ -35,7 +35,7 @@ nEvt = max(idx);
 ov.idx = 1:nEvt;
 idxValid = zeros(nEvt,1); idxValid(idx) = 1;
 ov.idxValid = idxValid;
-ov.col = ui.over.getColorCode(nEvt);
+ov.col = ui.over.getColorCode(f,nEvt);
 ov.colVal = 1:nEvt;
 ov.sel = ones(nEvt,1);
 

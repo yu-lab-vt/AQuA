@@ -63,6 +63,9 @@ function prepInitUI(f,fh,opts,scl,~,stg,~)
     
     fh.ignoreTau.Value = 1*(opts.ignoreTau>0);
     
+    % color overlay
+    ui.over.getColMap([],[],f);
+    
     % update overlay menu
     ui.over.updateOvFtMenu([],[],f);
     

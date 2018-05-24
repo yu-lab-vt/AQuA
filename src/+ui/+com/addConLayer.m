@@ -43,9 +43,10 @@ x1c = [15,20,15,20];
 uix.Empty('Parent',bL2);
 x1 = [x1a,x1b,x1c,5];
 
-bDrawBt = uix.HButtonBox('Parent',bL2,'Spacing',10,'ButtonSize',[120,20]);
+bDrawBt = uix.HButtonBox('Parent',bL2,'Spacing',5,'ButtonSize',[120,20]);
 uicontrol(bDrawBt,'String','Update overlay','Tag','updtFeature','Callback',{@ui.over.chgOv,f,2});
-uicontrol(bDrawBt,'String','Read user features','Tag','addUserFeature','Callback',{@ui.over.chgOv,f,0});
+uicontrol(bDrawBt,'String','Read features','Tag','addUserFeature','Callback',{@ui.over.chgOv,f,0});
+uicontrol(bDrawBt,'String','Read colormaps','Callback',{@ui.over.getColMap,f});
 uix.Empty('Parent',bL2);
 x2 = [20,12];
 
