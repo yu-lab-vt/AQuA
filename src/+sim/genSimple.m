@@ -1,4 +1,4 @@
-function [dat,datOrg,validMap,opts] = prepSim(id,varEst)
+function [dat,datOrg,validMap,opts] = genSimple(id,varEst)
 % prepSim generates simulation data
 
 opts = util.parseParam(1);
