@@ -18,6 +18,8 @@ function [ ss,ee,gInfo ] = buildGTWGraph( ref, tst, s, t, smoBase, winSize, s2)
 % No skipping/turn left/go down: otherwise has infinite cost (capacity)
 % Start NEAR (1,1) and stop NEAR (T,T)
 %
+% The graphs has x axis as REF and y axis as TST
+%
 % ALL INPUTS SHOULD BE DOUBLE
 %
 % Yizhi Wang, CBIL@VT

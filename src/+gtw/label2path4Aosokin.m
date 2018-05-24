@@ -36,11 +36,14 @@ for nn=1:nPix
     s0 = ss(idx1:idx2,:);
     b0 = labels(idx1:idx2);
     
-    idxSrcCut = find(s0(:,1)>0 & b0==1);  % nodes that cuts
+    % FIXME: we already use dEdgeIntSS(:,2) to filter out nodes not connected to s/t
+    % so s0(:,1)>=0 or s0(:,2)>=0 is not needed
+    
+    idxSrcCut = find(s0(:,1)>=0 & b0==1);  % nodes that cuts
     ia = ismember(dEdgeIntSS(:,2),idxSrcCut);  % get corresponding edges, src -> node
     resSrc = pEdgeSS(ia,:);  % the primal edges
     
-    idxSinkCut = find(s0(:,2)>0 & b0==0);
+    idxSinkCut = find(s0(:,2)>=0 & b0==0);
     ia = ismember(dEdgeIntSS(:,1),idxSinkCut);  % node -> sink
     resSink = pEdgeSS(ia,:);
     
