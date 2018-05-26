@@ -2,6 +2,7 @@ function addBd(f,axNow,lst,bdCol,n)
 
 btSt = getappdata(f,'btSt');
 opts = getappdata(f,'opts');
+flexLst = getappdata(f,'flexLst');
 
 if ~isfield(opts,'minShowEvtGUI')
     opts.minShowEvtGUI = 0.5;
@@ -26,11 +27,11 @@ if ~isempty(lst) && strcmp(btSt.overlayDatSel,'Events') && n>0
                     xyC = bds{idx(ii)};
                     for jj=1:numel(xyC)
                         xy = xyC{jj};
-                        patch(axNow,'XData',xy(:,2),'YData',H-xy(:,1)+1,...
-                            'FaceColor','none','EdgeColor',bdCol,'Tag','flex');
+                        flexLst{end+1} = patch(axNow,'XData',xy(:,2),'YData',H-xy(:,1)+1,...
+                            'FaceColor','none','EdgeColor',bdCol,'Tag','flex'); %#ok<AGROW>
                         if jj==1
-                            text(axNow,xy(1,2)+1,H-xy(1,1),num2str(idx(ii)),...
-                                'Color',bdCol,'FontSize',18,'Tag','flex');
+                            flexLst{end+1} = text(axNow,xy(1,2)+1,H-xy(1,1),num2str(idx(ii)),...
+                                'Color',bdCol,'FontSize',18,'Tag','flex'); %#ok<AGROW>
                         end
                     end
                 end
@@ -38,5 +39,7 @@ if ~isempty(lst) && strcmp(btSt.overlayDatSel,'Events') && n>0
         end
     end
 end
+
+setappdata(f,'flexLst',flexLst);
 
 end

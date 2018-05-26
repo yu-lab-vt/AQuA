@@ -24,5 +24,7 @@ function mskBuilderOpen(~,~,f)
         ui.msk.readMsk([],[],f,'self','background',0);
     end
     
+    ui.msk.mskLstViewer([],[],f,'refresh');
+    
     fh.g.Selection = 4;
 end

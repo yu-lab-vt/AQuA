@@ -18,8 +18,9 @@ function drawReg(~,~,f,op,lbl)
         if ~isempty(hh)
             nPts = size(hh.getPosition,1);
             if nPts>2
-                tmp{1} = hh.getPosition;
-                % tmp{2} = hh.createMask;
+                msk = flipud(hh.createMask);
+                tmp{1} = bwboundaries(msk);
+                tmp{2} = find(msk>0);
                 tmp{3} = 'manual';
                 bd0{end+1} = tmp;
                 delete(hh)

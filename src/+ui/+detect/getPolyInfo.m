@@ -7,7 +7,8 @@ polyAvgDist = nan(nPoly,1);
 for ii=1:nPoly
     poly0 = polyLst{ii};
     if ~isempty(poly0)
-        msk = flipud(poly2mask(poly0(:,1),poly0(:,2),sz(1),sz(2)));  % need to flip it
+        msk = zeros(sz(1),sz(2));
+        msk(poly0) = 1;
         cc = regionprops(msk,'Centroid');
         rCentroid = cc.Centroid;
         polyCenter(ii,:) = rCentroid;

@@ -14,7 +14,7 @@ end
 setappdata(f,'btSt',btSt);
 if n>0
     try
-        ui.movStep(f,n);
+        ui.movStep(f,n,[],1);
     catch
     end
 end

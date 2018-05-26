@@ -7,7 +7,7 @@ function addCon_wkflMsk(f, pWkfl)
     pMsk = uix.BoxPanel('Parent', bWkfl, 'Title', '  Load masks');
     pSave = uix.BoxPanel('Parent', bWkfl, 'Title', '  Save regions/landmarks');
     uix.Empty('Parent', bWkfl);
-    bWkfl.Heights = [390, 120, -1];
+    bWkfl.Heights = [390, 150, -1];
     % bWkfl.Heights = [130, 390, 120, -1];
 
     % load masks ---
@@ -43,19 +43,21 @@ function addCon_wkflMsk(f, pWkfl)
 
     % save masks and back to main UI ----
     bSave = uix.VBox('Parent', pSave, 'Spacing', 5, 'Padding', 5);
-    gSave = uix.Grid('Parent', bSave, 'Spacing', 3, 'Padding', 3);
-    uicontrol(gSave, 'Style', 'text', 'String', 'Combine region masks:', 'HorizontalAlignment', 'left');
-    uicontrol(gSave, 'Style', 'text', 'String', 'Combine landmark masks:', 'HorizontalAlignment', 'left');
-    uicontrol(gSave, 'Style', 'popupmenu', 'String', {'OR', 'AND'}, 'Value', 1, 'Tag', 'saveMskRegOp');
-    uicontrol(gSave, 'Style', 'popupmenu', 'String', {'OR', 'AND'}, 'Value', 1, 'Tag', 'saveMskLmkOp');
-    gSave.Widths = [-1, 60];
-    gSave.Heights = [20, 20];
+    gSave = uix.Grid('Parent', bSave, 'Spacing', 5, 'Padding', 3);
+    uicontrol(gSave, 'Style', 'text', 'String', 'Role of region markers', 'HorizontalAlignment', 'left');
+    uicontrol(gSave, 'Style', 'text', 'String', 'Combine region masks', 'HorizontalAlignment', 'left');
+    uicontrol(gSave, 'Style', 'text', 'String', 'Combine landmark masks', 'HorizontalAlignment', 'left');
+    uicontrol(gSave, 'Style', 'popupmenu', 'String', {'Segment region', 'Remove region'}, 'Value', 1, 'Tag', 'saveMarkerOp');
+    uicontrol(gSave, 'Style', 'popupmenu', 'String', {'OR', 'AND', 'SUB'}, 'Value', 1, 'Tag', 'saveMskRegOp');
+    uicontrol(gSave, 'Style', 'popupmenu', 'String', {'OR', 'AND', 'SUB'}, 'Value', 1, 'Tag', 'saveMskLmkOp');
+    gSave.Widths = [-1, 120];
+    gSave.Heights = [20, 20, 20];
     uix.Empty('Parent', bSave);
     bSaveBtn = uix.HButtonBox('Parent', bSave, 'Spacing', 20);
     uicontrol(bSaveBtn, 'String', 'Apply & back', 'Callback', {@ui.msk.saveMsk, f, 0});
     uicontrol(bSaveBtn, 'String', 'Discard & back', 'Callback', {@ui.msk.saveMsk, f, 1});
     bSaveBtn.ButtonSize = [100, 20];
     uix.Empty('Parent', bSave);
-    bSave.Heights = [50, -1, 20, 5];
+    bSave.Heights = [75, -1, 20, 5];
 
 end 

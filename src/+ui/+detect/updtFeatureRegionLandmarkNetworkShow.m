@@ -15,10 +15,9 @@ if bd.isKey('cell')
     evtSpatialMask = zeros(sz(1),sz(2));
     regLst = cell(numel(bd0),1);
     for ii=1:numel(bd0)
-        poly00 = bd0{ii}{1};
-        regLst{ii} = poly00;
-        spaMsk0 = poly2mask(poly00(:,1),poly00(:,2),sz(1),sz(2));
-        evtSpatialMask(spaMsk0>0) = 1;
+        pix00 = bd0{ii}{2};
+        regLst{ii} = pix00;
+        evtSpatialMask(pix00) = 1;
     end
 else
     regLst = [];
@@ -29,7 +28,7 @@ if bd.isKey('landmk')
     bd1 = bd('landmk');
     lmkLst = cell(numel(bd1),1);
     for ii=1:numel(bd1)
-        lmkLst{ii} = bd1{ii}{1};
+        lmkLst{ii} = bd1{ii}{2};
     end
 else
     lmkLst = [];

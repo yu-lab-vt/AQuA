@@ -26,7 +26,7 @@ function getColMap(~,~,f)
                         nxx = nxx + 1;
                     end
                 catch
-                    %fprintf('Some error in userColors.csv: %d\n',ii)
+                    fprintf('Error in reading userColors.csv: %d\n',ii)
                 end
             end
             colVals{ii} = val0;
@@ -35,7 +35,7 @@ function getColMap(~,~,f)
             try
                 colVals{ii} = brewermap(50,c0);
             catch
-                msgbox('Invalid brewer color scheme name')
+                fprintf('Error in reading userColors.csv (brewer): %d\n',ii)
             end
         end
     end

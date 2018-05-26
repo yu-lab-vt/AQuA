@@ -10,6 +10,20 @@ dF = getappdata(f,'dF');
 dat = getappdata(f,'dat');
 opts = getappdata(f,'opts');
 lmLoc = getappdata(f,'lmLoc');
+bd = getappdata(f,'bd');
+
+sz = opts.sz;
+evtSpatialMask = ones(sz(1),sz(2));
+if bd.isKey('cell')
+    bd0 = bd('cell');
+    evtSpatialMask = zeros(sz(1),sz(2));
+    for ii=1:numel(bd0)
+        p0 = bd0{ii}{2};
+        spaMsk0 = zeros(sz(1),sz(2));
+        spaMsk0(p0) = 1;
+        evtSpatialMask(spaMsk0>0) = 1;
+    end
+end
 
 try
     opts.thrTWScl = str2double(fh.thrTWScl.String);
@@ -20,7 +34,7 @@ catch
 end
 
 % grow seeds
-[svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,opts,ff);
+[svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,evtSpatialMask,opts,ff);
 
 % save data
 setappdata(f,'svLst',svLst);

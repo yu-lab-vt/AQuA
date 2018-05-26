@@ -1,8 +1,6 @@
 function resReg = getDistRegionBorderMIMO(evts,datS,regLst,lmkLst,muPerPix,minThr)
 % getDistRegionBorder extract features related to regions drawn by user
 % allow multiple landmark and multiple regions
-%
-% !!! input lmkLst and regLst are flipped !!!
 
 resReg = [];
 sz = size(datS);

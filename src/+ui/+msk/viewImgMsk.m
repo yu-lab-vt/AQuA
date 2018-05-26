@@ -29,7 +29,7 @@ function viewImgMsk(~, ~, f)
     mskx = datAvg >= rr.thr;
     if ~(strcmp(rr.type,'background') || strcmp(rr.type,'foreground'))
         mskx = bwareaopen(mskx, rr.minSz);
-        mskx = imfill(mskx, 'holes');
+        %mskx = imfill(mskx, 'holes');
         cc = bwconncomp(mskx);
         ccSz = cellfun(@numel, cc.PixelIdxList);
         cc.PixelIdxList = cc.PixelIdxList(ccSz <= rr.maxSz);
@@ -44,7 +44,7 @@ function viewImgMsk(~, ~, f)
     bd('maskLst') = bdMsk;
     setappdata(f, 'bd', bd);
 
-    % get boundary
+    % get boundary for drawing
     mskb = zeros(H, W);
 
     for ii = 1:numel(bLst)

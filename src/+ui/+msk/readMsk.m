@@ -11,6 +11,9 @@ function readMsk(~,~,f,srcType,mskType,initThr)
         initThr = [];
     end
     
+    opts = getappdata(f,'opts');
+    bdCrop = opts.regMaskGap;
+    
     if strcmp(srcType,'file')
         [FileName,PathName] = uigetfile({'*.tif','*.tiff'},'Choose movie',p0);
         if ~isempty(FileName) && ~isnumeric(FileName)
@@ -35,7 +38,6 @@ function readMsk(~,~,f,srcType,mskType,initThr)
             end
             delete(ff);
             dat = dat/numel(dd);
-            %ffName = dd(1).name;
             xx = strsplit(PathName,filesep);
             ffName = [xx{end},'-folder'];
         else
@@ -47,6 +49,10 @@ function readMsk(~,~,f,srcType,mskType,initThr)
         ffName = 'Project data';
     else
         return
+    end
+    
+    if ~strcmp(srcType,'self')
+        dat = dat(bdCrop+1:end-bdCrop,bdCrop+1:end-bdCrop,:);
     end
     
     btSt.mskFolder = PathName;

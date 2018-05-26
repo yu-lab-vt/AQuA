@@ -3,43 +3,62 @@ function addPatchLineText(f,axNow,n,updtAll)
     bd = getappdata(f,'bd');
     scl = getappdata(f,'scl');
     btSt = getappdata(f,'btSt');
+    opts = getappdata(f,'opts');
+    H = opts.sz(1);
     
     if ~exist('updtAll','var')
         updtAll = 1;
     end
     
-    % clean all patches
-    types = {'patch','text','line'};
-    for ii=1:numel(types)
-        if updtAll>0
+    % clean all patches only when refreshing the view
+    if updtAll>0
+        types = {'patch','text','line'};
+        for ii=1:numel(types)
             h00 = findobj(axNow,'Type',types{ii});
-        else
-            h00 = findobj(axNow,'Type',types{ii},'Tag','flex');
+            %h00 = findobj(axNow,'Type',types{ii},'Tag','flex');
+            if ~isempty(h00)
+                delete(h00);
+            end
         end
-        if ~isempty(h00)
-            delete(h00);
+    else
+        flexLst = getappdata(f,'flexLst');
+        for ii=1:numel(flexLst)
+            delete(flexLst{ii});
         end
-    end
-    
+        setappdata(f,'flexLst',[]);
+    end   
+        
     % user drawn boundaries (cells and landmarks, with number labels)
     if updtAll>0
         if bd.isKey('cell')
             bd0 = bd('cell');
             for ii=1:numel(bd0)
-                xy = bd0{ii}{1};
-                patch(axNow,'XData',xy(:,1),'YData',xy(:,2),...
-                    'FaceColor','none','LineStyle','-','EdgeColor',[0.2 0.2 0.5],'Tag','fix');
-                text(axNow,xy(1,1)+2,xy(1,2)+2,num2str(ii),'Color','b','Tag','fix');
+                xyLst = bd0{ii}{1};
+                for jj=1:numel(xyLst)
+                    xy = xyLst{jj};
+                    %xy = bd0{ii}{1};
+                    patch(axNow,'XData',xy(:,2),'YData',H-xy(:,1)+1,...
+                        'FaceColor','none','LineStyle','-','EdgeColor',[0.2 0.2 0.5],'Tag','fix');
+                    if jj==1
+                        text(axNow,xy(1,2)+2,H-xy(1,1)+2,num2str(ii),'Color','b','Tag','fix');
+                    end
+                end                
             end
         end
         
         if bd.isKey('landmk')
             bd0 = bd('landmk');
             for ii=1:numel(bd0)
-                xy = bd0{ii}{1};
-                patch(axNow,'XData',xy(:,1),'YData',xy(:,2),...
-                    'FaceColor','none','LineStyle','-','EdgeColor',[0.4 0.4 0],'Tag','fix');
-                text(axNow,xy(1,1)+2,xy(1,2)+2,num2str(ii),'Color','y','Tag','fix');
+                xyLst = bd0{ii}{1};
+                for jj=1:numel(xyLst)
+                    xy = xyLst{jj};
+                    %xy = bd0{ii}{1};
+                    patch(axNow,'XData',xy(:,2),'YData',H-xy(:,1)+1,...
+                        'FaceColor','none','LineStyle','-','EdgeColor',[0.4 0.4 0],'Tag','fix');
+                    if jj==1
+                        text(axNow,xy(1,2)+2,H-xy(1,1)+2,num2str(ii),'Color','y','Tag','fix');
+                    end
+                end                
             end
         end
     end

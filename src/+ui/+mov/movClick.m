@@ -21,12 +21,14 @@ if strcmp(lbl,'cell') || strcmp(lbl,'landmk')
     if bd.isKey(lbl)
         bd0 = bd(lbl);
         for ii=1:numel(bd0)
-            x00 = bd0{ii}{1};
+            map00 = zeros(sz(1),sz(2));
+            x00 = bd0{ii}{2};
+            map00(x00) = 1;
+            map00 = flipud(map00);
             %map00 = bd0{ii}{2};
-            map00 = poly2mask(x00(:,1),x00(:,2),sz(1),sz(2));
+            %map00 = poly2mask(x00(:,1),x00(:,2),sz(1),sz(2));
             v00 = map00(yrg,xrg);
             if sum(v00(:))>0
-            %if map00(y,x)>0
                 bd0{ii} = [];
             end
         end
@@ -35,9 +37,6 @@ if strcmp(lbl,'cell') || strcmp(lbl,'landmk')
         bd(lbl) = bd0;
     end
     setappdata(f,'bd',bd);
-    %fh.ims.im1.ButtonDownFcn = [];
-    %fh.ims.im2a.ButtonDownFcn = [];
-    %fh.ims.im2b.ButtonDownFcn = [];
 end
 
 % show curve, add to favourite or delete from favourite

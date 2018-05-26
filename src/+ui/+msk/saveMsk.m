@@ -24,10 +24,10 @@ function saveMsk(~,~,f,op)
     % combine masks
     opReg = fh.saveMskRegOp.Value;
     opLmk = fh.saveMskLmkOp.Value;
+    opMar = fh.saveMarkerOp.Value;
     fgMsk = ones(sz(1),sz(2));
     bgMsk = zeros(sz(1),sz(2));
     regMskAll = [];
-    %regDat = [];
     lmkMskAll = [];
     markerMap = [];
     minRegSz = 1e8;
@@ -36,15 +36,17 @@ function saveMsk(~,~,f,op)
         rr0 = bdMsk{ii};
         if strcmp(rr0.type,'region')
             minRegSz = min(minRegSz,rr0.minSz);
-            %regDat = rr0.datAvg;
             if isempty(regMskAll)
-                regMskAll = rr0.mask;
+                regMskAll = double(rr0.mask>0);
                 continue
             end
-            if opReg==1
-                regMskAll = regMskAll.*rr0.mask;
-            else
-                regMskAll = regMskAll+rr0.mask;
+            switch opReg
+                case 1
+                    regMskAll = regMskAll+double(rr0.mask>0);
+                case 2
+                    regMskAll = regMskAll.*double(rr0.mask>0);
+                case 3
+                    regMskAll(rr0.mask>0) = 0; %#ok<AGROW>
             end
         end
         if strcmp(rr0.type,'landmark')
@@ -53,10 +55,13 @@ function saveMsk(~,~,f,op)
                 lmkMskAll = rr0.mask;
                 continue
             end
-            if opLmk==1
-                lmkMskAll = lmkMskAll.*rr0.mask;
-            else
-                lmkMskAll = lmkMskAll+rr0.mask;
+            switch opLmk
+                case 1
+                    lmkMskAll = lmkMskAll+double(rr0.mask>0);               
+                case 2
+                    lmkMskAll = lmkMskAll.*double(rr0.mask>0);
+                case 3
+                    lmkMskAll(rr0.mask>0) = 0; %#ok<AGROW>
             end
         end
         if strcmp(rr0.type,'regionMarker')
@@ -71,7 +76,6 @@ function saveMsk(~,~,f,op)
     end
     
     % get regions and landmarks data structure
-    % !! do not allow holes
     regA = bwareaopen(regMskAll>0,round(minRegSz/4));
     lmkA = bwareaopen(lmkMskAll>0,round(minLmkSz/4));
     
@@ -80,59 +84,75 @@ function saveMsk(~,~,f,op)
         [H,W] = size(markerMap);
         markerIdxMap = bwlabel(markerMap);
         markerLst = label2idx(markerIdxMap);
-        markerLst1 = cell(0);
-        for ii=1:numel(markerLst)
-            [ih,iw] = ind2sub([H,W],markerLst{ii});
-            markerLst1{ii} = [ih,iw];
-        end
         
         ccRegA = bwconncomp(regA);
         nReg = ccRegA.NumObjects;
-        ccReg = cell(0);
+        ccRegx = cell(0);
         nn = 1;
+        
         for ii=1:nReg
             % markers overlapped with regions
             pix00 = ccRegA.PixelIdxList{ii};
             idx00 = markerIdxMap(pix00);
             idx00 = idx00(idx00>0);
             idx00 = unique(idx00);
-            if numel(idx00)>1
-                % segmentation with distance transform                
-                markerSel = markerLst(idx00);
-                bw = zeros(H,W);
-                bw(pix00) = 1;                 
-                distMat = nan(H,W,numel(idx00));
-                for jj=1:numel(idx00)
-                    mk = zeros(H,W);
-                    mk(markerSel{jj}) = 1;
-                    tmp = bwdistgeodesic(bw>0,mk>0);
-                    distMat(:,:,jj) = tmp;
-                end
-                [~,lbl00] = nanmin(distMat,[],3);
-                msk00 = zeros(H,W);
-                msk00(pix00) = 1;
-                lbl00(msk00==0) = nan;
-                for jj=1:numel(idx00)
-                    tmp = lbl00==jj;
-                    if sum(tmp(:))>0
-                        cc = bwboundaries(tmp);
-                        ccReg{nn} = cc{1};
-                        nn = nn + 1;
+            
+            if opMar==1  % segmentation with distance transform
+                if numel(idx00)>1
+                    markerSel = markerLst(idx00);
+                    bw = zeros(H,W);
+                    bw(pix00) = 1;
+                    distMat = nan(H,W,numel(idx00));
+                    for jj=1:numel(idx00)
+                        mk = zeros(H,W);
+                        mk(markerSel{jj}) = 1;
+                        tmp = bwdistgeodesic(bw>0,mk>0);
+                        distMat(:,:,jj) = tmp;
                     end
+                    [~,lbl00] = nanmin(distMat,[],3);
+                    msk00 = zeros(H,W);
+                    msk00(pix00) = 1;
+                    lbl00(msk00==0) = nan;
+                    for jj=1:numel(idx00)
+                        tmp = lbl00==jj;
+                        if sum(tmp(:))>0
+                            %cc = bwboundaries(tmp);
+                            %ccRegx{nn} = cc{1};
+                            ccRegx{nn} = find(tmp>0);
+                            nn = nn + 1;
+                        end
+                    end
+                else
+                    %tmp = zeros(H,W);
+                    %tmp(pix00) = 1;
+                    %cc = bwboundaries(tmp);
+                    %ccRegx{nn} = cc{1};
+                    ccRegx{nn} = pix00;
+                    nn = nn + 1;
                 end
-            else
-                tmp = zeros(H,W);
-                tmp(pix00) = 1;
-                cc = bwboundaries(tmp);
-                ccReg{nn} = cc{1};
-                nn = nn + 1;
             end
-        end      
+            
+            if opMar==2  % delete regions containing any mask
+                if numel(idx00)==0
+                    %tmp = zeros(H,W);
+                    %tmp(pix00) = 1;
+                    %cc = bwboundaries(tmp);
+                    %ccRegx{nn} = cc{1};
+                    ccRegx{nn} = pix00;
+                    nn = nn + 1;                    
+                end
+            end
+        end
+        ccReg = [];
+        ccReg.NumObjects = numel(ccRegx);
+        ccReg.PixelIdxList = ccRegx;
     else
-        ccReg = bwboundaries(regA);
-    end   
+        ccReg = bwconncomp(regA);
+        %ccReg = bwboundaries(regA,'noholes');
+    end
     
-    ccLmk = bwboundaries(lmkA);
+    ccLmk = bwconncomp(lmkA);
+    %ccLmk = bwboundaries(lmkA,'noholes');
 
     % export ------------           
     % clear previous regions from masks
@@ -168,21 +188,32 @@ function saveMsk(~,~,f,op)
     
     % add new
     H = opts.sz(1);
+    W = opts.sz(2);
     nNow = numel(regAll);
-    for ii=1:numel(ccReg)
+    for ii=1:ccReg.NumObjects
         tmp = [];
-        xx = ccReg{ii};
-        tmp{1} = [xx(:,2),H-xx(:,1)+1];
-        tmp{3} = 'auto';
-        regAll{nNow+ii} = tmp;
+        xx = ccReg.PixelIdxList{ii};
+        if numel(xx)>10
+            msk = zeros(H,W);
+            msk(xx) = 1;
+            tmp{1} = bwboundaries(msk);
+            %tmp{1} = [xx(:,2),H-xx(:,1)+1];
+            tmp{2} = xx;
+            tmp{3} = 'auto';
+            regAll{nNow+1} = tmp;
+            nNow = nNow+1;
+        end
     end
-    bd('cell') = regAll;    
+    bd('cell') = regAll;
     
     nNow = numel(lmkAll);
-    for ii=1:numel(ccLmk)
+    for ii=1:ccLmk.NumObjects
         tmp = [];
-        xx = ccLmk{ii};
-        tmp{1} = [xx(:,2),H-xx(:,1)+1];
+        xx = ccLmk.PixelIdxList{ii};
+        msk = zeros(H,W);
+        msk(xx) = 1;
+        tmp{1} = bwboundaries(msk);
+        tmp{2} = xx;
         tmp{3} = 'auto';
         lmkAll{nNow+ii} = tmp;
     end

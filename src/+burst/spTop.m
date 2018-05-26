@@ -1,8 +1,11 @@
-function [svLst,dReconSp,riseX] = spTop(dat,dF,lmLoc,opts,ff)
+function [svLst,dReconSp,riseX] = spTop(dat,dF,lmLoc,evtSpatialMask,opts,ff)
     
     [H,W,T] = size(dat);
     dReconSp = [];
     
+    if isempty(evtSpatialMask)
+        evtSpatialMask = ones(H,W);
+    end
     if ~isfield(opts,'thrSvSig')
         opts.thrSvSig = 4;
     end
@@ -25,6 +28,7 @@ function [svLst,dReconSp,riseX] = spTop(dat,dF,lmLoc,opts,ff)
     
     % clean super voxels
     fprintf('Cleaning super voxels by size ...\n')
+    lblMap = lblMap.*uint32(evtSpatialMask);
     lblMap = burst.filterAndFillSp(lblMap);
     
     if exist('ff','var')
