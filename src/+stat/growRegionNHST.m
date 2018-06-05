@@ -2,7 +2,7 @@ function [ regMap,zMap ] = growRegionNHST( zN, minSize, minSeedZ, minRegZ, bMean
 %GROWREGIONNHST Grow regions by order statistics based null hypothesis significance test
 
 if ~exist('bMean','var')
-    load('./cfg/maxN01.mat','bMean','bStd');
+    load('maxN01.mat','bMean','bStd');
 end
 
 [H,W] = size(zN);

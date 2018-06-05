@@ -5,7 +5,7 @@ fh = guidata(f);
 
 % read overlay features
 if op==0
-    tb = readtable('./cfg/userFeatures.csv','Delimiter',',');
+    tb = readtable('userFeatures.csv','Delimiter',',');
     setappdata(f,'userFeatures',tb);
     fh.overlayFeature.String = tb.Name;
     fprintf('Reading done.\n');

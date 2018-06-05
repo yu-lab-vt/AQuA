@@ -9,12 +9,12 @@ function prep(~,~,f,op,res)
 fprintf('Loading ...\n');
 ff = waitbar(0,'Loading ...');
 
-cfgFile = './cfg/uicfg.mat';
-if ~exist(cfgFile,'file')
-    cfg0 = [];
-else
-    cfg0 = load(cfgFile);
-end
+% cfgFile = 'uicfg.mat';
+% if ~exist(cfgFile,'file')
+%     cfg0 = [];
+% else
+%     cfg0 = load(cfgFile);
+% end
 
 if ~exist('op','var') || isempty(op)
     op = 0;
@@ -73,9 +73,9 @@ if op>0
         tmp = load(fexp);
         res = tmp.res;
         
-        [p00,~,~] = fileparts(fexp);
-        cfg0.outPath = p00;
-        save(cfgFile,'cfg0');
+        % [p00,~,~] = fileparts(fexp);
+        % cfg0.outPath = p00;
+        % save(cfgFile,'cfg0');
     end
     
     % rescale int8 to [0,1] double

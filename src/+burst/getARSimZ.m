@@ -10,7 +10,7 @@ function [arLst,dARAll] = getARSimZ(dat,opts,evtSpatialMask,smoMax,thrMin)
     rhoxM = nanmedian(rhox(:));
     rhoyM = nanmedian(rhoy(:));
     
-    rr = load('./cfg/smoCorr.mat');
+    rr = load('smoCorr.mat');
     [~,ix] = min(abs(rhoxM-rr.cx));
     [~,iy] = min(abs(rhoyM-rr.cy));
     smo0 = rr.sVec(max(ix,iy));

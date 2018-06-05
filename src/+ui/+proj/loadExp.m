@@ -1,5 +1,5 @@
 function loadExp(~,~,f)
-cfgFile = './cfg/uicfg.mat';
+cfgFile = 'uicfg.mat';
 p0 = '.';
 if exist(cfgFile,'file')
     xx = load(cfgFile);

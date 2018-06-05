@@ -1,6 +1,6 @@
 function getColMap(~,~,f)
    
-    tb = readtable('./cfg/userColors.csv','Delimiter',',','ReadVariableNames',0,'ReadRowNames',1);         
+    tb = readtable('userColors.csv','Delimiter',',','ReadVariableNames',0,'ReadRowNames',1);         
     colNames = tb.Properties.RowNames;
     tbc = table2cell(tb);
     
