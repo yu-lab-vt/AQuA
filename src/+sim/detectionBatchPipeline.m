@@ -1,8 +1,15 @@
-function ftsLstE = detectionBatchPipeline(datOrg,opts,regLst,lmkLst)
+function res = detectionBatchPipeline(datOrg,opts,regLst,lmkLst)
+    
+    if ~exist('regLst','var')
+        regLst = [];
+    end
+    if ~exist('lmkLst','var')
+        lmkLst = [];
+    end
     
     % detection
-    [dat,dF,arLst,lmLoc,opts,dL] = burst.actTop(datOrg,opts);  % foreground and seed detection
-    [svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,opts);  % super voxel detection
+    [dat,dF,arLst,lmLoc,opts] = burst.actTop(datOrg,opts);  % foreground and seed detection
+    [svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,[],opts);  % super voxel detection
     
     [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts);  % events
     [ftsLst,dffMat] = fea.getFeatureQuick(datOrg,evtLst,opts);
@@ -32,6 +39,13 @@ function ftsLstE = detectionBatchPipeline(datOrg,opts,regLst,lmkLst)
     minSHow1 = opts.minShow1;    
     resReg = fea.getDistRegionBorderMIMO(evtLstE,datRE,regLst,lmkLst,muPix,minSHow1);
     ftsLstE.region = resReg;
+    
+    % output
+    try
+        res = fea.gatherRes(datOrg,opts,evtLstE,ftsLstE,dffMatE,dMatE,riseLstE,seLst,arLst,datRE);
+    catch
+        keyboard
+    end
     
 end
 

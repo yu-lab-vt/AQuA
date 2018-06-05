@@ -16,6 +16,9 @@ res.fts = fts;
 res.riseLst = riseLst;
 res.dffMat = dffMat;
 res.dMat = dMat;
+% res.dRecon = dRecon;
+res.seLst = seLst;
+res.arLst = arLst;
 
 ov = containers.Map('UniformValues',0);
 ov('None') = [];

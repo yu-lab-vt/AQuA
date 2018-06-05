@@ -1,4 +1,4 @@
-function [opts,optsInfo,optsName,cfg,pName] = parseParam(cfgNum,cfgSel,cfgFile)
+function [opts,optsInfo,optsName,cfg,pName] = parseParam(cfgNum,cfgNumSel,cfgFile)
 %GETPARAM read parameter configuration file
 
 if ~exist('cfgNum','var')
@@ -6,7 +6,7 @@ if ~exist('cfgNum','var')
 end
 
 if ~exist('cfgSel','var')
-    cfgSel = 0;
+    cfgNumSel = 0;
 end
 
 if ~exist('cfgFile','var')
@@ -38,7 +38,7 @@ end
 
 % user select profile
 vName = cfg{:,2};
-if cfgSel>0
+if cfgNumSel>0
     cfgNum = listdlg('PromptString','Which best describe your data?',...
         'SelectionMode','single','ListString',pName);
     if isempty(cfgNum)
@@ -46,13 +46,13 @@ if cfgSel>0
     end
 end
 val0 = cfg{:,4+cfgNum-1};
-vInfo0 = cfg{:,end};
-vName0 = cfg{:,1};
+% vInfo0 = cfg{:,end};
+% vName0 = cfg{:,1};
 
 for ii=1:numel(vName)
     opts.(vName{ii}) = val0(ii);
-    optsInfo.(vName{ii}) = vInfo0{ii};
-    optsName.(vName{ii}) = vName0{ii};
+    %optsInfo.(vName{ii}) = vInfo0{ii};
+    %optsName.(vName{ii}) = vName0{ii};
 end
 
 end
