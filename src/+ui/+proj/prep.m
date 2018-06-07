@@ -42,8 +42,8 @@ if op==0
         pf0 = fh.fIn.String;
         [filepath,name,ext] = fileparts(pf0);
         [datOrg,opts] = burst.prep1(filepath,[name,ext],[],opts,ff);
-        cfg0.file = pf0;  % save folder
-        save(cfgFile,'cfg0');
+        %cfg0.file = pf0;  % save folder
+        %save(cfgFile,'cfg0');
     catch
         msgbox('Fail to load file');
         return
