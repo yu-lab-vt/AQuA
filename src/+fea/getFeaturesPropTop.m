@@ -23,27 +23,25 @@ for ii=1:numel(evtLst)
     end
     pix0 = evtLst{ii};
     if isempty(pix0)
-        continue
-    end
-    [ih,iw,it] = ind2sub([H,W,T],pix0);
-    rgH = max(min(ih)-1,1):min(max(ih)+1,H);
-    rgW = max(min(iw)-1,1):min(max(iw)+1,W);
-    rgT = ftsLst.curve.tBegin(ii):ftsLst.curve.tEnd(ii);
-    % rgT = ftsLst.curve.rgt1(ii,1):ftsLst.curve.rgt1(ii,2);
-    
-    % basic and propagation features
-    ih1 = ih-min(rgH)+1;
-    iw1 = iw-min(rgW)+1;
-    it1 = it-min(rgT)+1;
-    voxd = dat(rgH,rgW,rgT);
-    voxi = zeros(size(voxd));
-    pix1 = sub2ind(size(voxd),ih1,iw1,it1);
-    voxi(pix1) = 1;
-    voxr = evtRec(rgH,rgW,rgT);
-    voxr = double(voxr)/255;
-    
-    if ii==43
-        % keyboard
+        voxi = ones(4);  % dummy events
+        voxr = ones(4)*0.5;
+        %continue
+    else
+        [ih,iw,it] = ind2sub([H,W,T],pix0);
+        rgH = max(min(ih)-1,1):min(max(ih)+1,H);
+        rgW = max(min(iw)-1,1):min(max(iw)+1,W);
+        rgT = ftsLst.curve.tBegin(ii):ftsLst.curve.tEnd(ii);
+        
+        % basic and propagation features
+        ih1 = ih-min(rgH)+1;
+        iw1 = iw-min(rgW)+1;
+        it1 = it-min(rgT)+1;
+        voxd = dat(rgH,rgW,rgT);
+        voxi = zeros(size(voxd));
+        pix1 = sub2ind(size(voxd),ih1,iw1,it1);
+        voxi(pix1) = 1;
+        voxr = evtRec(rgH,rgW,rgT);
+        voxr = double(voxr)/255;
     end
     
     ftsLst.propagation = fea.getPropagationCentroidQuad(voxi,voxr,muPix,ii,ftsLst.propagation,northDi,opts.minShow1);

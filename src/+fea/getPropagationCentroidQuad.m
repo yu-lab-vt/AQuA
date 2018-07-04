@@ -5,7 +5,8 @@ function ftsPg = getPropagationCentroidQuad(voli0,volr0,muPerPix,nEvt,ftsPg,nort
 
 [H,W,T] = size(voli0);
 if T==1
-    return
+%     keyboard
+%     return
 end
 
 % make coordinate correct
@@ -97,17 +98,19 @@ prop(2:end,:,:) = sigDist(2:end,:,:) - sigDist(1:end-1,:,:);
 propGrowMultiThr = prop; 
 propGrowMultiThr(propGrowMultiThr<0) = nan; 
 propGrow = nanmax(propGrowMultiThr,[],3);
+propGrow(isnan(propGrow)) = 0;
 propGrowOverall = nansum(propGrow,1);
 
 propShrinkMultiThr = prop; 
 propShrinkMultiThr(propShrinkMultiThr>0) = nan; 
 propShrink = nanmax(propShrinkMultiThr,[],3);
+propShrink(isnan(propShrink)) = 0;
 propShrinkOverall = nansum(propShrink,1);
 
 pixNumChange = zeros(size(pixNum));
 pixNumChange(2:end,:) = pixNum(2:end,:)-pixNum(1:end-1,:);
 pixNumChangeRateMultiThr = pixNumChange/nPix;
-pixNumChangeRate = max(pixNumChangeRateMultiThr,[],2);
+pixNumChangeRate = nanmax(pixNumChangeRateMultiThr,[],2);
 
 % output
 ftsPg.propGrow{nEvt} = propGrow*muPerPix;
