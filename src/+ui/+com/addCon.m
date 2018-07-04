@@ -75,6 +75,8 @@ if dbg>0
 %     warning('on','all');
 end
 
+setappdata(f,'dbg',dbg);
+
 end
 
 

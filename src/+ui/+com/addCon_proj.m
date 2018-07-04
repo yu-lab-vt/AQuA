@@ -17,9 +17,9 @@ uix.Empty('Parent',bNew);
 % event detection: data settings
 pDeProp = uix.Grid('Parent',bNew);
 uicontrol(pDeProp,'Style','popupmenu','Tag','preset');
-uicontrol(pDeProp,'Style','edit','String','1','Tag','tmpRes');
-uicontrol(pDeProp,'Style','edit','String','1','Tag','spaRes');
-uicontrol(pDeProp,'Style','edit','String','5','Tag','bdSpa');
+uicontrol(pDeProp,'Style','edit','String','As preset','Tag','tmpRes');
+uicontrol(pDeProp,'Style','edit','String','As preset','Tag','spaRes');
+uicontrol(pDeProp,'Style','edit','String','As preset','Tag','bdSpa');
 uicontrol(pDeProp,'Style','text','String','Data type (presets)','HorizontalAlignment','left');
 uicontrol(pDeProp,'Style','text','String','Temporal resolution: second per frame','HorizontalAlignment','left');
 uicontrol(pDeProp,'Style','text','String','Spatial resolution: um per pixel','HorizontalAlignment','left');

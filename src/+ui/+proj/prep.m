@@ -30,9 +30,15 @@ if op==0
     
     % read user input
     try
-        opts.frameRate = str2double(fh.tmpRes.String);
-        opts.spatialRes = str2double(fh.spaRes.String);
-        opts.regMaskGap = str2double(fh.bdSpa.String);
+        if ~strcmp(fh.tmpRes.String,'As preset')
+            opts.frameRate = str2double(fh.tmpRes.String);
+        end
+        if ~strcmp(fh.spaRes.String,'As preset')
+            opts.spatialRes = str2double(fh.spaRes.String);
+        end
+        if ~strcmp(fh.bdSpa.String,'As preset')
+            opts.regMaskGap = str2double(fh.bdSpa.String);
+        end
     catch
         msgbox('Invalid input');
         return
@@ -110,12 +116,16 @@ if op>0
     end
     
     % reset some settings
-    res.btSt.overlayDatSel = 'Events';
+    if ~isfield(res,'dbg') || res.dbg==0
+        res.btSt.overlayDatSel = 'Events';
+    end
     
     opts = res.opts;
     scl = res.scl;
     stg = res.stg;
     ov = res.ov;
+    
+    res.btSt.sbs = 0;
     
     fns = fieldnames(res);
     for ii=1:numel(fns)

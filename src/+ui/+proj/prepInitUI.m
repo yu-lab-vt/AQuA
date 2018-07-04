@@ -58,7 +58,7 @@ function prepInitUI(f,fh,opts,scl,~,stg,~)
     fh.mergeEventDiscon.String = num2str(opts.mergeEventDiscon);
     fh.mergeEventCorr.String = num2str(opts.mergeEventCorr);
     fh.mergeEventMaxTimeDif.String = num2str(opts.mergeEventMaxTimeDif);
-
+    
     fh.extendEvtRe.Value = 1*(opts.extendEvtRe>0);
     
     fh.ignoreTau.Value = 1*(opts.ignoreTau>0);
@@ -66,19 +66,25 @@ function prepInitUI(f,fh,opts,scl,~,stg,~)
     % color overlay
     ui.over.getColMap([],[],f);
     
-    % update overlay menu
-    ui.over.updateOvFtMenu([],[],f);
-    
-    % User defined features
-    ui.over.chgOv([],[],f,0);
-    ui.over.chgOv([],[],f,1);
-    ui.over.chgOv([],[],f,2);
-    ui.evt.evtMngrRefresh([],[],f);
+    try
+        % update overlay menu
+        ui.over.updateOvFtMenu([],[],f);
+        
+        % User defined features
+        ui.over.chgOv([],[],f,0);
+        ui.over.chgOv([],[],f,1);
+        ui.over.chgOv([],[],f,2);
+        ui.evt.evtMngrRefresh([],[],f);
+    catch
+    end
     
     % resize GUI
     fh.g.Selection = 3;
     f.Resize = 'on';
     f.Position = getappdata(f,'guiMainSz');
+    
+    dbgx = getappdata(f,'dbg');
+    if isempty(dbgx); dbgx=0; end        
     
     % UI visibility according to steps
     if stg.detect==0  % not started yet
@@ -86,7 +92,7 @@ function prepInitUI(f,fh,opts,scl,~,stg,~)
         for ii=2:numel(xx)
             xx{ii} = 'off';
         end
-        fh.deOutTab.TabEnables = xx;        
+        fh.deOutTab.TabEnables = xx;
         fh.deOutNext.Enable = 'off';
         fh.pFilter.Visible = 'off';
         fh.pExport.Visible = 'off';
@@ -95,7 +101,7 @@ function prepInitUI(f,fh,opts,scl,~,stg,~)
     else  % finished
         ui.detect.filterInit([],[],f);
         evtLst = getappdata(f,'evtLst');
-        if isempty(evtLst)
+        if isempty(evtLst) && dbgx==0
             fh.bWkfl.Heights(2) = 0;  % never show detection part again
         end
     end
