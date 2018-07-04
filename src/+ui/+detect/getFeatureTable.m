@@ -41,11 +41,11 @@ for ii=1:nFt
         for xxDi=1:4
             try
                 eval([cmdSel0,';']);
+                ftsTb(ftsCnt,:) = reshape(x,1,[]);
             catch
                 fprintf('Feature "%s" not used\n',ftsName0)
-                x = nan(nEvt,1);
-            end
-            ftsTb(ftsCnt,:) = reshape(x,1,[]);
+                ftsTb(ftsCnt,:) = nan;
+            end            
             ftsName1 = [ftsName0,' - ',dixx{xxDi}];
             ftsName{ftsCnt} = ftsName1;
             ftsCnt = ftsCnt + 1;
@@ -53,11 +53,11 @@ for ii=1:nFt
     else
         try
             eval([cmdSel0,';']);
+            ftsTb(ftsCnt,:) = reshape(x,1,[]);            
         catch
             fprintf('Feature "%s" not used\n',ftsName0)
-            x = nan(nEvt,1);
+            ftsTb(ftsCnt,:) = nan;
         end
-        ftsTb(ftsCnt,:) = reshape(x,1,[]);
         ftsName{ftsCnt} = ftsName0;
         ftsCnt = ftsCnt + 1;
     end
