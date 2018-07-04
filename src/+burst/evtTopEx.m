@@ -56,7 +56,8 @@ for nn=1:numel(seLst)
     datR(rgh,rgw,rgtx) = max(datR(rgh,rgw,rgtx),evtRecon);  % combine events
     datL(rgh,rgw,rgtx) = evtL;
     riseLst = burst.addToRisingMap(riseLst,evtMap,dlyMap,nEvt,nEvt0,rgh,rgw,rgt,rgtSel);
-    nEvt = nEvt + nEvt0;
+    nEvt = nEvt + 1;
+    %nEvt = nEvt + nEvt0;
 end
 
 evtLst = label2idx(datL);
