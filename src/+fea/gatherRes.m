@@ -1,6 +1,8 @@
 function res = gatherRes(dat,opts,evt,fts,dffMat,dMat,riseLst,dRecon)
 
 opts.bitNum = 8;
+maxVal = max(dat(:));
+dat = dat./maxVal;
 dat1 = dat*(2^opts.bitNum-1);
 if opts.bitNum<=8
     dat1 = uint8(dat1);
@@ -9,8 +11,9 @@ else
 end
 
 res = [];
+res.maxVal = maxVal;
 res.opts = opts;
-res.dat = dat1;
+res.datOrg = dat1;
 res.evt = evt;
 res.fts = fts;
 res.riseLst = riseLst;

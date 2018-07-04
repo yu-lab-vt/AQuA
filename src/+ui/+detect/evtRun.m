@@ -25,6 +25,7 @@ end
 [ftsLst,dffMat] = fea.getFeatureQuick(dat,evtLst,opts);
 
 setappdata(f,'riseLstAll',riseLst);
+setappdata(f,'seLstAll',seLst);
 setappdata(f,'evtLstAll',evtLst);
 setappdata(f,'ftsLstAll',ftsLst);
 setappdata(f,'dffMatAll',dffMat);

@@ -1,7 +1,7 @@
 function getOutputFolder(~,~,f)
     
     opts = getappdata(f,'opts');
-    file0 = [opts.fileName,'_results'];
+    file0 = [opts.fileName,'_aqua'];
     selpath = uigetdir('.','Choose output folder');
     path0 = [selpath,filesep,opts.fileName];
     if ~isnumeric(selpath)
