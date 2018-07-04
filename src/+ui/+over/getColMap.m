@@ -10,7 +10,7 @@ function getColMap(~,~,f)
     for ii=1:nCol
         v0 = tbc(ii,1:end);
         %v0 = tb{ii,1:end};
-        idxGood = ~cellfun(@isempty,v0);
+        idxGood = ~cellfun(@isempty,v0) & cellfun(@numel,v0)>=5;
         nGood = sum(idxGood);
         if nGood>1
             val0 = nan(1,3);
