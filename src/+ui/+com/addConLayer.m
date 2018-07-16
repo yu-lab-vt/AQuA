@@ -38,7 +38,7 @@ uicontrol(bL2,'Style','text','String','Propagation direction','HorizontalAlignme
 uicontrol(bL2,'Style','popupmenu','Tag','overlayPropDi','String',...
     {'Anterior','Posterior','Lateral Left','Lateral Right'},'Enable','off');
 uicontrol(bL2,'Style','text','String','Landmark ID','HorizontalAlignment','left');
-uicontrol(bL2,'Style','edit','Tag','overlayLmk','String','0','Enable','off','HorizontalAlignment','left');
+uicontrol(bL2,'Style','edit','Tag','overlayLmk','String','1','Enable','off','HorizontalAlignment','left');
 x1c = [15,20,15,20];
 uix.Empty('Parent',bL2);
 x1 = [x1a,x1b,x1c,5];
