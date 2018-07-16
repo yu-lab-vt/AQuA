@@ -22,6 +22,9 @@ function [c1,v0] = reMapCol(c0,v0,scl)
             c1(ii,:) = c0(end,:);
             continue
         end
+        if isnan(v0(ii))
+            continue
+        end
         
         ix0 = find(vx<=v0(ii),1,'last');
         ix1 = find(vx>=v0(ii),1);
