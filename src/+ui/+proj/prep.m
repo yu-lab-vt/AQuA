@@ -30,18 +30,18 @@ if op==0
     
     % read user input
     try
-        if ~strcmp(fh.tmpRes.String,'As preset')
+        % if ~strcmp(fh.tmpRes.String,'As preset')
             opts.frameRate = str2double(fh.tmpRes.String);
-        end
-        if ~strcmp(fh.spaRes.String,'As preset')
+        % end
+        % if ~strcmp(fh.spaRes.String,'As preset')
             opts.spatialRes = str2double(fh.spaRes.String);
-        end
-        if ~strcmp(fh.bdSpa.String,'As preset')
+        % end
+        % if ~strcmp(fh.bdSpa.String,'As preset')
             opts.regMaskGap = str2double(fh.bdSpa.String);
-        end
+        % end
     catch
-        msgbox('Invalid input');
-        return
+        % msgbox('Invalid input');
+        % return
     end
     
     try
