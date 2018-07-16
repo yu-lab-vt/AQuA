@@ -53,11 +53,13 @@ function addCon_wkfl(f,pWkfl)
     bExp = uix.VBox('Parent',pExport,'Spacing',5,'Padding',5);
     % uicontrol(bExp,'Style','checkbox','String','Filtered events','Value',1,'Tag','expEvtFlt');
     % uicontrol(bExp,'Style','checkbox','String','Selected events','Value',1,'Tag','expEvtMngr');
+    uicontrol(bExp,'Style','checkbox','String','Events and features','Value',1,'Tag','expEvt');
+    % uicontrol(bExp,'Style','checkbox','String','Tables and maps','Value',1,'Tag','expTab');
     uicontrol(bExp,'Style','checkbox','String','Movie with overlay','Value',1,'Tag','expMov');
     % uicontrol(bExp,'Style','checkbox','String','Features','Tag','expFea');
     % uicontrol(bExp,'Style','checkbox','String','Curves','Tag','expCur');
     bExpBtn = uix.HButtonBox('Parent',bExp,'Spacing',20);
-    uicontrol(bExpBtn,'String','Export & Save','Callback',{@ui.proj.getOutputFolder,f});
+    uicontrol(bExpBtn,'String','Export / Save','Callback',{@ui.proj.getOutputFolder,f});
     bExpBtn.ButtonSize = [120,20];
     
     % misc. tools ----

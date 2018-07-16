@@ -22,13 +22,13 @@ vSave0 = {...  % basic variables for results analysis
     'opts','scl','btSt','ov','bd','datOrg','evt','fts','dffMat','dMat',...
     'riseLst','featureTable','userFeatures'...
     };
-vSave1 = {...  % extra variables for event detection
-    'arLst','lmLoc','svLst','seLstAll','riseX','riseLstAll','evtLstAll','ftsLstAll',...
-    'dffMatAll','datRAll','evtLstFilterZ','dffMatFilterZ','tBeginFilterZ',...
-    'riseLstFilterZ','evtLstMerge','dF'...
-};
-vSave = [vSave0,vSave1];
-% vSave = vSave0;
+% vSave1 = {...  % extra variables for event detection
+%     'arLst','lmLoc','svLst','seLstAll','riseX','riseLstAll','evtLstAll','ftsLstAll',...
+%     'dffMatAll','datRAll','evtLstFilterZ','dffMatFilterZ','tBeginFilterZ',...
+%     'riseLstFilterZ','evtLstMerge','dF'...
+% };
+% vSave = [vSave0,vSave1];
+vSave = vSave0;
 
 res = [];
 for ii=1:numel(vSave)
@@ -69,21 +69,23 @@ if modex>0
 end
 
 %% export
+fh = guidata(f);
+opts = getappdata(f,'opts');
+
 waitbar(0.25,ff,'Saving ...');
 btSt = getappdata(f,'btSt');
 favEvtLst = btSt.evtMngrMsk;
 fout = [path0,filesep,file0];
 [fpath,fname,ext] = fileparts(fout);
 
-if isempty(ext)
-    fout = [fout,'.mat'];
+if fh.expEvt.Value==1
+    if isempty(ext)
+        fout = [fout,'.mat'];
+    end
+    save(fout,'res','-v7.3');
 end
-save(fout,'res','-v7.3');
 
 waitbar(0.5,ff,'Writing movie ...');
-
-fh = guidata(f);
-opts = getappdata(f,'opts');
 
 % export movie
 if fh.expMov.Value==1
@@ -99,85 +101,87 @@ if fh.expMov.Value==1
     io.writeTiffSeq(fmov,ov1,8);
 end
 
-% export feature table
-ftTb = getappdata(f,'featureTable');
-if isempty(ftTb)
-    ui.detect.getFeatureTable(f);
+if fh.expEvt.Value==1
+    % export feature table
     ftTb = getappdata(f,'featureTable');
-end
-cc = ftTb{:,1};
+    if isempty(ftTb)
+        ui.detect.getFeatureTable(f);
+        ftTb = getappdata(f,'featureTable');
+    end
+    cc = ftTb{:,1};
 
-% all selected events
-cc1 = cc(:,xSel);
-ftTb1 = table(cc1,'RowNames',ftTb.Row);
-ftb = [fpath,filesep,fname,'.xlsx'];
-writetable(ftTb1,ftb,'WriteVariableNames',0,'WriteRowNames',1);
+    % all selected events
+    cc1 = cc(:,xSel);
+    ftTb1 = table(cc1,'RowNames',ftTb.Row);
+    ftb = [fpath,filesep,fname,'.xlsx'];
+    writetable(ftTb1,ftb,'WriteVariableNames',0,'WriteRowNames',1);
 
-% for each region
-if ~isempty(fts.region) && isfield(fts.region.cell,'memberIdx') && ~isempty(fts.region.cell.memberIdx)
-    memSel = fts.region.cell.memberIdx(xSel,:);
-    for ii=1:size(memSel,2)
-        mem00 = memSel(:,ii);
-        cc00 = cc(:,mem00>0);
+    % for each region
+    if ~isempty(fts.region) && isfield(fts.region.cell,'memberIdx') && ~isempty(fts.region.cell.memberIdx)
+        memSel = fts.region.cell.memberIdx(xSel,:);
+        for ii=1:size(memSel,2)
+            mem00 = memSel(:,ii);
+            cc00 = cc(:,mem00>0);
+            ftTb00 = table(cc00,'RowNames',ftTb.Row);
+            ftb00 = [fpath,filesep,fname,'_region_',num2str(ii),'.xlsx'];
+            writetable(ftTb00,ftb00,'WriteVariableNames',0,'WriteRowNames',1);
+        end
+    end
+
+    % for favorite events
+    if ~isempty(favEvtLst)
+        cc00 = cc(:,favEvtLst);
         ftTb00 = table(cc00,'RowNames',ftTb.Row);
-        ftb00 = [fpath,filesep,fname,'_region_',num2str(ii),'.xlsx'];
+        ftb00 = [fpath,filesep,fname,'_favorite.xlsx'];
         writetable(ftTb00,ftb00,'WriteVariableNames',0,'WriteRowNames',1);
     end
-end
 
-% for favorite events
-if ~isempty(favEvtLst)
-    cc00 = cc(:,favEvtLst);
-    ftTb00 = table(cc00,'RowNames',ftTb.Row);
-    ftb00 = [fpath,filesep,fname,'_favorite.xlsx'];
-    writetable(ftTb00,ftb00,'WriteVariableNames',0,'WriteRowNames',1);
-end
-
-% region and landmark map
-f00 = figure('Visible','off');
-dat = getappdata(f,'datOrg');
-dat = mean(dat,3);
-dat = dat/max(dat(:));
-Low_High = stretchlim(dat,0.001);
-dat = imadjust(dat,Low_High);
-axNow = axes(f00);
-image(axNow,'CData',flipud(dat),'CDataMapping','scaled');
-axNow.XTick = [];
-axNow.YTick = [];
-axNow.XLim = [0.5,size(dat,2)+0.5];
-axNow.YLim = [0.5,size(dat,1)+0.5];
-axNow.DataAspectRatio = [1 1 1];
-colormap gray
-ui.mov.addPatchLineText(f,axNow,0,1)
-% saveas(f00,[fpath,filesep,fname,'_landmark.fig']);
-saveas(f00,[fpath,filesep,fname,'_landmark.png'],'png');
-delete(f00);
-
-% rising maps
-riseLst = getappdata(f,'riseLst');
-if ~isempty(favEvtLst)
+    % region and landmark map
     f00 = figure('Visible','off');
+    dat = getappdata(f,'datOrg');
+    dat = mean(dat,3);
+    dat = dat/max(dat(:));
+    Low_High = stretchlim(dat,0.001);
+    dat = imadjust(dat,Low_High);
     axNow = axes(f00);
-    fpathRising = [fpath,filesep,'risingMaps'];
-    if ~exist(fpathRising,'file')
-        mkdir(fpathRising);
-    end
-    for ii=1:numel(favEvtLst)
-        rr = riseLst{favEvtLst(ii)};
-        imagesc(axNow,rr.dlyMap);
-        colorbar(axNow);
-        xx = axNow.XTickLabel;
-        for jj=1:numel(xx)
-            xx{jj} = num2str(str2double(xx{jj})+min(rr.rgw)-1);
+    image(axNow,'CData',flipud(dat),'CDataMapping','scaled');
+    axNow.XTick = [];
+    axNow.YTick = [];
+    axNow.XLim = [0.5,size(dat,2)+0.5];
+    axNow.YLim = [0.5,size(dat,1)+0.5];
+    axNow.DataAspectRatio = [1 1 1];
+    colormap gray
+    ui.mov.addPatchLineText(f,axNow,0,1)
+    % saveas(f00,[fpath,filesep,fname,'_landmark.fig']);
+    saveas(f00,[fpath,filesep,fname,'_landmark.png'],'png');
+    delete(f00);
+
+    % rising maps
+    riseLst = getappdata(f,'riseLst');
+    if ~isempty(favEvtLst)
+        f00 = figure('Visible','off');
+        axNow = axes(f00);
+        fpathRising = [fpath,filesep,'risingMaps'];
+        if ~exist(fpathRising,'file')
+            mkdir(fpathRising);
         end
-        axNow.XTickLabel = xx;
-        xx = axNow.YTickLabel;
-        for jj=1:numel(xx)
-            xx{jj} = num2str(str2double(xx{jj})+min(rr.rgw)-1);
+        for ii=1:numel(favEvtLst)
+            rr = riseLst{favEvtLst(ii)};
+            imagesc(axNow,rr.dlyMap);
+            colorbar(axNow);
+            xx = axNow.XTickLabel;
+            for jj=1:numel(xx)
+                xx{jj} = num2str(str2double(xx{jj})+min(rr.rgw)-1);
+            end
+            axNow.XTickLabel = xx;
+            xx = axNow.YTickLabel;
+            for jj=1:numel(xx)
+                xx{jj} = num2str(str2double(xx{jj})+min(rr.rgw)-1);
+            end
+            axNow.YTickLabel = xx;
+            axNow.DataAspectRatio = [1 1 1];
+            saveas(f00,[fpathRising,filesep,num2str(favEvtLst(ii)),'.png'],'png');
         end
-        axNow.YTickLabel = xx;
-        axNow.DataAspectRatio = [1 1 1];
-        saveas(f00,[fpathRising,filesep,num2str(favEvtLst(ii)),'.png'],'png');
     end
 end
 
