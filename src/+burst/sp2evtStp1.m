@@ -2,8 +2,10 @@ function lblMapS = sp2evtStp1(lblMapS,riseMap,maxRiseDly1,maxRiseDly2,minOverRat
 % sp2evtStp1 combine superpixels to hyper events
 
 [H,W,T] = size(lblMapS);
-dh = [-1 0 1 -1 1 -1 0 1];
-dw = [-1 -1 -1 0 0 1 1 1];
+% dh = [-1 0 1 -1 1 -1 0 1];
+% dw = [-1 -1 -1 0 0 1 1 1];
+dh = [0 -1 1 0];
+dw = [-1 0 0 1];
 
 spVoxLst = label2idx(lblMapS);
 nSp = numel(spVoxLst);

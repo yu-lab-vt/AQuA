@@ -1,4 +1,4 @@
-function [evtMem,evtMemC] = evtGrowLm1(spEvt,distMat,cDelay,spMap)
+function [evtMem,evtMemC] = evtGrowLm1(spEvt,distMat,cDelay,~)
 
 nSeed = max(spEvt);
 nSp = numel(spEvt);
@@ -25,6 +25,7 @@ for ii=1:nSeed
 end
 
 % add one by one, small distance first
+% some super pixels may not be reachable by seeds
 while 1
     [x,ix] = min(evtDist);
     if isinf(x)
@@ -61,11 +62,9 @@ for ii=1:numel(ia)
     ib0 = ib(ii);
     evta = evtMem(ia0);
     evtb = evtMem(ib0);
-    if (evta==2 || evtb==2) && (evta~=evtb)
-        %fprintf('%d %d %f\n',ia0,ib0,distMat(ia0,ib0))
-        %keyboard
+    if evta>0 && evtb>0
+        A(evta,evtb) = min(distMat(ia0,ib0),A(evta,evtb));
     end
-    A(evta,evtb) = min(distMat(ia0,ib0),A(evta,evtb));
 end
 A(A>cDelay) = Inf;
 

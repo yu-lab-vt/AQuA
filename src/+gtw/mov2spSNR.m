@@ -1,4 +1,4 @@
-function [spLst,spSeedVec,spSz,spSco,spStd,spStatus] = mov2spSNR(dF,dFInfo,tMapMT,availMap,snrThr,gaphw)
+function [spLst,spSeedVec,spSz,spSco,spStd,spStatus] = mov2spSNR(dF,dFInfo,tMapMT,availMap,snrThr,gaphw,s00)
 % mov2spSNR make delta F movie to super pixels with similar SNR
 % For weak signals, enlarge search space
 
@@ -73,7 +73,8 @@ for nn=1:numel(dIx)
     for ii=1:100
         % SNR
         xm = mean(df0Vec(pixSet,:),1);
-        sNow = sqrt(median((xm(2:end)-xm(1:end-1)).^2)/0.9113);
+        %sNow = sqrt(median((xm(2:end)-xm(1:end-1)).^2)/0.9113);
+        sNow = s00/sqrt(numel(pixSet));  % more stable than re-calculating
         xm = movmean(xm,5);
         xMax = max(xm) - xMaxBias*sNow;
         snrNow = xMax/sNow;

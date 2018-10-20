@@ -92,12 +92,20 @@ function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
         
         charxIn1 = mean(voxd1(sigxy>0,:),1);
         charx1 = fea.curvePolyDeTrend(charxIn1,sigz,opts.correctTrend);
-        sigma1 = sqrt(median((charx1(2:end)-charx1(1:end-1)).^2)/0.9113);
+
+        % noise level using baseline part of the signal
+        charxMv1 = movmean(charx1,Tww);
+        [~,ixMin] = min(charxMv1);
+        rg00 = max(ixMin-round(Tww/2),1):min(ixMin+round(Tww/2),T);
+        charx1Base = charx1(rg00);
+        sigma1 = sqrt(median((charx1Base(2:end)-charx1Base(1:end-1)).^2)/0.9113);
         
         charxBg1 = min(movmean(charx1,Tww));
         charxBg1 = charxBg1 - bbm*sigma1 - opts.bgFluo^2;
         dff1 = (charx1-charxBg1)/charxBg1;
-        sigma1dff = sqrt(median((dff1(2:end)-dff1(1:end-1)).^2)/0.9113);
+
+        dff1Base = dff1(rg00);
+        sigma1dff = sqrt(median((dff1Base(2:end)-dff1Base(1:end-1)).^2)/0.9113);
         
         dff1Sel = dff1(rgT);
         dffMax1= max(dff1Sel);

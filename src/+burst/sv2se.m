@@ -60,7 +60,7 @@ while 1
                 sp00 = unique(map0(cc.PixelIdxList{ii}));
                 idxSel = ~isnan(evtLbl(sp00));
                 if sum(idxSel)>0
-                    keyboard
+                    %keyboard
                 end
                 regLst{nReg} = sp00;      
                 regSz(nReg) = numel(cc.PixelIdxList{ii});

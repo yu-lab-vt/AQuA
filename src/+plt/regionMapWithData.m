@@ -7,9 +7,17 @@ if ~exist('seedx','var') || isempty(seedx)
 end
 rng(seedx);
 
+if ~exist('dat','var')
+    dat = double(regionMap*0);
+end
+
 [H,W,T] = size(dat);
 dat = uint8(dat*255);
 % sclOv = uint8(sclOv);
+
+if ~exist('sclOv','var')
+    sclOv = 0.5;
+end
 
 if ~exist('reCon','var') || isempty(reCon)
     reCon = ones(size(dat));

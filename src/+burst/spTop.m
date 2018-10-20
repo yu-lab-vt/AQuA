@@ -56,8 +56,8 @@ function [svLst,dReconSp,riseX] = spTop(dat,dF,lmLoc,evtSpatialMask,opts,ff)
         waitbar(1,ff);
     end
     
-    poolobj = gcp('nocreate');
-    delete(poolobj);
+    %poolobj = gcp('nocreate');
+    %delete(poolobj);
     
     svLst = label2idx(lblMap);
     

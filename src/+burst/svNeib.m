@@ -4,8 +4,10 @@ spVoxLst = label2idx(lblMapS);
 nSp = numel(spVoxLst);
 [H,W,T] = size(lblMapS);
 
-dh = [-1 0 1 -1 1 -1 0 1];
-dw = [-1 -1 -1 0 0 1 1 1];
+% dh = [-1 0 1 -1 1 -1 0 1];
+% dw = [-1 -1 -1 0 0 1 1 1];
+dh = [0 -1 1 0];
+dw = [-1 0 0 1];
 
 % spatial location of super pixel for conflicting
 spPixLst = cell(nSp,1);

@@ -34,6 +34,9 @@ for ii=1:numel(vName)
     opts.(vName{ii}) = tmp;
 end
 
+tmp = load('normTopMeanDist'); 
+opts.osTb = tmp.tbTopNorm;
+
 end
 
 

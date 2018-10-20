@@ -1,43 +1,49 @@
 Name,Variable,Type,GCaMP in Vivo (cyto & lck),GCaMP ex Vivo lck,GCaMP ex Vivo cyto,GluSnFR (astrocytic & neuronal),Noisy GCaMP,Notes
-Minimum size,minSize,prep,8.00,15.00,8.00,8.00,8,Minimum size of events to be detected (in pixels)
-Spatial smoothing level,smoXY,prep,0.50,0.50,0.50,1.00,1,Spatial smoothing filter size
-Active voxels threshold scale,thrARScl,prep,2.00,1.75,2.00,2.00,1,
-Temporal cut threshold scale,thrTWScl,prep,2.00,2.00,2.00,2.00,5,
-Seed growing threshold,thrExtZ,prep,1.00,1.00,1.00,2.00,0.5,
-Slowest propgation,cDelay,event,2.00,2.00,2.00,2.00,2,
-Rising phase uncertainty,cRise,event,2.00,2.00,2.00,2.00,2,
-GTW smoothness term,gtwSmo,event,1.00,1.00,1.00,0.30,1,
-GTW windows size,maxStp,event,11.00,11.00,11.00,11.00,11,Maximum propagation delay
-Z score threshold for events,zThr,post,2.00,2.00,0.00,7.00,2,
-Ignore merging step,ignoreMerge,post,1.00,1.00,1.00,0.00,0,
-Maximum merging distance,mergeEventDiscon,post,0.00,0.00,0.00,10.00,5,
-Minimum merging correlation,mergeEventCorr,post,0.00,0.00,0.00,0.00,-1, 
-Maximum merging time difference,mergeEventMaxTimeDif,post,2.00,2.00,2.00,2.00,5,
+Minimum size,minSize,prep,8,15,8,8,8,Minimum size of events to be detected (in pixels)
+Spatial smoothing level,smoXY,prep,0.5,0.5,0.5,1,1,Spatial smoothing filter size
+Active voxels threshold scale,thrARScl,prep,2,1.75,2,2,1,
+Temporal cut threshold scale,thrTWScl,prep,2,2,2,2,5,
+Seed growing threshold,thrExtZ,prep,1,1,1,2,0.5,
+Slowest propgation,cDelay,event,2,2,2,2,2,
+Rising phase uncertainty,cRise,event,2,2,2,2,2,
+GTW smoothness term,gtwSmo,event,1,1,1,0.3,1,
+GTW windows size,maxStp,event,11,11,11,11,11,Maximum propagation delay
+Z score threshold for events,zThr,post,2,2,0,7,2,
+Ignore merging step,ignoreMerge,post,1,1,1,0,0,
+Maximum merging distance,mergeEventDiscon,post,0,0,0,10,5,
+Minimum merging correlation,mergeEventCorr,post,0,0,0,0,-1, 
+Maximum merging time difference,mergeEventMaxTimeDif,post,2,2,2,2,5,
 ,,,,,,,,
-Remove pixels close to image boundary,regMaskGap,prep,5.00,5.00,5.00,5.00,2,
-Poisson noise model,usePG,prep,1.00,1.00,1.00,1.00,1,
-Frames per segment,cut,prep,200.00,200.00,200.00,40.00,10000,Cut video to pieces to avoid global trend
-Baseline window,movAvgWin,prep,25.00,25.00,25.00,20.00,25,
-Extend super voxels temporally,extendSV,prep,1.00,1.00,1.00,0.00,1,
-Older code for active voxels,legacyModeActRun,prep,1.00,1.00,1.00,0.00,1,
-Time window detection range,getTimeWindowExt,prep,50.00,50.00,50.00,50.00,10000,Smaller value for faster run
-Pixels for window detection,seedNeib,prep,1.00,1.00,1.00,1.00,5,
-Remove seeds,seedRemoveNeib,prep,2.00,2.00,2.00,2.00,5,Should be >= seedNeib
-Super voxel significance,thrSvSig,prep,4.00,4.00,4.00,1.00,1,
-Super events prefer larger,superEventdensityFirst,event,1.00,1.00,0.00,1.00,1,
-Area ratio to find seed curve,gtwGapSeedRatio,event,4.00,4.00,4.00,4.00,4,Larger for smaller proportion
-Area to find seed curve,gtwGapSeedMin,event,5.00,5.00,5.00,5.00,5,
-Spatial overlap threshold,cOver,event,0.20,0.20,0.20,0.00,0.2,
-Event show threshold on raw data,minShow1,post,0.20,0.20,0.20,0.20,0.2,
-GUI event boundary threshold,minShowEvtGUI,post,0.00,0.00,0.50,0.00,0,Smaller to show boundary longer
-Ignore decay tau calculation,ignoreTau,post,1.00,1.00,1.00,0.00,1,
-Correct baseline trend,correctTrend,post,1.00,1.00,0.00,1.00,1,The order of the model to correct trend
-Extend event temporally after merging,extendEvtRe,post,0.00,0.00,0.00,0.00,0,
+Temporal smoothing,smoZ,prep,0,0,0,0,0,
+Use noise estimated from un-smoothed data,useRawNoiseLevel,prep,1,1,1,1,1,
+Remove pixels close to image boundary,regMaskGap,prep,5,5,5,5,2,
+Poisson noise model,usePG,prep,1,1,1,1,1,
+Frames per segment,cut,prep,200,200,200,40,10000,Cut video to pieces to avoid global trend
+Baseline window,movAvgWin,prep,25,25,25,20,25,
+Extend super voxels temporally,extendSV,prep,1,1,1,0,1,
+Older code for active voxels,legacyModeActRun,prep,1,1,1,0,1,
+Time window detection range,getTimeWindowExt,prep,50,50,50,50,10000,Smaller value for faster run
+Pixels for window detection,seedNeib,prep,1,1,1,1,5,
+Remove seeds,seedRemoveNeib,prep,2,2,2,2,5,Should be >= seedNeib
+Super voxel significance,thrSvSig,prep,4,4,4,1,1,
+Super events prefer larger,superEventdensityFirst,event,1,1,0,1,1,
+Area ratio to find seed curve,gtwGapSeedRatio,event,4,4,4,4,4,Larger for smaller proportion
+Area to find seed curve,gtwGapSeedMin,event,5,5,5,5,5,
+Spatial overlap threshold,cOver,event,0.2,0.2,0.2,0,0.2,
+Region growing z map method,htrgSeed,event,0,0,0,0,0,
+Region growing solver,htrgSolver,event,1,1,1,1,1,
+Temporal smoothing for region growing,htrgSmoZ,event,0,0,0,0,0,
+Clean refined regions,htrgClean,event,0,0,0,0,0,
+Event show threshold on raw data,minShow1,post,0.2,0.2,0.2,0.2,0.2,
+GUI event boundary threshold,minShowEvtGUI,post,0,0,0.5,0,0,Smaller to show boundary longer
+Ignore decay tau calculation,ignoreTau,post,1,1,1,0,1,
+Correct baseline trend,correctTrend,post,1,1,0,1,1,The order of the model to correct trend
+Extend event temporally after merging,extendEvtRe,post,0,0,0,0,0,
 ,,,,,,,,
-Frame rate,frameRate,prep,0.5,1.00,1.00,1.00,1,Second per frame
-Spatial resolution,spatialRes,prep,0.5,1.00,1.00,1.00,1,Micrometer per pixel
+Frame rate,frameRate,prep,0.5,1,1,1,1,Second per frame
+Spatial resolution,spatialRes,prep,0.5,1,1,1,1,Micrometer per pixel
 Estimated noise variance,varEst,prep,0.02,0.02,0.02,0.02,0.02,
-Foreground threshold,fgFluo,prep,0.00,0.00,0.00,0.00,0,
-Background threshold,bgFluo,prep,0.00,0.00,0.00,0.00,0,
-X cooridante for north vector,northx,prep,0.00,0.00,0.00,0.00,0,
-Y cooridante for north vector,northy,prep,1.00,1.00,1.00,1.00,1,
+Foreground threshold,fgFluo,prep,0,0,0,0,0,
+Background threshold,bgFluo,prep,0,0,0,0,0,
+X cooridante for north vector,northx,prep,0,0,0,0,0,
+Y cooridante for north vector,northy,prep,1,1,1,1,1,

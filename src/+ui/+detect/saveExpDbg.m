@@ -1,4 +1,4 @@
-function res = saveExpDbg(~,~,f)
+function res = saveExpDbg(~,~,f,e)
     % saveExp save experiment (and export results)
     
     fts = getappdata(f,'fts');
@@ -51,6 +51,7 @@ function res = saveExpDbg(~,~,f)
     res.stg.post = 1;
     res.stg.detect = 1;
     res.dbg = 1;
+    res.error = e;
     
     save('debug.mat','res','-v7.3');
     

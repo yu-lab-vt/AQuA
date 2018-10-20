@@ -8,16 +8,24 @@ function [ref,tst,refBase,s,t,idxGood] = sp2graph(df0ip,vMap0,spLst,seedIn,gapSe
 
 % test and refererence curves
 % optionally, ignore signals after arriving peak
-df0ipSmo = imgaussfilt3(df0ip,[1 1 1]);
+% FIXME do we need to smooth raw data?
+% df0ipSmo = imgaussfilt3(df0ip,[1 1 1]);
+% df0ipSmo = imgaussfilt3(df0ip,[0.1 0.1 0.1]);
+df0ipSmo = df0ip;
 
-[ih,iw] = ind2sub([H0,W0],seedIn);
+% [ih,iw] = ind2sub([H0,W0],seedIn);
+
+dt0 = bwdist(vMap0==0);
+[~,ihw] = max(dt0(:));
+[ih,iw] = ind2sub(size(vMap0),ihw);
+
 rgh = max(ih-gapSeedHW,1):min(ih+gapSeedHW,H0);
 rgw = max(iw-gapSeedHW,1):min(iw+gapSeedHW,W0);
 df00Vec = reshape(df0ip(rgh,rgw,:),[],T0);
 vm00 = vMap0(rgh,rgw);
 df00Vec = df00Vec(vm00>0,:);
 refBase = nanmean(df00Vec,1);
-refBase = imgaussfilt(refBase,1);
+% refBase = imgaussfilt(refBase,1);  % FIXME how should we denoise ref curve?
 refBase = refBase - nanmin(refBase);
 
 r1 = refBase;
@@ -62,8 +70,10 @@ ref = ref(idxGood,:);
 s = nan(nSp,1);
 t = nan(nSp,1);
 nPair = 0;
-dh = [-1 0 1 -1 1 -1 0 1];
-dw = [-1 -1 -1 0 0 1 1 1];
+% dh = [-1 0 1 -1 1 -1 0 1];
+% dw = [-1 -1 -1 0 0 1 1 1];
+dh = [0 -1 1 0];
+dw = [-1 0 0 1];
 spMap1 = zeros(H0,W0);
 
 for ii=1:numel(spLst)

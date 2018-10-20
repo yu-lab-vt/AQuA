@@ -9,7 +9,7 @@ if ~isfield(opts,'gtwGapSeedMin') || ~isfield(opts,'gtwGapSeedRatio')
 end
 
 [H,W,T] = size(dF);
-isFail = 0;
+isFail = 0;  % fail if too less super pixels
 maxStp = max(min(maxStp,round(T/2)),1);
 
 % dF and local noise
@@ -23,17 +23,18 @@ validMap = sum(seMap==seSel,3)>0;
 dFip = dF;
 % s00 = sqrt(opts.varEst);
 
-pk = nanmedian(dF(seMap==seSel)/s00);
-thrpk = 0.5*pk;
+% FIXME: suppress un-detected signals
+% pk = nanmedian(dF(seMap==seSel)/s00);
+% thrpk = 0.5*pk;
 
 dFip(seMap>0 & seMap~=seSel) = nan;
-dFip(dF>thrpk*s00 & seMap~=seSel) = nan;
+%dFip(dF>thrpk*s00 & seMap~=seSel) = nan;
 dFip = gtw.imputeMov(dFip);
 
-dFmax = max(movmean(dFip,5,3),[],3);
-dFmax(dFmax<0) = 0;
-dFInfo = medfilt2(dFmax);  % information in each pixel, for peak SNR
-dFInfo(isnan(dFInfo)) = 0;
+% dFmax = max(movmean(dFip,5,3),[],3);
+% dFmax(dFmax<0) = 0;
+% dFInfo = medfilt2(dFmax);  % information in each pixel, for peak SNR
+% dFInfo(isnan(dFInfo)) = 0;
 
 % rising time as feature
 thrMax = ceil(quantile(dFip(:),0.999)/s00);
@@ -52,47 +53,19 @@ dat = double(dFip(:,:,rgt00));
 % region growing
 nPixTot = sum(validMap(:)>0);
 nSpMax = round(10000*spT/(max(it0)-min(it0)+1));
-nSpTgt = ceil(nPixTot/spSz);
-if nSpTgt>nSpMax/2
-    nSpTgt = nSpMax/2;
-end
 
 dFVec = reshape(dFip,[],T);
 mAvg = nanmean(dFVec(validMap>0,:));
+mAvg = movmean(mAvg,5);  % consistent with mov2spSNR
 snrInit = ceil(max(mAvg)/(s00/sqrt(spSz)));
 snrThr = snrInit;
-tb = nan(10,2);
-for ii=1:5
-% for ii=1:numel(snrVec)
-    %snrThr = snrVec(ii);
-    gaphw = (11-ii)*5+5;
-    [spLst,spSeedVec,spSz,~,spStd] = gtw.mov2spSNR(dF,dFInfo,tMapMT,validMap,snrThr,gaphw);
-    fprintf('Max %d - Tgt %d - Now %d - Thr %f\n',nSpMax,nSpTgt,numel(spLst),snrThr)
-    
-    tb(ii,1) = snrThr;
-    tb(ii,2) = numel(spLst);
-    %if numel(spLst)<=nSpMax && numel(spLst)>=nSpTgt
-    if numel(spLst)<=nSpMax
-        break
-    end    
-    dif0 = tb(:,2)-nSpMax;  % too many
-    dif0(dif0<0) = nan;
-    [x0,ix0] = nanmin(dif0);
-    dif1 = nSpTgt-tb(:,2);  % not enough
-    dif1(dif1<0) = nan;
-    [x1,ix1] = nanmin(dif1);    
-    
-    % binary search
-    if isnan(x0)  % all not enough
-        snrThr = tb(ix1,1)/1.5;
-    elseif isnan(x1)  % all too many
-        snrThr = tb(ix0,1)*1.5;
-    else
-        snrThr = (tb(ix1,1)+tb(ix0,1))/2;
-    end
-end
 
-if numel(spLst)<2
+spSz1 = max(sum(validMap(:))/nSpMax,spSz);
+% spSz1 = max(H*W/nSpMax,spSz);
+
+[spLst,spSeedVec,spSzVec,spStd] = gtw.mov2sp(dF,validMap,spSz1,s00);
+
+if numel(spLst)<10
     spLst = {find(validMap>0)};
     cx = [];
     dlyMap = [];
@@ -103,7 +76,7 @@ if numel(spLst)<2
     isFail = 1;
     return
 end
-fprintf('Node %d, SNR %d dB Ratio %.2f\n',numel(spLst),20*log10(snrThr),sum(spSz)/nPixTot)
+fprintf('Node %d, SNR %d dB Ratio %.2f\n',numel(spLst),20*log10(snrThr),sum(spSzVec)/nPixTot)
 
 %% alignment
 % graph
@@ -163,30 +136,31 @@ for nn=1:nSp
         tAch(nn,ii) = t1;
     end
 end
-tDly = mean(tAch,2);
+tDly = nanmean(tAch,2);  % mean?
 
 % direction for each pair
 nPair = numel(s);
 distMat = nan(nSp,nSp);
-% cDelay = 1e8;  % !!
 for nn=1:nPair
     s0 = s(nn);
     t0 = t(nn);
+    
     d0 = tAch(s0,:)-tAch(t0,:);  % negative is earlier
     d0 = sum(d0)/numel(thrVec);
-    %d0a = abs(d0)-cDelay;
-    %d0a(d0a<0) = 0;
-    %if sum(d0a)==0
     distMat(s0,t0) = d0;
     distMat(t0,s0) = -d0;
-    %end
 end
 
 % delay map
 dlyMap = inf(H,W);
+spMap = zeros(H,W);
 for nn=1:numel(spLst)
     dlyMap(spLst{nn}) = tDly(nn);
+    spMap(spLst{nn}) = nn;
 end
+
+% dlyMapx = dlyMap;
+% dlyMapx(~isinf(dlyMap) & dlyMap>20) = 20;
 
 % partition by continuity
 A = Inf(nSp,nSp);

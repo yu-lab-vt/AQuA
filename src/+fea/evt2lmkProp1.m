@@ -78,12 +78,12 @@ for kk=1:numel(thrRg)
             [h1,w1] = find(evt0s>0);
             tmp = inf(H,W);
             for jj=1:numel(h0)
-                dist00 = sqrt((h1-h0(jj)).^2+(w1-w0(jj)).^2);            
+                dist00 = sqrt((h1-h0(jj)).^2+(w1-w0(jj)).^2);
                 tmp(evt0s>0) = min(tmp(evt0s),dist00);
             end
         else
             tmp = bwdistgeodesic(evt0s,msk00>0);
-        end        
+        end
         D{ii} = tmp;
     end
     

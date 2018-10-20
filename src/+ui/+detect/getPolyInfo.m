@@ -10,11 +10,11 @@ for ii=1:nPoly
         msk = zeros(sz(1),sz(2));
         msk(poly0) = 1;
         cc = regionprops(msk,'Centroid');
-        rCentroid = cc.Centroid;
+        rCentroid = cc.Centroid;  % first item is X, second is Y, later same as dimension order
         polyCenter(ii,:) = rCentroid;
         polyMask{ii} = msk;
         mskBd = bwperim(msk);
-        [ix,iy] = find(mskBd>0);
+        [iy,ix] = find(mskBd>0);
         polyBorder{ii} = [ix,iy];
         polyAvgDist(ii) = max(round(median(sqrt((rCentroid(1)-ix).^2 + (rCentroid(2)-iy).^2))),1);
     end

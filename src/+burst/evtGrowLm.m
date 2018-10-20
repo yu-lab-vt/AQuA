@@ -1,4 +1,6 @@
-function spEvt = evtGrowLm(spEvt,distMat,rise0,spMap)
+function spEvt = evtGrowLm(spEvt,distMat,rise0,~)
+ 
+% rise0 = rise0 + randn(size(rise0))*0.01;  % !!
 
 spVec = unique(spEvt(spEvt>0 & ~isnan(spEvt)));
 nSeed = numel(spVec);

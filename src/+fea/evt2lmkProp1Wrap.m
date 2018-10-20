@@ -4,7 +4,7 @@ function [rr,res1] = evt2lmkProp1Wrap(dRecon,evts,lmkMsk,muPerPix,minThr)
 
 [H,W,T] = size(dRecon);
 
-m2 = muPerPix^2;
+% m2 = muPerPix^2;
 m3 = muPerPix^3;
 
 thrRg = minThr:0.1:0.9;
@@ -81,8 +81,8 @@ for nn=1:numel(evts)
     chgAway(nn,:) = res1.chgAway;
     chgTowardBefReach(nn,:) = res1.chgTowardBefReach;
     chgAwayAftReach(nn,:) = res1.chgAwayAftReach;
-    pixTwd{nn} = res1.pixelToward*m2;
-    pixAwy{nn} = res1.pixelAway*m2;    
+    pixTwd{nn} = res1.pixelToward*muPerPix;
+    pixAwy{nn} = res1.pixelAway*muPerPix;    
     chgTowardThr(nn,:,:) = res1.chgTowardThr;
     chgAwayThr(nn,:,:) = res1.chgAwayThr;
     chgTowardThrFrame{nn} = res1.chgTowardThrFrame*m3;
