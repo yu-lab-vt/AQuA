@@ -25,7 +25,7 @@ function [resCell,lblMap] = growSeed(dat,dF,resCell,lblMap,lmLoc,lm3Idx,opts,stg
     end
     
     % prepare data
-    datc = cell(nLm,1);
+    % datc = cell(nLm,1);
     for uu=1:numel(lmLoc)
         %if uu==85; keyboard; end
         iSeed = lmLoc(uu);
@@ -117,16 +117,17 @@ function [resCell,lblMap] = growSeed(dat,dF,resCell,lblMap,lmLoc,lm3Idx,opts,stg
                 continue
             end
         end
-        datc{uu} = dat(res.rgH,res.rgW,res.rgT);
+        % datc{uu} = dat(res.rgH,res.rgW,res.rgT);
     end
     
     % fit around seeds
-    parfor uu=1:nLm
+    for uu=1:nLm
         res = resCell{uu};
         if isempty(res) || res.cont==0
             continue
         end
-        resCell{uu} = burst.detectGrowSp(datc{uu},res,opts);
+        % resCell{uu} = burst.detectGrowSp(datc{uu},res,opts);
+        resCell{uu} = burst.detectGrowSp(dat(res.rgH,res.rgW,res.rgT),res,opts);
     end
     
     % grow seeds
