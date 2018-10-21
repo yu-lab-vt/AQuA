@@ -47,39 +47,51 @@ end
 
 % landmark features
 waitbar(0.7,gg);
-if ~isempty(regLst) || ~isempty(lmkLst)
-    fprintf('Updating region and landmark features ...\n')
-    ftsLst.region = fea.getDistRegionBorderMIMO(evtx,datR,regLst,lmkLst,muPerPix,opts.minShow1);
-else
-    ftsLst.region = [];
+ftsLst.region = [];
+try
+    if ~isempty(regLst) || ~isempty(lmkLst)
+        fprintf('Updating region and landmark features ...\n')
+        ftsLst.region = fea.getDistRegionBorderMIMO(evtx,datR,regLst,lmkLst,muPerPix,opts.minShow1);
+    end
+catch
 end
 
 % update events to show
 waitbar(1,gg);
-if ~isempty(regLst)
-    btSt.regMask = sum(ftsLst.region.cell.memberIdx>0,2);
-else
-    btSt.regMask = ones(numel(ftsLst.loc.x3D),1);
+btSt.regMask = [];
+try
+    if ~isempty(regLst)
+        btSt.regMask = sum(ftsLst.region.cell.memberIdx>0,2);
+    else
+        %ftsLst = [];  % !!DBG
+        btSt.regMask = ones(numel(ftsLst.loc.x3D),1);
+    end
+catch
 end
 setappdata(f,'btSt',btSt);
 ui.over.updtEvtOvShowLst([],[],f);
 
 % update network features
 evtx1 = evtx;
-if ~isempty(regLst)
-    for ii=1:numel(evtx)
-        if isfield(ftsLst,'loc2D')
-            loc00 = ftsLst.loc2D{ii};
-        else
-            loc00 = ftsLst.loc.x2D{ii};
-        end
-        if sum(evtSpatialMask(loc00))==0
-            evtx1{ii} = [];
+ftsLst.networkAll = [];
+ftsLst.network = [];
+try
+    if ~isempty(regLst)
+        for ii=1:numel(evtx)
+            if isfield(ftsLst,'loc2D')
+                loc00 = ftsLst.loc2D{ii};
+            else
+                loc00 = ftsLst.loc.x2D{ii};
+            end
+            if sum(evtSpatialMask(loc00))==0
+                evtx1{ii} = [];
+            end
         end
     end
+    ftsLst.networkAll = fea.getEvtNetworkFeatures(evtx,sz);  % all filtered events
+    ftsLst.network = fea.getEvtNetworkFeatures(evtx1,sz);  % events inside cells only
+catch
 end
-ftsLst.networkAll = fea.getEvtNetworkFeatures(evtx,sz);  % all filtered events
-ftsLst.network = fea.getEvtNetworkFeatures(evtx1,sz);  % events inside cells only
 setappdata(f,'fts',ftsLst);
 
 end

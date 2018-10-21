@@ -14,6 +14,14 @@ end
 % show in event manager and for exporting
 fts = getappdata(f,'fts');
 tb = getappdata(f,'userFeatures');
+
+evtLst = getappdata(f, 'evt');
+if isempty(evtLst)
+    featureTable = table(nan(0,1));
+    setappdata(f,'featureTable',featureTable);
+    return
+end
+
 nEvt = numel(fts.basic.area);
 nFt = numel(tb.Name);
 ftsTb = nan(nFt,nEvt);
