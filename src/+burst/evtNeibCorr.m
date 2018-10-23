@@ -76,6 +76,7 @@ function [G,neibLst] = evtNeibCorr(mIn,dffMat,tBegin,minCorr,maxTimeDif)
                 end
             end
         end
+        neib0 = union(neib0,nn);
         neibLst{nn} = neib0;
     end    
     

@@ -22,7 +22,7 @@ function evtLstOut = mergeEvt(evtLst,dffMat,tBegin,opts)
     end
     
     % dilate events
-    se0 = ones(minDist,minDist);
+    se0 = ones(minDist*2+1,minDist*2+1);
     for tt=1:size(mIn,3)
         tmp = mIn(:,:,tt);
         mIn(:,:,tt) = imdilate(tmp,strel(se0));
