@@ -33,12 +33,15 @@ if correctTrend>0
     try
         model0 = ['poly',num2str(correctTrend)];
         f0 = fit(x,y,model0,'Exclude',find(s0));
+        yFit = f0(x);
+        c0 = y - yFit;
+        c0 = c0 - min(c0) + min(y);
     catch
         warning('Curve trend removal error')
+        disp(c0)
+        disp(s0)
+        save(['debug_deTrend_',num2str(randi(1e8)),'.mat'],'c0','s0');
     end
-    yFit = f0(x);
-    c0 = y - yFit;
-    c0 = c0 - min(c0) + min(y);
 end
 
 end
