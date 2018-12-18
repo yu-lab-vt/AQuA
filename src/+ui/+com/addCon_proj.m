@@ -16,7 +16,7 @@ uix.Empty('Parent',bNew);
 
 % event detection: data settings
 pDeProp = uix.Grid('Parent',bNew);
-uicontrol(pDeProp,'Style','popupmenu','Tag','preset','Callback',{@ui.proj.updtPreset,f,0});
+uicontrol(pDeProp,'Style','popupmenu','Tag','preset','Callback',{@ui.proj.updtPreset,f});
 uicontrol(pDeProp,'Style','edit','String','1','Tag','tmpRes');
 uicontrol(pDeProp,'Style','edit','String','1','Tag','spaRes');
 uicontrol(pDeProp,'Style','edit','String','2','Tag','bdSpa');

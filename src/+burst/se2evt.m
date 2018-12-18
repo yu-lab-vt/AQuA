@@ -51,10 +51,15 @@ if numel(ihw0)<=30 || xFail==1
     cx = cx/nanmax(cx(:));
 end
 
-rgtx = min(it0):max(it0);
 cxAll = zeros(numel(spLst),T);
-cxAll(:,rgt(rgtSel)) = cx;
-cx1 = cxAll(:,rgtx);
+if ~isfield(opts,'useLongerDuration') || opts.useLongerDuration==0
+    rgtx = min(it0):max(it0);
+    cxAll(:,rgt(rgtSel)) = cx;
+    cx1 = cxAll(:,rgtx);
+else
+    cxAll(:,rgt(rgtSel)) = cx;
+    cx1 = cxAll;
+end
 
 % events
 minShow = sqrt(opts.minShow1);
@@ -62,6 +67,14 @@ minShow = sqrt(opts.minShow1);
 evtRecon = evtRecon.^2;
 evtRecon = uint8(evtRecon*255);
 nEvt0 = max(evtL(:));
+
+if isfield(opts,'useLongerDuration') && opts.useLongerDuration>0
+    ix0 = find(evtL>0);
+    [~,~,it00] = ind2sub(size(evtL),ix0);
+    rgtx = min(it00):max(it00);
+    evtL = evtL(:,:,rgtx);
+    evtRecon = evtRecon(:,:,rgtx);
+end
 
 end
 

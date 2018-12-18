@@ -3,6 +3,12 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff)
     
     [H,W,T] = size(dat);
     
+    if isfield(opts,'gapExt')
+        gaptxx = opts.gapExt;  % 5 by default
+    else
+        gaptxx = 50;
+    end
+    
     lblMapS = zeros(size(dat),'uint32');
     for nn=1:numel(svLst)
         lblMapS(svLst{nn}) = nn;
@@ -59,7 +65,7 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff)
         [ih0,iw0,it0] = ind2sub([H,W,T],se0);
         rgh = min(ih0):max(ih0); rgw = min(iw0):max(iw0);
         ihw0 = unique(sub2ind([numel(rgh),numel(rgw)],ih0-min(rgh)+1,iw0-min(rgw)+1));
-        gapt = max(max(it0)-min(it0),5); rgt = max(min(it0)-gapt,1):min(max(it0)+gapt,T);
+        gapt = max(max(it0)-min(it0),gaptxx); rgt = max(min(it0)-gapt,1):min(max(it0)+gapt,T);
         
         dF0 = double(dF(rgh,rgw,rgt));
         seMap0 = seMap(rgh,rgw,rgt);
@@ -67,7 +73,11 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff)
             dF0,seMap0,nn,ihw0,rgh,rgw,rgt,it0,T,opts,1);
         
         seMap00 = seMap(rgh,rgw,rgtx);
-        evtL(seMap00~=nn) = 0;  % avoid interfering other events
+        if ~isfield(opts,'useLongerDuration') || opts.useLongerDuration==0
+            evtL(seMap00~=nn) = 0;  % avoid interfering other events
+        else
+            evtL(seMap00~=nn & seMap00>0) = 0;
+        end
         evtL(evtL>0) = evtL(evtL>0)+nEvt;
         dLNow = datL(rgh,rgw,rgtx);
         dRNow = datR(rgh,rgw,rgtx);
