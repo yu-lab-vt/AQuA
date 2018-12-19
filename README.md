@@ -1,4 +1,4 @@
-![AQuA Logo](img/logo1.png)
+![AQuA Logo](img/logo1s.png)
 
 ----------------------------------
 
