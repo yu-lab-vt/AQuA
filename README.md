@@ -43,7 +43,7 @@ AQuA (**A**strocyte **Qu**antification and **A**nalysis) is a tool to detect eve
 # Download and installation
 ## MATLAB GUI
 
-1. Download **[here](https://github.com/freemanwyz/AQuA/archive/master.zip)**.
+1. Download **[here](https://github.com/yu-lab-vt/AQuA/archive/master.zip)**.
 2. Unzip the downloaded file.
 3. Start MATLAB.
 4. Switch the current folder to AQuA's folder.
