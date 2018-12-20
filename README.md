@@ -64,18 +64,23 @@ Some browsers may show a warning when downloading the 'jar' file. Pleae choose '
 
 # Getting started
 If you use AQuA for the first time, please read
-**[the step by step user guide](https://drive.google.com/open?id=1T6vz8B8BgsnwMbcMZGXbs28GMrhx_9WY)**.
+**[the step by step user guide](https://drive.google.com/open?id=1vUZP44KG3B4m4LZXfzcauiyp-Sqd0eJ1)**.
 
-Or you can check the **[details on output files, extracted features, and parameter settings](https://drive.google.com/open?id=16jpUYZMDKJO29G3s3D3l8a7iKeQt_fY1)**.
+Or you can check the **[details on output files, extracted features, and parameter settings](https://drive.google.com/open?id=1U3oJpEFwv0lXdax6efSnoifcYjJuRzj3)**.
 
 # Example datasets
-You can try these example data sets in AQuA:
+You can try these real data sets in AQuA. These data sets are used in the supplemental of the paper.
 
-* **[Ex-vivo GCaMP dataset](https://drive.google.com/open?id=1zkw3JdJpVpGtX8DtFC6gt-Q7v757ESwj)**
+**[Ex-vivo GCaMP dataset](https://drive.google.com/open?id=1EH3fJ9wepUfQfU2HY1fHtn0YMDWMtMek)**
 
-* **[In-vivo GCaMP dataset](https://drive.google.com/open?id=1hjvGF8NI-JnyNAnscbjocjQoVI7WM2SG)**
+**[In-vivo GCaMP dataset](https://drive.google.com/open?id=1JrDEDfcT6RM76dOAtKI1-UgtO_UEd_wa)**
 
-* **[GluSnFr dataset](https://drive.google.com/open?id=19-s8hQlIEQ2dv88PLmVGvjRvnedqNoGj)**
+**[GluSnFr dataset](https://drive.google.com/open?id=1516tK_6pcA7qfNf4JahalYchWmU-p2SV)**
+
+We also provide some synthetic data sets. These are used in the simulation part of the paper.
+
+**[Synthetic data sets](https://drive.google.com/open?id=1ljh-X7vkT7ryjk0mR7PXli_-nYThqK7h)**
+
 
 # Reference
 Paper draft in preparation.
