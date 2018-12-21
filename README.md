@@ -2,7 +2,7 @@
 
 ----------------------------------
 
-AQuA (**A**strocyte **Qu**antification and **A**nalysis) is a tool to detect events from microscopic time-lapse imaging data of astrocytes. The algorithm is data-driven and based on machine learning principles, so it can potentially be applied across model organisms, fluorescent indicators, experimental modes, cell types, and imaging resolutions and speeds.
+AQuA (**A**strocyte **Qu**antification and **A**nalysis) is a tool to detect events from microscopic time-lapse imaging data of astrocytes. The algorithm is data-driven and based on machine learning principles, so, potentially, it can be applied across model organisms, fluorescent indicators, experimental modes, cell types, and imaging resolutions and speeds.
 
 - [More about AQuA](#more-about-aqua)
   - [From raw data to events](#from-raw-data-to-events)
