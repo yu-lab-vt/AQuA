@@ -10,7 +10,7 @@ AQuA (**A**strocyte **Qu**antification and **A**nalysis) is a tool to detect eve
   - [Graphical user interface](#graphical-user-interface)
 - [Download and installation](#download-and-installation)
   - [MATLAB GUI](#matlab-gui)
-  - [Fiji plugin (coming soon)](#fiji-plugin-coming-soon)
+  - [Fiji plugin](#fiji-plugin)
 - [Getting started](#getting-started)
 - [Example datasets](#example-datasets)
 - [Reference](#reference)
@@ -84,5 +84,5 @@ We also provide some synthetic data sets. These are used in the simulation part 
 
 
 # Reference
-Paper draft in preparation.
+Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K. Cahill, Xuelong Mi, Guoqiang Yu, Kira E. Poskanzer, *An event-based paradigm for analyzing fluorescent astrocyte activity uncovers novel single-cell and population-level physiology*, BioRxiv 504217. Link: https://www.biorxiv.org/content/early/2018/12/21/504217
 
