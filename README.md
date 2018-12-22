@@ -53,16 +53,15 @@ AQuA (**A**strocyte **Qu**antification and **A**nalysis) is a tool to detect eve
 
 We tested on MATLAB versions later than 2017a. Earlier versions are not supported.
 
-## Fiji plugin (coming soon)
+## Fiji plugin
 
-1. Download **[here]()**.
+1. Download **[here](https://github.com/yu-lab-vt/AQuA-Fiji/releases)**.
 2. Put the downloaded `Aqua.jar` to the plugins folder of Fiji.
 3. Open Fiji.
 4. In the `Plugins` menu, click `Aqua`.
 5. Open movie and choose project path in AQuA GUI.
 
 Some browsers may show a warning when downloading the 'jar' file. Please choose 'keep file'.
-**The Fiji plugin is still under testing**.
 
 # Getting started
 If you are using AQuA for the first time, please read
