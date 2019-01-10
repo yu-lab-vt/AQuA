@@ -7,8 +7,9 @@ function addDetectTab(f,pDeOut)
     uix.Empty('Parent',bDeOut);
     deOutTab = uix.TabPanel('Parent',bDeOut,'Tag','deOutTab');
     deOutCon = uix.HButtonBox('Parent',bDeOut,'Spacing',10);
+    deOutRunAll = uix.HButtonBox('Parent',bDeOut,'Spacing',10);
     uix.Empty('Parent',bDeOut);
-    bDeOut.Heights = [-1,150,25,-1];
+    bDeOut.Heights = [-1,150,25,25,-1];
     
     % tabs
     pAct = uix.Panel('Parent',deOutTab,'Title','Active voxels','Tag','pAct');
@@ -30,6 +31,11 @@ function addDetectTab(f,pDeOut)
     pRun.Callback = {@ui.detect.flow,f,'run'};
     pNext.Callback = {@ui.detect.flow,f,'next'};
     deOutCon.ButtonSize = [100,20];
+    pRunAll = uicontrol(deOutRunAll,'String','RunAllSteps','Tag','deOutRunAll');
+    pRunAll.Callback = {@ui.detect.flow2,f};
+    pRunAll.BackgroundColor = [.3,.5,.8];
+    pRunAll.ForegroundColor = [1,1,1];
+    deOutRunAll.ButtonSize = [100,20];
     
     % event detection: active voxels
     bAct = uix.VBox('Parent',pAct);

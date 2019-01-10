@@ -8,7 +8,7 @@ function addCon_wkfl(f,pWkfl)
     pExport = uix.BoxPanel('Parent',bWkfl,'Title','Export','Tag','pExport');
     pSys = uix.BoxPanel('Parent',bWkfl,'Title','Others','Tag','pSys');
     uix.Empty('Parent',bWkfl);
-    bWkfl.Heights = [110,215,180,100,60,-1];
+    bWkfl.Heights = [110,240,180,100,60,-1];
     
     % draw regions ----
     bDraw = uix.VBox('Parent',pDraw,'Spacing',3,'Padding',3);
