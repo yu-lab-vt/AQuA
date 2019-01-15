@@ -92,11 +92,12 @@ uicontrol(pImgTool,'Style','edit','String','1','Callback',{@ui.mov.jumpTo,f},'Ta
 uicontrol(pImgTool,'Style','text','String','Playback frame rate');
 uicontrol(pImgTool,'Style','edit','String','5','Tag','playbackRate');
 uicontrol(pImgTool,'String','Side by side','Tag','sbs','Callback',{@ui.mov.movSideBySide,f});
+uicontrol(pImgTool,'String','GaussFilter','Tag','GaussFilter','Callback',{@ui.mov.movGauss,f},'Enable','off');
 uix.Empty('Parent',pImgTool);
 uicontrol(pImgTool,'Style','text','String','1/1','HorizontalAlignment','right','Tag','curTime');
 uix.Empty('Parent',pImgTool);
 pImgTool.Spacing = 10;
-pImgTool.Widths = [10,60,60,40,50,100,50,80,-1,200,10];
+pImgTool.Widths = [10,60,60,40,50,100,50,80,80,-1,200,10];
 
 % view control
 str00 = {'Raw','Raw + overlay','Rising map'};

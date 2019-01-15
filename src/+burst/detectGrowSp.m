@@ -89,7 +89,10 @@ if sum(validMap(:))>0
         x0 = datVec(pix1(ii),tw.t0);
         x1 = datVec(pix1(ii),tw.t1);
         xp = datVec(pix1(ii),tw.tPeak);
-        sz0(ii) = min((xp-x0)/s0,(xp-x1)/s0);
+        if xp==0
+            continue;
+        end
+        sz0(ii) = min((xp-x0)/s0,(xp-x1)/s0);      
     end
     
     %         % current significance

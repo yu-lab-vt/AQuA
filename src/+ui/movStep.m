@@ -1,8 +1,14 @@
 function datxCol = movStep(f,n,ovOnly,updtAll)
     % use btSt.sbs, btSt.leftView and btSt.rightView to determine what to show
-    
+    btSt = getappdata(f,'btSt');
     fh = guidata(f);
-    dat = getappdata(f,'datOrg');
+        
+    if ~isfield(btSt,'GaussFilter') ||(btSt.GaussFilter==0) 
+        dat = getappdata(f,'datOrg');
+    else
+        dat = getappdata(f,'dat');  
+    end
+    
     if isempty(dat)
         dat = getappdata(f,'dat');
     end
