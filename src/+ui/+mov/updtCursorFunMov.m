@@ -60,6 +60,9 @@ function updtCursorFunMov(~,~,f,op,lbl)
         fh.AddLm.ForegroundColor = [0 0 0];
         fh.AddCell.ForegroundColor = [0 0 0];
         btSt.clickSt = [];
+    elseif strcmp(op,'addrm')&&strcmp(lbl,'addAll')
+        ui.mov.movAddAll([],[],f);
+        btSt = getappdata(f,'btSt');
     else
         fh.ims.im1.ButtonDownFcn = {@ui.mov.movClick,f,op,lbl};
         fh.ims.im2a.ButtonDownFcn = {@ui.mov.movClick,f,op,lbl};
