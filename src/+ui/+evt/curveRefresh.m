@@ -7,6 +7,11 @@ fts = getappdata(f,'fts');
 opts = getappdata(f,'opts');
 sz = opts.sz;
 
+% save the status
+fh.showcurves = evtIdxVec;
+guidata(f,fh);
+n = fh.sldMov.Value;
+
 ofstGap = 0.3;
 
 xx = double(reshape((dffMat(evtIdxVec,:,2)),numel(evtIdxVec),[]));
@@ -15,7 +20,7 @@ xxMax = max(xx(:))+ofstGap*(numel(evtIdxVec)-1);
 xxRg = xxMax-xxMin;
 
 ax = fh.curve;
-ax.XLim = [0,sz(3)];
+ax.XLim = [0,sz(3)+1];
 ax.YLim = [xxMin-xxRg*0.1,xxMax+xxRg*0.2];
 
 % delete existing curves
@@ -46,12 +51,12 @@ for ii=1:numel(evtIdxVec)
         line(ax,1:sz(3),x,'Color',col);
         line(ax,t0:t1,x(t0:t1),'Color',col,'LineWidth',1.5);
     end
-    
     xSel = x(t0:t1);
     [xm,ixm] = max(xSel);
     txt0 = [num2str(evtIdx),' dff:',num2str(fts.curve.dffMax(evtIdx))];
     text(ax,ixm+t0-1,xm,txt0);
 end
+line(ax,[n,n],ax.YLim,'Color','k','LineStyle','--');
 
 end
 

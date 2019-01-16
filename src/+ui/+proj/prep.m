@@ -57,6 +57,7 @@ if op==0
     
     maxPro = max(datOrg,[],3);
     fh.maxPro = maxPro;
+    fh.showcurves = [];
     guidata(f,fh);
     
     % UI data structure
