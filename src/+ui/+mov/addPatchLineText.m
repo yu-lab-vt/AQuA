@@ -80,8 +80,8 @@ function addPatchLineText(f,axNow,n,updtAll)
         end
     end
     
-    ui.over.addBd(f,axNow,btSt.evtMngrMsk,[0 0.5 0],n);
-    ui.over.addBd(f,axNow,btSt.rmLst,[0.5 0 0],n);
+    ui.over.addBd(f,axNow,btSt.evtMngrMsk,[1 0.85 0],n);
+    ui.over.addBd(f,axNow,btSt.rmLst,[1 0.25 0.25],n);
     
 end
 

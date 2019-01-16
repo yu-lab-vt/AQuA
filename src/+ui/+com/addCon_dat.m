@@ -105,7 +105,7 @@ uicontrol(bMov2Pop,'Style','popupmenu','String',str00,'Tag','movLType','Callback
 uix.Empty('Parent',bMov2Pop);
 uicontrol(bMov2Pop,'Style','popupmenu','String',str00,'Tag','movRType','Callback',{@ui.mov.movViewSel,f},'Value',1);
 uix.Empty('Parent',bMov2Pop);
-bMov2Pop.Widths = [70,-1,70,-1];
+bMov2Pop.Widths = [200,-1,200,-1];
 
 % image play
 uix.Empty('Parent',pImgCon);

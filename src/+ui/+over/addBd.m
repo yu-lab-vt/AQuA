@@ -28,7 +28,7 @@ if ~isempty(lst) && strcmp(btSt.overlayDatSel,'Events') && n>0
                     for jj=1:numel(xyC)
                         xy = xyC{jj};
                         flexLst{end+1} = patch(axNow,'XData',xy(:,2),'YData',H-xy(:,1)+1,...
-                            'FaceColor','none','EdgeColor',bdCol,'Tag','flex'); %#ok<AGROW>
+                            'FaceColor','none','EdgeColor',bdCol,'Tag','flex','LineWidth',1); %#ok<AGROW>
                         if jj==1
                             flexLst{end+1} = text(axNow,xy(1,2)+1,H-xy(1,1),num2str(idx(ii)),...
                                 'Color',bdCol,'FontSize',18,'Tag','flex'); %#ok<AGROW>

@@ -64,7 +64,7 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
             switch curType
                 case 'Raw'
                     fh.ims.(imName{ii}).CData = flipud(datx);
-                    ui.mov.addPatchLineText(f,axNow,n,updtAll);
+%                     ui.mov.addPatchLineText(f,axNow,n,updtAll);
                 case 'Raw + overlay'
                     fh.ims.(imName{ii}).CData = flipud(datxCol);
                     ui.mov.addPatchLineText(f,axNow,n,updtAll);
