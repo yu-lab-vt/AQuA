@@ -55,6 +55,10 @@ if op==0
         return
     end
     
+    maxPro = max(datOrg,[],3);
+    fh.maxPro = maxPro;
+    guidata(f,fh);
+    
     % UI data structure
     [ov,bd,scl,btSt] = ui.proj.prepInitUIStruct(datOrg,opts); %#ok<ASGLU>
     

@@ -70,6 +70,14 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
                     ui.mov.addPatchLineText(f,axNow,n,updtAll);
                 case 'Rising map'
                     ui.mov.showRisingMap(f,imName{ii},n);
+                case 'Maximum Projection'
+                    if scl.map==1
+                        datM = fh.maxPro.^2;
+                    end
+                    datM = (datM-scl.min)/max(scl.max-scl.min,0.01)*scl.bri;
+                    datMx = cat(3,datM,datM,datM);
+                    fh.ims.(imName{ii}).CData = flipud(datMx);
+                    ui.mov.addPatchLineText(f,axNow,n,updtAll);
             end
         end
     end
