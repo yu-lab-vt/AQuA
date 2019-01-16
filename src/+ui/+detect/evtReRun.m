@@ -28,6 +28,7 @@ setappdata(f,'evt',evtLstE);
 
 ui.detect.postRun([],[],f,evtLstE,datRE,'Events');
 
+fh.nEvt.String = num2str(numel(evtLstE));
 fprintf('Done\n')
 delete(ff);
 

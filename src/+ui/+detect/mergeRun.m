@@ -33,6 +33,7 @@ waitbar(1,ff);
 
 ui.detect.postRun([],[],f,evtLstMerge,[],'Step 5: events merged');
 
+fh.nEvt.String = num2str(numel(evtLstMerge));
 delete(ff);
 fprintf('Done\n')
 

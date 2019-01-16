@@ -97,7 +97,7 @@ uix.Empty('Parent',pImgTool);
 uicontrol(pImgTool,'Style','text','String','1/1','HorizontalAlignment','right','Tag','curTime');
 uix.Empty('Parent',pImgTool);
 pImgTool.Spacing = 10;
-pImgTool.Widths = [10,60,60,40,50,100,50,80,80,-1,200,10];
+pImgTool.Widths = [10,60,60,40,50,100,50,80,80,-1,120,10];
 
 % view control
 str00 = {'Raw','Raw + overlay','Rising map','Maximum Projection'};
@@ -113,10 +113,13 @@ uicontrol(pImgCon,'String','Play','Callback',{@ui.mov.playMov,f},'Tag','play');
 uicontrol(pImgCon,'String','Pause','Callback',{@ui.mov.pauseMov,f});
 h00 = uicomponent(pImgCon,'style','javax.swing.JScrollBar','Tag','sldMov','Orientation',0);  % Java
 h00.AdjustmentValueChangedCallback = {@ui.mov.stepOne,f};
+uicontrol(pImgCon,'Style','text','String','nEvt');
+nEvt = uicontrol(pImgCon,'Style','text','String','0','Tag','nEvt');
+nEvt.BackgroundColor = [1,1,1];
 % uicontrol(pImgCon,'Style','slider','Min',0,'Max',100,'Value',1,'SliderStep',[0.01 0.1],...
 %     'Tag','sldMov','Callback',{@stepOne,f});
 uix.Empty('Parent',pImgCon);
-pImgCon.Widths = [15,50,50,-1,15];
+pImgCon.Widths = [15,50,50,-1,40,40,15];
 
 % curve tools
 % uix.Empty('Parent',pCurveCon);
