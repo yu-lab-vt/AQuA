@@ -24,13 +24,14 @@ pToolMsk = uix.CardPanel('Parent',bMsk);
 bMsk.Widths = [300 -1 300];
 
 ui.msk.addCon_wkflMsk(f,pWkflMsk);
-imsMsk = ui.msk.addCon_datMsk(f,pDatMsk);
+[imsMsk,movBuilder] = ui.msk.addCon_datMsk(f,pDatMsk);
 ui.msk.addCon_toolsMsk(f,pToolMsk);
 
 % default GUI settings
 fh = guihandles(f);
 fh.ims = ims;
 fh.imsMsk = imsMsk;
+fh.movBuilder = movBuilder;
 guidata(f,fh);
 col = fh.pan.BackgroundColor;
 setappdata(f,'col',col);

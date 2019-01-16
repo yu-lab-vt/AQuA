@@ -39,8 +39,18 @@ function addCon_wkflMsk(f, pWkfl)
     bLoadBtn = uix.HButtonBox('Parent', bLoad);
     uicontrol(bLoadBtn, 'String', 'Remove', 'Callback', {@ui.msk.mskLstViewer, f, 'remove'});
     uix.Empty('Parent', bLoad);
-    bLoad.Heights = [90, -1, 3, 20, 5];
-
+    
+    % Manually Select
+    gSelect = uix.Grid('Parent', bLoad, 'Spacing', 5, 'Padding', 5);
+    uicontrol(gSelect, 'Style', 'text', 'String', 'Manually Select', 'HorizontalAlignment', 'left');
+    uicontrol(gSelect, 'String', 'Clear', 'Tag','Clear', 'Callback', {@ui.mov.updtCursorFunMov2,f,'clear'});
+    uicontrol(gSelect, 'String', 'Add', 'Tag','AddBuilder', 'Callback', {@ui.mov.updtCursorFunMov2,f,'add'});
+    uicontrol(gSelect, 'String', 'Remove', 'Tag','RemoveBuilder', 'Callback', {@ui.mov.updtCursorFunMov2,f,'rm'});
+    gSelect.Widths = [-1, 60, 60, 60];
+    gSelect.Heights = [20];
+    
+    bLoad.Heights = [90, -1, 3, 20, 5, 25];
+    
     % save masks and back to main UI ----
     bSave = uix.VBox('Parent', pSave, 'Spacing', 5, 'Padding', 5);
     gSave = uix.Grid('Parent', bSave, 'Spacing', 5, 'Padding', 3);

@@ -1,4 +1,4 @@
-function im1 = addCon_datMsk(f,pDat)
+function [im1,pMov1] = addCon_datMsk(f,pDat)
 % masks image view ***********
 
 % top level panels
