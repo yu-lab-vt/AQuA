@@ -9,9 +9,26 @@ uix.Empty('Parent',bL1);
 uicontrol(bL1,'Style','text','String','Max','HorizontalAlignment','left');
 uicontrol(bL1,'Style','slider','Tag','sldMax','Callback',{@ui.over.adjMov,f});
 uix.Empty('Parent',bL1);
-uicontrol(bL1,'Style','text','String','Brightness','HorizontalAlignment','left');
-uicontrol(bL1,'Style','slider','Tag','sldBri','Callback',{@ui.over.adjMov,f});
-bL1.Heights = [18,15,15,3,15,15,3,15,15];
+
+% single view
+pBrightness = uix.CardPanel('Parent',bL1,'Tag','pBrightness');  % two sliders
+pB = uix.VBox('Parent',pBrightness);
+uicontrol(pB,'Style','text','String','Brightness','HorizontalAlignment','left');
+uicontrol(pB,'Style','slider','Tag','sldBri','Callback',{@ui.over.adjMov,f});
+pB.Heights = [15,15];
+
+% side by side view
+pBS = uix.Grid('Parent',pBrightness);
+uicontrol(pBS,'Style','text','String','Left Brightness','HorizontalAlignment','left');
+uicontrol(pBS,'Style','slider','Tag','sldBriL','Callback',{@ui.over.adjMov,f});
+uix.Empty('Parent',pBS);
+uix.Empty('Parent',pBS);
+uicontrol(pBS,'Style','text','String','Right Brightness','HorizontalAlignment','left');
+uicontrol(pBS,'Style','slider','Tag','sldBriR','Callback',{@ui.over.adjMov,f});
+pBS.Widths = [-1,2,-1];   pBS.Heights = [15,15];
+
+pBrightness.Selection = 1;
+bL1.Heights = [18,15,15,3,15,15,3,30];
 
 uix.Empty('Parent',bLayer);
 

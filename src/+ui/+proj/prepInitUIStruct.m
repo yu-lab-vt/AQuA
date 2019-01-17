@@ -30,6 +30,8 @@ else
     scl.map = 1;
 end
 scl.bri = 1;
+scl.briL = 1;
+scl.briR = 1;
 scl.briOv = 0.5;
 scl.minOv = 0;
 scl.maxOv = 1;

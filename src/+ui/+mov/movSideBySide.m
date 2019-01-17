@@ -10,10 +10,12 @@ if btSt.sbs==0
     btSt.sbs = 1;
     fh.sbs.BackgroundColor = [0.3 0.3 0.7];
     fh.movTop.Selection = 2;
+    fh.pBrightness.Selection = 2;
 else
     btSt.sbs = 0;
     fh.sbs.BackgroundColor = col;
     fh.movTop.Selection = 1;
+    fh.pBrightness.Selection = 1;
 end
 setappdata(f,'btSt',btSt);
 if n>0

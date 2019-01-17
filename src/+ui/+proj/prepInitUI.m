@@ -17,6 +17,16 @@ function prepInitUI(f,fh,opts,scl,~,stg,~)
     fh.sldBri.SliderStep = gap0;
     fh.sldBri.Value = scl.bri;
     
+    fh.sldBriL.Min = 0.1;
+    fh.sldBriL.Max = 10;
+    fh.sldBriL.SliderStep = gap0;
+    fh.sldBriL.Value = scl.briL;
+    
+    fh.sldBriR.Min = 0.1;
+    fh.sldBriR.Max = 10;
+    fh.sldBriR.SliderStep = gap0;
+    fh.sldBriR.Value = scl.briR;
+    
     fh.sldMinOv.Min = 0;
     fh.sldMinOv.Max = 1;
     fh.sldMinOv.SliderStep = gap0;

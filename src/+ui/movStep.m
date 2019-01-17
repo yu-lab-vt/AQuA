@@ -32,7 +32,11 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
     end
     dat0 = (dat0-scl.min)/max(scl.max-scl.min,0.01)*scl.bri;
     datx = cat(3,dat0,dat0,dat0);
+    datxL = datx/scl.bri*scl.briL;
+    datxR = datx/scl.bri*scl.briR;
     datxCol = ui.over.addOv(f,datx,n);
+    datxColL = ui.over.addOv(f,datxL,n);
+    datxColR = ui.over.addOv(f,datxR,n);
     
     if ovOnly>0
         return
@@ -63,10 +67,18 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
             end
             switch curType
                 case 'Raw'
-                    fh.ims.(imName{ii}).CData = flipud(datx);
+                    if ii==1
+                        fh.ims.(imName{ii}).CData = flipud(datxL);
+                    else
+                        fh.ims.(imName{ii}).CData = flipud(datxR);
+                    end
 %                     ui.mov.addPatchLineText(f,axNow,n,updtAll);
                 case 'Raw + overlay'
-                    fh.ims.(imName{ii}).CData = flipud(datxCol);
+                    if ii==1
+                        fh.ims.(imName{ii}).CData = flipud(datxColL);
+                    else
+                        fh.ims.(imName{ii}).CData = flipud(datxColR);
+                    end
                     ui.mov.addPatchLineText(f,axNow,n,updtAll);
                 case 'Rising map'
                     ui.mov.showRisingMap(f,imName{ii},n);
@@ -74,9 +86,16 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
                     if scl.map==1
                         datM = fh.maxPro.^2;
                     end
-                    datM = (datM-scl.min)/max(scl.max-scl.min,0.01)*scl.bri;
-                    datMx = cat(3,datM,datM,datM);
-                    fh.ims.(imName{ii}).CData = flipud(datMx);
+                    if ii==1
+                        datML = (datM-scl.min)/max(scl.max-scl.min,0.01)*scl.briL;
+                        datMxL = cat(3,datML,datML,datML);
+                        fh.ims.(imName{ii}).CData = flipud(datMxL);
+                    else
+                       datMR = (datM-scl.min)/max(scl.max-scl.min,0.01)*scl.briR;
+                        datMxR = cat(3,datMR,datMR,datMR);
+                        fh.ims.(imName{ii}).CData = flipud(datMxR);
+                    end
+                    
                     ui.mov.addPatchLineText(f,axNow,n,updtAll);
             end
         end
