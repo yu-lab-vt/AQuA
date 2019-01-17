@@ -2,7 +2,7 @@ function loadOpt(~,~,f)
     
     %file0 = [opts.fileName,'_AQuA']; SP, 18.07.16
     [file,path] = uigetfile('.csv','Choose Parameter file');
-    if exist([path,file])>0
+    if ~isnumeric([path,file])
         optsOrg = getappdata(f,'opts');
         opts = ui.proj.csv2struct([path,file]);
         opts.filePath = optsOrg.filePath;
@@ -33,7 +33,5 @@ function loadOpt(~,~,f)
         
         n = fh.sldMov.Value;
         ui.mov.updtMovInfo(f,n,opts.sz(3));
-    else
-        warndlg('the file does not exist!!!')
     end
 end
