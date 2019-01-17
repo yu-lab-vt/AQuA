@@ -8,7 +8,7 @@ function addCon_wkfl(f,pWkfl)
     pExport = uix.BoxPanel('Parent',bWkfl,'Title','Export','Tag','pExport');
     pSys = uix.BoxPanel('Parent',bWkfl,'Title','Others','Tag','pSys');
     uix.Empty('Parent',bWkfl);
-    bWkfl.Heights = [110,240,180,100,60,-1];
+    bWkfl.Heights = [110,240,190,100,60,-1];
     
     % draw regions ----
     bDraw = uix.VBox('Parent',pDraw,'Spacing',3,'Padding',3);
@@ -45,11 +45,14 @@ function addCon_wkfl(f,pWkfl)
         'Callback',{@ui.mov.updtCursorFunMov,f,'addrm','viewFav'});
     uicontrol(fcon,'String','delete/restore','Tag','delResClick',...
         'Callback',{@ui.mov.updtCursorFunMov,f,'addrm','delRes'});
-    uicontrol(fcon,'String','addAllFiltered','Tag','addAllFiltered',...
-        'Callback',{@ui.mov.updtCursorFunMov,f,'addrm','addAll'});
     uitable(bFilter,'Data',zeros(5,4),'Tag','filterTable',...
         'CellEditCallback',{@ui.detect.filterUpdt,f});
-    bFilter.Heights = [20,-1];
+    fcon2 = uix.HBox('Parent',bFilter,'Spacing',5);
+    uicontrol(fcon2,'String','addAllFiltered','Tag','addAllFiltered',...
+        'Callback',{@ui.mov.updtCursorFunMov,f,'addrm','addAll'});
+    uicontrol(fcon2,'String','FeaturesPlot','Tag','featuresPlot',...
+        'Callback',{@ui.mov.featurePlot,f});
+    bFilter.Heights = [20,-1,20];
     
     % exporting ----
     bExp = uix.VBox('Parent',pExport,'Spacing',5,'Padding',5);
