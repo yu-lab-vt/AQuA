@@ -46,11 +46,11 @@ function [dat,dF,arLst,lmLoc,opts,dActVox] = actTop(datOrg,opts,evtSpatialMask,f
     % noise and threshold, get active voxels
     if isfield(opts,'legacyModeActRun') && opts.legacyModeActRun>0
         opts.varEst = stdEstBef.^2;
-        opts.varMap = stdMapGauBef.^2;
+%         opts.varMap = stdMapGauBef.^2;
         [arLst,dActVox] = burst.getAr(dF,opts,evtSpatialMask);
     else
         opts.varEst = stdEst.^2;
-        opts.varMap = stdMapGau.^2;
+%         opts.varMap = stdMapGau.^2;
         %[arLst,dActVox] = burst.getARSimZ(datOrg,opts,evtSpatialMask,opts.smoXY,opts.thrARScl);
         %[arLst,dActVox] = burst.getAr(dF,opts,evtSpatialMask);
         [arLst,dActVox] = burst.getARSim(datOrg,opts,evtSpatialMask,opts.smoXY,opts.thrARScl,opts.minSize);

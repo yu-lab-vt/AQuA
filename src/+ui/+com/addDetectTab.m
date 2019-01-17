@@ -31,7 +31,15 @@ function addDetectTab(f,pDeOut)
     pRun.Callback = {@ui.detect.flow,f,'run'};
     pNext.Callback = {@ui.detect.flow,f,'next'};
     deOutCon.ButtonSize = [100,20];
+    pSaveOpt = uicontrol(deOutRunAll,'String','SaveOpts','Tag','deSaveOpt');
+    pLoadOpt = uicontrol(deOutRunAll,'String','LoadOpts','Tag','deLoadOpt');
     pRunAll = uicontrol(deOutRunAll,'String','RunAllSteps','Tag','deOutRunAll');
+    pSaveOpt.Callback = {@ui.detect.saveOpt,f};
+    pSaveOpt.BackgroundColor = [.3,.5,.8];
+    pSaveOpt.ForegroundColor = [1,1,1];
+    pLoadOpt.Callback = {@ui.detect.loadOpt,f};
+    pLoadOpt.BackgroundColor = [.3,.5,.8];
+    pLoadOpt.ForegroundColor = [1,1,1];
     pRunAll.Callback = {@ui.detect.flow2,f};
     pRunAll.BackgroundColor = [.3,.5,.8];
     pRunAll.ForegroundColor = [1,1,1];
