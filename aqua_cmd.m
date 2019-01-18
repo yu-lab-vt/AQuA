@@ -3,20 +3,8 @@
 startup;  % initialize
 
 preset = 1;
-p0 = 'D:\neuro_WORK\glia_kira\raw\Mar14_InVivoDataSet\';
-f0 = '2826451(4)_1_2_4x_reg_200um_dualwv-001.tif';
-% preset = 2;
-% p0 = 'D:\neuro_WORK\glia_kira\raw\TTXDataSetRegistered_32Bit\';
-% f0 = 'FilteredNRMCCyto22m_slice2_Baseline2_Layer2_3-008cycle1channel1.tif';
-% f0 = 'FilteredNRMCCyto16m_slice3_Baseline3_L2 3-015cycle1channel1.tif';
-% preset = 4;
-% p0 = 'D:\neuro_WORK\glia_kira\raw\GluSnFR_20180511\';
-% f0 = 'hsyn-102816-Slice1-ACSF-Baseline-006_reg.tif';
-% f0 = 'test_detrend.tiff';
-% f0 = 'Substack (501-1000).tif';
-% preset = 5;
-% p0 = 'D:\neuro_WORK\glia_kira\tmp\superNoisy\';
-% f0 = '180504_s1_T_ctk-DA_zoom.tif';
+p0 = 'D:\neuro_WORK\glia_kira\raw\Mar14_InVivoDataSet\';  % folder name
+f0 = '2826451(4)_1_2_4x_reg_200um_dualwv-001.tif';  % file name
 
 opts = util.parseParam(preset,0);
 
@@ -71,12 +59,15 @@ ftsLstE = fea.getFeaturesPropTop(dat,datRE,evtLstE,ftsLstE,opts);
 res = fea.gatherRes(datOrg,opts,evtLstE,ftsLstE,dffMatE,dMatE,riseLstE,datRE);
 aqua_gui(res);
 
-ov1 = plt.regionMapWithData(arLst,datOrg,0.5); zzshow(ov1);
-ov1 = plt.regionMapWithData(svLst,datOrg,0.5); zzshow(ov1);
-ov1 = plt.regionMapWithData(seLst,datOrg,0.5,datR); zzshow(ov1);
-ov1 = plt.regionMapWithData(evtLst,datOrg,0.5,datR); zzshow(ov1);
-ov1 = plt.regionMapWithData(evtLstFilterZ,datOrg,0.5,datR); zzshow(ov1);
-ov1 = plt.regionMapWithData(evtLstMerge,datOrg,0.5,datR); zzshow(ov1);
-[ov1,lblMapS] = plt.regionMapWithData(evtLstE,datOrg,0.5,datRE); zzshow(ov1);
+% visualize the results in each step
+if 0
+    ov1 = plt.regionMapWithData(arLst,datOrg,0.5); zzshow(ov1);
+    ov1 = plt.regionMapWithData(svLst,datOrg,0.5); zzshow(ov1);
+    ov1 = plt.regionMapWithData(seLst,datOrg,0.5,datR); zzshow(ov1);
+    ov1 = plt.regionMapWithData(evtLst,datOrg,0.5,datR); zzshow(ov1);
+    ov1 = plt.regionMapWithData(evtLstFilterZ,datOrg,0.5,datR); zzshow(ov1);
+    ov1 = plt.regionMapWithData(evtLstMerge,datOrg,0.5,datR); zzshow(ov1);
+    [ov1,lblMapS] = plt.regionMapWithData(evtLstE,datOrg,0.5,datRE); zzshow(ov1);
+end
 
 
