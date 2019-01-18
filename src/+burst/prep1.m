@@ -11,7 +11,15 @@ function [dat,opts] = prep1(p0,f0,rgT,opts,ff)
     
     % read data
     fprintf('Reading data\n');
-    [dat,maxImg] = io.readTiffSeq([p0,filesep,f0]);
+    if strcmp(ext,'.mat')
+        file = load([p0,filesep,f0]);
+        headers = fieldnames(file);
+        dat = file.(headers{1});
+        maxImg = -1;
+    else
+        [dat,maxImg] = io.readTiffSeq([p0,filesep,f0]);
+    end
+    
     if exist('rgT','var') && ~isempty(rgT)
         dat = dat(:,:,rgT);
     end

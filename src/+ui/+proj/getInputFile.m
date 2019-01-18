@@ -8,7 +8,7 @@ p0 = '.';
 %         p0 = xx.cfg0.file;
 %     end
 % end
-[FileName,PathName] = uigetfile({'*.tif','*.tiff'},'Choose movie',p0);
+[FileName,PathName] = uigetfile({'*.tif;*.mat','*.tiff'},'Choose movie',p0);
 if ~isempty(FileName) && ~isnumeric(FileName)
     fh.fIn.String = [PathName,FileName];
 end
