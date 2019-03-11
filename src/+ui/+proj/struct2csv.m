@@ -69,7 +69,8 @@ function struct2csv(s,fn)
                             str = [str,num2str(double(c(ii,kk))),','];
                         end
                     elseif ischar(c)
-                        str = ['"',c(ii,:),'",'];
+                        ccc = char(strrep(c(ii,:),"\","\\"));
+                        str = [ccc,','];
                     elseif iscell(c)
                         if isnumeric(c{1,1})
                             for kk = 1:sz(jj,2)
