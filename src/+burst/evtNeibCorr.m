@@ -1,4 +1,4 @@
-function [G,neibLst] = evtNeibCorr(mIn,dffMat,tBegin,minCorr,maxTimeDif)
+function [G,neibLst] = evtNeibCorr(mIn,dffMat,tBegin,minCorr,maxTimeDif,bdMap,evtCellLabel)
     % evtNeib detect neighboring events based on curve corrrelation
     % mainly used for merging
     % TODO: use warped curves on boundaries
@@ -10,17 +10,25 @@ function [G,neibLst] = evtNeibCorr(mIn,dffMat,tBegin,minCorr,maxTimeDif)
     dh = [-1 0 1 -1 1 -1 0 1];
     dw = [-1 -1 -1 0 0 1 1 1];
     
+    bdLst = label2idx(bdMap);
+    
     % neighbors
     neibLst = cell(N,1);
     for nn=1:N
         if mod(nn,1000)==0; fprintf('%d\n',nn); end
         vox0 = evtLst{nn};
+        if(isempty(vox0)) 
+            continue; 
+        end
         [ih,iw,it] = ind2sub([H,W,T],vox0);
         neib0 = [];
         for rr=1:numel(dh)
             ih1 = min(max(ih + dh(rr),1),H);
             iw1 = min(max(iw + dw(rr),1),W);
+            cellIndex = evtCellLabel(nn);
+            cellRegion = bdLst{cellIndex};
             vox1 = sub2ind([H,W,T],ih1,iw1,it);
+            vox1 = intersect(vox1,cellRegion);
             x = mIn(vox1);
             xNeib = unique(x(x>0 & x<nn));
             xNeib = setdiff(xNeib,neib0);

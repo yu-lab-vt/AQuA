@@ -22,7 +22,7 @@ catch
 end
 
 if opts.ignoreMerge==0
-    evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts);
+    evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,f);
 else
     evtLstMerge = evtLstFilterZ;
 end
