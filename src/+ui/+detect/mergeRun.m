@@ -9,6 +9,7 @@ ff = waitbar(0,'Merging ...');
 evtLstFilterZ = getappdata(f,'evtLstFilterZ');
 dffMatFilterZ = getappdata(f,'dffMatFilterZ');
 tBeginFilterZ = getappdata(f,'tBeginFilterZ');
+bd = getappdata(f,'bd');
 opts = getappdata(f,'opts');
 
 try
@@ -22,7 +23,7 @@ catch
 end
 
 if opts.ignoreMerge==0
-    evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,f);
+    evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,bd);
 else
     evtLstMerge = evtLstFilterZ;
 end

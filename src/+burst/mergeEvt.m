@@ -1,4 +1,4 @@
-function evtLstOut = mergeEvt(evtLst,dffMat,tBegin,opts,f)
+function evtLstOut = mergeEvt(evtLst,dffMat,tBegin,opts,bd)
     % mergeEvt merge spatially close events, for Glutamate or some noisy invivo data
     % if events already adjacent, do not merge them
     
@@ -9,11 +9,11 @@ function evtLstOut = mergeEvt(evtLst,dffMat,tBegin,opts,f)
     minDist = opts.mergeEventDiscon;
     minCorr = opts.mergeEventCorr;
     maxTimeDif = opts.mergeEventMaxTimeDif;
-    bd = getappdata(f,'bd');
+    
     mIn = zeros(sz,'uint32');
     evtCellLabel = zeros(numel(evtLst),1);
     
-    if bd.isKey('cell')
+    if ~isempty(bd) && bd.isKey('cell')
         bd0 = bd('cell');
         bdMap = zeros(sz(1)*sz(2),sz(3));
         for ii=1:numel(bd0)
