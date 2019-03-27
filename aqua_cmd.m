@@ -3,10 +3,12 @@
 startup;  % initialize
 
 preset = 1;
-p0 = 'D:\neuro_WORK\glia_kira\raw\Mar14_InVivoDataSet\';  % folder name
-f0 = '2826451(4)_1_2_4x_reg_200um_dualwv-001.tif';  % file name
+p0 = 'D:\Bug Folder\';  % folder name
+f0 = 'reg_stk_0002_20190117_4322-000-Ch2.tif';  % file name
+ftb = ['D:\Bug Folder\FeatureTable.xlsx'];      % FeatureTable Path
+fmov = ['D:\Bug Folder\Movie.tif'];             % Movie Path
 
-opts = util.parseParam(preset,0);
+opts = util.parseParam(preset,1);
 
 % opts.smoXY = 1;
 % opts.thrARScl = 2;
@@ -42,7 +44,7 @@ tBeginFilterZ = ftsLst.curve.tBegin(mskx);
 riseLstFilterZ = riseLst(mskx);
 
 % merging (glutamate)
-evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts);
+evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,[]);
 
 % reconstruction (glutamate)
 if opts.extendSV==0 || opts.ignoreMerge==0 || opts.extendEvtRe>0
@@ -54,6 +56,117 @@ end
 % feature extraction
 [ftsLstE,dffMatE,dMatE] = fea.getFeaturesTop(datOrg,evtLstE,opts);
 ftsLstE = fea.getFeaturesPropTop(dat,datRE,evtLstE,ftsLstE,opts);
+
+% update network features
+sz = size(datOrg);
+evtx1 = evtLstE;
+ftsLstE.networkAll = [];
+ftsLstE.network = [];
+try
+    ftsLstE.networkAll = fea.getEvtNetworkFeatures(evtLstE,sz);  % all filtered events
+    ftsLstE.network = fea.getEvtNetworkFeatures(evtx1,sz);  % events inside cells only
+catch
+end
+
+%% export table
+fts = ftsLstE;
+tb = readtable('userFeatures.csv','Delimiter',',');
+nEvt = numel(ftsLstE.basic.area);
+nFt = numel(tb.Name);
+ftsTb = nan(nFt,nEvt);
+ftsName = cell(nFt,1);
+ftsCnt = 1;
+dixx = ftsLstE.notes.propDirectionOrder;
+lmkLst = [];
+
+for ii=1:nFt
+    cmdSel0 = tb.Script{ii};
+    ftsName0 = tb.Name{ii};
+    % if find landmark or direction
+    if ~isempty(strfind(cmdSel0,'xxLmk')) %#ok<STREMP>
+        for xxLmk=1:numel(lmkLst)
+            try
+                eval([cmdSel0,';']);
+            catch
+                fprintf('Feature "%s" not used\n',ftsName0)
+                x = nan(nEvt,1);
+            end
+            ftsTb(ftsCnt,:) = reshape(x,1,[]);
+            ftsName1 = [ftsName0,' - landmark ',num2str(xxLmk)];
+            ftsName{ftsCnt} = ftsName1;
+            ftsCnt = ftsCnt + 1;
+        end
+    elseif ~isempty(strfind(cmdSel0,'xxDi')) %#ok<STREMP>
+        for xxDi=1:4
+            try
+                eval([cmdSel0,';']);
+                ftsTb(ftsCnt,:) = reshape(x,1,[]);
+            catch
+                fprintf('Feature "%s" not used\n',ftsName0)
+                ftsTb(ftsCnt,:) = nan;
+            end            
+            ftsName1 = [ftsName0,' - ',dixx{xxDi}];
+            ftsName{ftsCnt} = ftsName1;
+            ftsCnt = ftsCnt + 1;
+        end
+    else
+        try
+            eval([cmdSel0,';']);
+            ftsTb(ftsCnt,:) = reshape(x,1,[]);            
+        catch
+            fprintf('Feature "%s" not used\n',ftsName0)
+            ftsTb(ftsCnt,:) = nan;
+        end
+        ftsName{ftsCnt} = ftsName0;
+        ftsCnt = ftsCnt + 1;
+    end
+end
+featureTable = table(ftsTb,'RowNames',ftsName);
+writetable(featureTable,ftb,'WriteVariableNames',0,'WriteRowNames',1);
+
+%% export movie
+datL = zeros(opts.sz);
+for i = 1:numel(evtLstE)
+   datL(evtLstE{i}) = i; 
+end
+ov1 = zeros(opts.sz(1),opts.sz(2),3,opts.sz(3));
+% re-scale movie
+c0 = zeros(nEvt,3);
+for nn=1:nEvt
+    x = rand(1,3);
+    while (x(1)>0.8 && x(2)>0.8 && x(3)>0.8) || sum(x)<1
+        x = rand(1,3);
+    end
+    x = x/max(x);
+    c0(nn,:) = x;
+end
+
+for tt=1:opts.sz(3)
+    if mod(tt,100)==0
+        fprintf('Frame %d\n',tt); 
+    end
+    dat0 = datOrg(:,:,tt);
+    if opts.usePG==1
+        dat0 = dat0.^2;
+    end
+    datx = cat(3,dat0,dat0,dat0);
+    datxCol = datx;
+    [H,W,~] = size(datx);
+    reCon = double(datRE(:,:,tt))/255;
+    rPlane = zeros(H,W);
+    gPlane = rPlane;
+    bPlane = rPlane;
+    map = datL(:,:,tt);
+    rPlane(map>0) = c0(map(map>0),1);
+    gPlane(map>0) = c0(map(map>0),2);
+    bPlane(map>0) = c0(map(map>0),3);
+    datxCol(:,:,1) = rPlane.*reCon + datxCol(:,:,1);
+    datxCol(:,:,2) = gPlane.*reCon + datxCol(:,:,2);
+    datxCol(:,:,3) = bPlane.*reCon + datxCol(:,:,3);
+    ov1(:,:,:,tt) = datxCol;
+end
+io.writeTiffSeq(fmov,ov1,8);
+
 
 %% export to GUI
 res = fea.gatherRes(datOrg,opts,evtLstE,ftsLstE,dffMatE,dMatE,riseLstE,datRE);
