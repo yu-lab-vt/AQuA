@@ -9,7 +9,7 @@
 
 addpath(genpath('./'))
 [f0,p0] = uigetfile();
-
+windowsize = 400; % the window for baseline estimation
 
 %% read results and get overlay
 fprintf('Loading...\n')
@@ -20,8 +20,8 @@ sz = opts.sz;
 dat = double(res.datOrg);
 dat = dat/max(dat(:));
 
-evt = res.evtFilter;
-dff = res.dffMatFilter(:,:,2);
+evt = res.evt;
+dff = res.dffMat(:,:,2);
 evtMap = zeros(sz);
 for ii=1:numel(evt)
     evtMap(evt{ii}) = ii;
@@ -60,17 +60,30 @@ for ii=1:numel(evt)
     ex0 = evtMapVec(ihw0,:);
     e0 = sum(ex0~=ii & ex0>0,1);
     
+    xx = c0;
+    base = xx;
+    for k = 1:10
+        base = movmean(min(xx, base), windowsize);
+        cur = max(0, base - xx);
+        sd = sqrt(sum(cur.^2) ./ (length(cur) - 1));
+        if sd < std0
+            break;
+        end
+    end
+    c0 = c0 - base;
+    std0 = sqrt(median((c0(2:end)-c0(1:end-1)).^2/2))/0.685;
+    
     [xMax0,iMax0] = max(c0(it0));
     tMax0 = it0(iMax0);
-    xThr0 = min(xMax0*opts.minShow1,std0);
     
+    xThr0 = min(xMax0*opts.minShow1,std0);
     trg = min(it0):max(it0);
     
     % search backward
     t0 = min(it0);
-    for tt=min(it0)-1:-1:1
+    for tt=min(it0):-1:1
         if e0(tt)==0 && c0(tt)>=xThr0
-            t0 = tt;
+            t0 = max(tt-1,1);
         elseif e0(tt)>0
             [~,dt] = min(c0(tt:min(it0)));
             t0 = tt+dt-1;
@@ -83,9 +96,9 @@ for ii=1:numel(evt)
     
     % search forward
     t0 = max(it0);
-    for tt=max(it0)+1:sz(3)
+    for tt=max(it0):sz(3)
         if e0(tt)==0 && c0(tt)>=xThr0
-            trg = union(trg,tt);
+            trg = union(trg,min(tt+1,res.opts.sz(3)));
         elseif e0(tt)>0
             [~,dt] = min(c0(max(it0):tt));
             t0 = max(it0)+dt-1;          

@@ -8,6 +8,12 @@ nSp = numel(spVoxLst);
 % find one super event in each connected component
 ccL = bwconncomp(lblMapS>0);
 ccLst = ccL.PixelIdxList;
+
+if (isempty(ccLst)|| numel(ccLst)==0)
+   lblMapC1 = zeros(H,W,T,'uint32');
+   return;
+end
+
 evtLbl = nan(nSp,1);  % super event label for each super voxel
 nSe = 0;
 while 1
