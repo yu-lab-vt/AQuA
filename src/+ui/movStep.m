@@ -9,6 +9,12 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
         dat = getappdata(f,'dat');  
     end
     
+    dF = getappdata(f,'dF');
+    
+    if isempty(dF)
+        dF = dat;
+    end
+    
     if isempty(dat)
         dat = getappdata(f,'dat');
     end
@@ -27,6 +33,7 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
     
     % re-scale movie
     dat0 = dat(:,:,n);
+    dF0 = dF(:,:,n);
     if scl.map==1
         dat0 = dat0.^2;
     end
@@ -73,6 +80,16 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
                         fh.ims.(imName{ii}).CData = flipud(datxR);
                     end
 %                     ui.mov.addPatchLineText(f,axNow,n,updtAll);
+                case 'dF'
+                        dF0 = (dF0-scl.min)/max(scl.max-scl.min,0.01)*scl.bri;
+                        dFx = cat(3,dF0,dF0,dF0);
+                        dFxL = dFx/scl.bri*scl.briL;
+                        dFxR = dFx/scl.bri*scl.briR;
+                        if ii==1
+                            fh.ims.(imName{ii}).CData = flipud(dFxL);
+                        else
+                            fh.ims.(imName{ii}).CData = flipud(dFxR);
+                        end
                 case 'Raw + overlay'
                     if ii==1
                         fh.ims.(imName{ii}).CData = flipud(datxColL);
