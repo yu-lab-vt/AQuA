@@ -29,6 +29,11 @@ setappdata(f,'evt',evtLstE);
 ui.detect.postRun([],[],f,evtLstE,datRE,'Events');
 
 fh.nEvt.String = num2str(numel(evtLstE));
+
+btSt = getappdata(f,'btSt');
+btSt.filterMsk = ones(numel(evtLstE),1);
+setappdata(f,'btSt',btSt);
+    
 fprintf('Done\n')
 delete(ff);
 
