@@ -26,9 +26,17 @@ function [G,neibLst] = evtNeibCorr(mIn,dffMat,tBegin,minCorr,maxTimeDif,bdMap,ev
             ih1 = min(max(ih + dh(rr),1),H);
             iw1 = min(max(iw + dw(rr),1),W);
             cellIndex = evtCellLabel(nn);
-            cellRegion = bdLst{cellIndex};
+            if(cellIndex==0)
+                cellRegion = [];
+            else
+                cellRegion = bdLst{cellIndex};
+            end
             vox1 = sub2ind([H,W,T],ih1,iw1,it);
-            vox1 = intersect(vox1,cellRegion);
+            
+            vox12d = sub2ind([H,W],ih1,iw1);
+            indx = ismember(vox12d,cellRegion);
+            vox1 = vox1(indx);
+%             vox1 = intersect(vox1,cellRegion);
             x = mIn(vox1);
             xNeib = unique(x(x>0 & x<nn));
             xNeib = setdiff(xNeib,neib0);

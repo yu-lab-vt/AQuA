@@ -21,7 +21,24 @@ catch
     msgbox('Error setting parameters')
 end
 
-[riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,ff);
+if isfield(opts,'skipSteps') && opts.skipSteps>0
+    evtLst = svLst;
+    seLst = evtLst;
+    datR = 255*ones(size(dat));
+    riseLst = cell(0);
+    H = opts.sz(1);
+    W = opts.sz(2);
+    for i = 1:numel(evtLst)
+        rr = [];
+        rr.dlyMap = zeros(H,W);
+        rr.rgh = 1:H;
+        rr.rgw = 1:W;
+        riseLst{i} = rr;
+    end
+else
+    [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,ff);
+end
+
 [ftsLst,dffMat] = fea.getFeatureQuick(dat,evtLst,opts);
 
 setappdata(f,'riseLstAll',riseLst);

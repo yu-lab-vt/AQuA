@@ -15,22 +15,22 @@ function evtLstOut = mergeEvt(evtLst,dffMat,tBegin,opts,bd)
     
     if ~isempty(bd) && bd.isKey('cell')
         bd0 = bd('cell');
-        bdMap = zeros(sz(1)*sz(2),sz(3));
+        bdMap = zeros(sz(1)*sz(2),1);
         for ii=1:numel(bd0)
             p0 = bd0{ii}{2};
-            bdMap(p0,:) = ii;     
+            bdMap(p0) = ii;     
         end
-        bdMap = reshape(bdMap,sz);
+        bdMap = reshape(bdMap,sz(1:2));
 %         evtCell{ii} = burst.mergeInCell(mIn0,dffMat,tBegin,minCorr,maxTimeDif);
     else
 %         evtCell{1} = burst.mergeInCell(mIn,dffMat,tBegin,minCorr,maxTimeDif);
-        bdMap = ones(sz);
+        bdMap = ones(sz(1:2));
     end
     
     for ii=1:numel(evtLst)
         mIn(evtLst{ii}) = ii;
         [ih,iw,it] = ind2sub(sz,evtLst{ii}(1));
-        evtCellLabel(ii) = bdMap(ih,iw,it);
+        evtCellLabel(ii) = bdMap(ih,iw);
     end
     
     % do not need to merge

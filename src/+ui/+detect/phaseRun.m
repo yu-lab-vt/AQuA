@@ -33,8 +33,13 @@ catch
     msgbox('Error setting parameters')
 end
 
-% grow seeds
-[svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,evtSpatialMask,opts,ff);
+if isfield(opts,'skipSteps') && opts.skipSteps>0
+    svLst = getappdata(f,'arLst');
+    riseX = [];
+else
+    % grow seeds
+    [svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,evtSpatialMask,opts,ff);
+end
 
 % save data
 setappdata(f,'svLst',svLst);
