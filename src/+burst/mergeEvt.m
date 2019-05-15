@@ -39,17 +39,25 @@ function evtLstOut = mergeEvt(evtLst,dffMat,tBegin,opts,bd)
         return
     end
     
+    
+    bd0 = label2idx(bdMap);
     % dilate events
     se0 = ones(minDist*2+1,minDist*2+1);
     for tt=1:size(mIn,3)
         tmp = mIn(:,:,tt);
-        mIn(:,:,tt) = imdilate(tmp,strel(se0));
+        for i = 1:numel(bd0)
+           tmp0 = zeros(size(tmp)); 
+           tmp0(bd0{i}) = tmp(bd0{i});
+           tmp0 = imdilate(tmp0,strel(se0));
+           tmp(bd0{i}) = tmp0(bd0{i});
+        end
+        mIn(:,:,tt) = tmp;
     end  
     
     
     
     % neighbor graphs
-    G = burst.evtNeibCorr(mIn,dffMat,tBegin,minCorr,maxTimeDif,bdMap,evtCellLabel);
+    G = burst.evtNeibCorr(mIn,dffMat,tBegin,minCorr,maxTimeDif);
     
     % connect events
     cc = conncomp(G,'OutputForm','cell');
