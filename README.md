@@ -62,6 +62,7 @@ We tested on MATLAB versions later than 2017a. Earlier versions are not supporte
 5. Open movie and choose project path in AQuA GUI.
 
 Some browsers may show a warning when downloading the 'jar' file. Please choose 'keep file'.
+Note: The Fiji version do not save the results in 'res' data structure in 'mat' file. If users want to obtain the results and process by themselves, please use MATLAB version.
 
 # Getting started
 If you are using AQuA for the first time, please read
