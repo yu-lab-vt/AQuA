@@ -6,7 +6,7 @@
 % px = getWorkPath('proj');
 % p0 = [px,'/glia_kira/tmp/181109_detectionExamples/181113_s1_001_bl/'];
 % f0 = '181113_s1_001_bl_AQuA';
-
+clear;
 addpath(genpath('./'))
 [f0,p0] = uigetfile();
 windowsize = 400; % the window for baseline estimation
@@ -15,6 +15,7 @@ windowsize = 400; % the window for baseline estimation
 fprintf('Loading...\n')
 tmp = load([p0,f0]);
 res = tmp.res;
+res0 = res;
 opts = res.opts;
 sz = opts.sz;
 dat = double(res.datOrg);
@@ -117,11 +118,15 @@ for ii=1:numel(evt)
     r0Min = min(r0);
     for tt=trg
         datRExt(ihw0,tt) = c0(tt)/xMax0;         
+
     end
     r1 = datRExt(evt0);
     r0MinNew = min(r1);
     r0ext = 1-(1-r0)*(1-r0MinNew)/(1-r0Min);
     datRExt(evt0) = r0ext;
+    if ismember(ii,res.btSt.rmLst)
+        datRExt(evt0) = 0;
+    end
 end
 
 evtMapExt = reshape(evtMapExt,sz);
@@ -129,8 +134,8 @@ datRExt = reshape(datRExt,sz);
 
 
 %% update overlay
-evtFilter = label2idx(evtMapExt);
-nEvt = numel(evtFilter);
+evtLst = label2idx(evtMapExt);
+nEvt = numel(evtLst);
 ovx = res.ov('Events');
 for tt = 1:sz(3)
     ov0 = ovx.frame{tt};
@@ -159,17 +164,103 @@ res.ov('Events') = ovx;
 
 %% update some features and save
 fprintf('Preparing AQuA...\n')
-[ftsLstE, dffMat, dMat] = fea.getFeaturesTop(dat, evtFilter, opts);
-ftsLstE = fea.getFeaturesPropTop(dat, datRExt, evtFilter, ftsLstE, opts);
+[ftsLstE, dffMat, dMat] = fea.getFeaturesTop(dat, evtLst, opts);
+ftsLstE = fea.getFeaturesPropTop(dat, datRExt, evtLst, ftsLstE, opts);
 
-res.evt = evtFilter;
+% update network features
+sz = size(dat);
+btSt = res.btSt;
+bd = res.bd;
+fm = btSt.filterMsk;
+muPerPix = opts.spatialRes;
+
+if bd.isKey('cell')
+    bd0 = bd('cell');
+    evtSpatialMask = zeros(sz(1),sz(2));
+    regLst = cell(numel(bd0),1);
+    for ii=1:numel(bd0)
+        pix00 = bd0{ii}{2};
+        regLst{ii} = pix00;
+        evtSpatialMask(pix00) = 1;
+    end
+else
+    regLst = [];
+    evtSpatialMask = ones(sz(1),sz(2));
+end
+
+if bd.isKey('landmk')
+    bd1 = bd('landmk');
+    lmkLst = cell(numel(bd1),1);
+    for ii=1:numel(bd1)
+        lmkLst{ii} = bd1{ii}{2};
+    end
+else
+    lmkLst = [];
+end
+
+% use filtered events only
+evtx = evtLst;
+if ~isempty(fm)
+    for ii=1:numel(evtx)
+        if fm(ii)==0
+            evtx{ii} = [];
+        end
+    end
+end
+
+% landmark features
+ftsLstE.region = [];
+try
+    if ~isempty(regLst) || ~isempty(lmkLst)
+        fprintf('Updating region and landmark features ...\n')
+        ftsLstE.region = fea.getDistRegionBorderMIMO(evtx,datR,regLst,lmkLst,muPerPix,opts.minShow1);
+    end
+catch
+end
+
+% update events to show
+btSt.regMask = [];
+try
+    if ~isempty(regLst)
+        btSt.regMask = sum(ftsLst.region.cell.memberIdx>0,2);
+    else
+        %ftsLst = [];  % !!DBG
+        btSt.regMask = ones(numel(ftsLst.loc.x3D),1);
+    end
+catch
+end
+
+evtx1 = evtx;
+ftsLstE.networkAll = [];
+ftsLstE.network = [];
+try
+    if ~isempty(regLst)
+        for ii=1:numel(evtx)
+            if isfield(ftsLst,'loc2D')
+                loc00 = ftsLstE.loc2D{ii};
+            else
+                loc00 = ftsLstE.loc.x2D{ii};
+            end
+            if sum(evtSpatialMask(loc00))==0
+                evtx1{ii} = [];
+            end
+        end
+    end
+    ftsLstE.networkAll = fea.getEvtNetworkFeatures(evtx,sz);  % all filtered events
+    ftsLstE.network = fea.getEvtNetworkFeatures(evtx1,sz);  % events inside cells only
+catch
+end
+res.evt = evtLst;
 res.fts = ftsLstE;
 res.dffMat = dffMat;
 res.dMat = dMat;
-res.riseLst = res.riseLstFilter;
+res.riseLst = res0.riseLst;
+res.riseLstFilter = res0.riseLstFilter;
 
-res.evtFilter = res.evt;
-res.ftsFilter = res.fts;
+idx = 1:numel(res.evt);
+xSel = ~ismember(idx,btSt.rmLst);
+res.evtLst = res.evt;
+res.ftsFilter = util.filterFields(res.fts,xSel);
 res.dffMatFilter = res.dffMat;
 res.dMatFilter = res.dMat;
 

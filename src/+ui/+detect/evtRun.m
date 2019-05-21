@@ -9,6 +9,7 @@ ff = waitbar(0,'Detecting ...');
 svLst = getappdata(f,'svLst');
 riseX = getappdata(f,'riseX');
 dat = getappdata(f,'dat');
+bd = getappdata(f,'bd');
 dF = getappdata(f,'dF');
 opts = getappdata(f,'opts');
 
@@ -36,7 +37,7 @@ if isfield(opts,'skipSteps') && opts.skipSteps>0
         riseLst{i} = rr;
     end
 else
-    [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,ff);
+    [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,ff,bd);
 end
 
 [ftsLst,dffMat] = fea.getFeatureQuick(dat,evtLst,opts);

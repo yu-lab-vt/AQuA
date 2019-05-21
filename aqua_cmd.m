@@ -33,7 +33,7 @@ opts = util.parseParam(preset,1);
 [dat,dF,arLst,lmLoc,opts,dL] = burst.actTop(datOrg,opts);  % foreground and seed detection
 [svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,[],opts);  % super voxel detection
 
-[riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts);  % events
+[riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,[]);  % events
 [ftsLst,dffMat] = fea.getFeatureQuick(datOrg,evtLst,opts);
 
 % fitler by significance level

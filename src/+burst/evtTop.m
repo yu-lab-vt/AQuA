@@ -1,4 +1,4 @@
-function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff)
+function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd)
     % evtTop super voxels to super events and optionally, to events
     
     [H,W,T] = size(dat);
@@ -40,6 +40,9 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff)
         xx = double(riseMap); xx(xx==0) = nan;
         seMap = burst.sp2evtStp1(lblMapS,xx,0,stp11,0.2,dat);
     end
+    
+    % seperate events in different region
+    seMap = burst.seperateEvents(seMap,bd);
     
     seLst = label2idx(seMap);
     if exist('ff','var')
