@@ -42,7 +42,9 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd)
     end
     
     % seperate events in different region
-    seMap = burst.seperateEvents(seMap,bd);
+    if exist('bd')
+        seMap = burst.seperateEvents(seMap,bd);
+    end
     
     seLst = label2idx(seMap);
     if exist('ff','var')

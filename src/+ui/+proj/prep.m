@@ -129,6 +129,7 @@ if op>0
     scl = res.scl;
     stg = res.stg;
     ov = res.ov;
+    fh.nEvt.String = num2str(numel(res.evt));
     
     res.btSt.sbs = 0;
     
