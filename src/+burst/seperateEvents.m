@@ -1,7 +1,8 @@
 function evtMap = seperateEvents(seMap,bd)
     sz = size(seMap);
-    evtMap = zeros(size(seMap));
-    if ~isempty(bd) && bd.isKey('cell')
+    evtMap = zeros(size(seMap));    
+    
+    if exist('bd') && ~isempty(bd) && bd.isKey('cell')
         bd0 = bd('cell');
         bdMap = zeros(sz(1)*sz(2),1);
         for ii=1:numel(bd0)
