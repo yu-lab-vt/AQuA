@@ -52,7 +52,7 @@ function saveMsk(~,~,f,op)
         if strcmp(rr0.type,'landmark')
             minLmkSz = min(minLmkSz,rr0.minSz);
             if isempty(lmkMskAll)
-                lmkMskAll = rr0.mask;
+                lmkMskAll = double(rr0.mask);
                 continue
             end
             switch opLmk
@@ -204,7 +204,21 @@ function saveMsk(~,~,f,op)
             nNow = nNow+1;
         end
     end
-    bd('cell') = regAll;
+    
+    regAllS = cell(1,numel(regAll));
+    pos = zeros(1,numel(regAll));
+    for i = 1:numel(regAll)
+        pix = regAll{i}{2};
+        [ih0,iw0] = ind2sub(opts.sz(1:2),pix);
+        ihw = sub2ind([opts.sz(2),opts.sz(1)],iw0,ih0);
+        pos(i) = min(ihw);
+    end
+    [~,num] = sort(pos);
+    for i = 1:numel(regAll)
+        regAllS{i} = regAll{num(i)};
+    end
+    bd('cell') = regAllS;
+    
     
     nNow = numel(lmkAll);
     for ii=1:ccLmk.NumObjects

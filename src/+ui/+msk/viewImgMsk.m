@@ -1,9 +1,11 @@
-function viewImgMsk(~, ~, f)
+function viewImgMsk(~, ~, f,stg)
 
     fh = guidata(f);
     ax = fh.imgMsk;
     im = fh.imsMsk;
-
+    if ~exist('stg')
+        stg = 0;
+    end
     hh = findobj(ax, 'Type', 'text');
     delete(hh);
 
@@ -25,22 +27,25 @@ function viewImgMsk(~, ~, f)
     datAvg = rr.datAvg;
     [H, W] = size(datAvg);
 
-    % remove too small and too large
-    mskx = datAvg >= rr.thr;
-    if ~(strcmp(rr.type,'background') || strcmp(rr.type,'foreground'))
-        mskx = bwareaopen(mskx, rr.minSz);
-        %mskx = imfill(mskx, 'holes');
-        cc = bwconncomp(mskx);
-        ccSz = cellfun(@numel, cc.PixelIdxList);
-        cc.PixelIdxList = cc.PixelIdxList(ccSz <= rr.maxSz);
-        cc.NumObjects = numel(cc.PixelIdxList);
-        mskx = labelmatrix(cc);
-    end
-    bLst = bwboundaries(mskx > 0);
+    if(stg==0)
+        % remove too small and too large
+        mskx = datAvg >= rr.thr;
+        if ~(strcmp(rr.type,'background') || strcmp(rr.type,'foreground'))
+            mskx = bwareaopen(mskx, rr.minSz);
+            %mskx = imfill(mskx, 'holes');
+            cc = bwconncomp(mskx);
+            ccSz = cellfun(@numel, cc.PixelIdxList);
+            cc.PixelIdxList = cc.PixelIdxList(ccSz <= rr.maxSz);
+            cc.NumObjects = numel(cc.PixelIdxList);
+            mskx = labelmatrix(cc);
+        end
+        bLst = bwboundaries(mskx > 0);
 
-    % save mask
-    rr.mask = mskx;
+        % save mask
+        rr.mask = mskx;
+    end
     bdMsk{ix} = rr;
+    bLst = bwboundaries(rr.mask > 0);
     bd('maskLst') = bdMsk;
     setappdata(f, 'bd', bd);
 

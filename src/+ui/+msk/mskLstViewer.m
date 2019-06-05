@@ -6,6 +6,7 @@ function mskLstViewer(~,evtDat,f,op)
     
     bd = getappdata(f,'bd');
     bdMsk = bd('maskLst');
+    stg = 0;
     
     % t.ColumnName = {'','Mask name','Type'};
     % rr.name = ffName;
@@ -39,6 +40,7 @@ function mskLstViewer(~,evtDat,f,op)
         dat{idx,1} = true;
         tb.Data = dat;
         rr = bdMsk{idx};
+        stg = 1;
     end
     
     if strcmp(op,'remove')
@@ -70,7 +72,7 @@ function mskLstViewer(~,evtDat,f,op)
     end
     
     ui.msk.updtMskSld([],[],f,rr);
-    ui.msk.viewImgMsk([],[],f);  % update image
+    ui.msk.viewImgMsk([],[],f,stg);  % update image
     
 end
 
