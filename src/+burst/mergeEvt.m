@@ -28,6 +28,10 @@ function evtLstOut = mergeEvt(evtLst,dffMat,tBegin,opts,bd)
     end
     
     for ii=1:numel(evtLst)
+        if(numel(evtLst{ii})==0)
+            evtCellLabel(ii) = 0;
+            continue;
+        end
         mIn(evtLst{ii}) = ii;
         [ih,iw,it] = ind2sub(sz,evtLst{ii}(1));
         evtCellLabel(ii) = bdMap(ih,iw);

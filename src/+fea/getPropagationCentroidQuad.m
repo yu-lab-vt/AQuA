@@ -64,10 +64,10 @@ for ii=1:4
     msk(:,:,ii) = msk0;    
 end
 
-msk(1:h0,:,1) = 1;
-msk(h0:end,:,2) = 1;
-msk(:,1:w0,3) = 1;
-msk(:,w0:end,4) = 1;
+% msk(1:h0,:,1) = 1;
+% msk(h0:end,:,2) = 1;
+% msk(:,1:w0,3) = 1;
+% msk(:,w0:end,4) = 1;
 
 % locations of centroid
 sigDist = nan(T,4,nThr);  % weighted distance for each frame (four directions)
