@@ -128,7 +128,7 @@ function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
         [dff2e,rgT1] = fea.extendEventTimeRangeByCurve(dff2,sigxOthers,it);
         
         % curve features
-        [ rise19,fall91,width55,width11,decayTau ] = fea.getCurveStat( ...
+        [ rise19,fall91,width55,width11,decayTau,pp] = fea.getCurveStat( ...
             dff2e, secondPerFrame, foptions, opts.ignoreTau );
         
         dffMat(ii,:,1) = single(dff1);
@@ -143,7 +143,7 @@ function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
         ftsLst.curve.rgt1(ii,:) = [min(rgT1),max(rgT1)];
         ftsLst.curve.dffMax(ii) = dffMax1;
         ftsLst.curve.dffMax2(ii) = dffMax2;
-        ftsLst.curve.dffMaxFrame(ii) = (tMax+min(rgT)-1)*secondPerFrame;
+        ftsLst.curve.dffMaxFrame(ii) = (tMax+min(rgT)-1);
         ftsLst.curve.dffMaxZ(ii) = dffMaxZ;
         ftsLst.curve.dffMaxPval(ii) = dffMaxPval;
         ftsLst.curve.tBegin(ii) = min(it);
@@ -151,6 +151,9 @@ function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
         ftsLst.curve.rise19(ii) = rise19;
         ftsLst.curve.fall91(ii) = fall91;
         ftsLst.curve.width55(ii) = width55;
+        ftsLst.curve.width11(ii) = width11;
+        ftsLst.curve.dff1Begin(ii) = (pp(1,1)+min(rgT1)-1);
+        ftsLst.curve.dff1End(ii) = (pp(1,2)+min(rgT1)-1);
         ftsLst.curve.width11(ii) = width11;
         ftsLst.curve.decayTau(ii) = decayTau;
         
