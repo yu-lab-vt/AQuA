@@ -55,7 +55,6 @@ We tested on MATLAB versions later than 2017a. Earlier versions are not supporte
 
 ## Fiji plugin
 
-Now this plugin can only be applied in windows system.
 1. Download **[here](https://github.com/yu-lab-vt/AQuA-Fiji/releases)**.
 2. Put the downloaded `Aqua.jar` to the plugins folder of Fiji.
 3. Open Fiji.
