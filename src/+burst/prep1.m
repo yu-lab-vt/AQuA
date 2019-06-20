@@ -23,6 +23,7 @@ function [dat,opts] = prep1(p0,f0,rgT,opts,ff)
     if exist('rgT','var') && ~isempty(rgT)
         dat = dat(:,:,rgT);
     end
+    dat = double(dat);
     maxDat = max(dat(:));
     dat = dat/maxDat;
     dat = dat(bdCrop+1:end-bdCrop,bdCrop+1:end-bdCrop,:);
