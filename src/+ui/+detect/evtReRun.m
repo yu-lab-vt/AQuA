@@ -21,7 +21,7 @@ if isfield(opts,'skipSteps') && opts.skipSteps>0
     riseLstE = riseLstFilterZ; datRE = datR; evtLstE = evtLstFilterZ;
 else
     if opts.extendSV==0	|| opts.ignoreMerge==0 || opts.extendEvtRe>0
-        [riseLstE,datRE,evtLstE] = burst.evtTopEx(dat,dF,evtLstMerge,opts);
+        [riseLstE,datRE,evtLstE] = burst.evtTopEx(dat,dF,evtLstMerge,opts,ff,f);
     else
         riseLstE = riseLstFilterZ; datRE = datR; evtLstE = evtLstFilterZ;
     end

@@ -100,7 +100,7 @@ pImgTool.Spacing = 10;
 pImgTool.Widths = [10,60,60,40,50,100,50,80,80,-1,120,10];
 
 % view control
-str00 = {'Raw','Raw + overlay','Rising map','Maximum Projection', 'dF'};
+str00 = {'Raw','Raw + overlay','Rising map','Maximum Projection','Average Projection', 'dF'};
 uicontrol(bMov2Pop,'Style','popupmenu','String',str00,'Tag','movLType','Callback',{@ui.mov.movViewSel,f},'Value',2);
 uix.Empty('Parent',bMov2Pop);
 uicontrol(bMov2Pop,'Style','popupmenu','String',str00,'Tag','movRType','Callback',{@ui.mov.movViewSel,f},'Value',1);

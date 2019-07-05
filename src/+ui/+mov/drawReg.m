@@ -22,6 +22,7 @@ function drawReg(~,~,f,op,lbl)
                 tmp{1} = bwboundaries(msk);
                 tmp{2} = find(msk>0);
                 tmp{3} = 'manual';
+                tmp{4} = 'None';
                 bd0{end+1} = tmp;
                 delete(hh)
             end

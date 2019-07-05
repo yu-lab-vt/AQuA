@@ -112,8 +112,22 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
                         datMxR = cat(3,datMR,datMR,datMR);
                         fh.ims.(imName{ii}).CData = flipud(datMxR);
                     end
-                    
                     ui.mov.addPatchLineText(f,axNow,n,updtAll);
+                case 'Average Projection'
+                    if scl.map==1
+                        datM = fh.averPro.^2;
+                    end
+                    if ii==1
+                        datML = (datM-scl.min)/max(scl.max-scl.min,0.01)*scl.briL;
+                        datMxL = cat(3,datML,datML,datML);
+                        fh.ims.(imName{ii}).CData = flipud(datMxL);
+                    else
+                       datMR = (datM-scl.min)/max(scl.max-scl.min,0.01)*scl.briR;
+                        datMxR = cat(3,datMR,datMR,datMR);
+                        fh.ims.(imName{ii}).CData = flipud(datMxR);
+                    end
+                    ui.mov.addPatchLineText(f,axNow,n,updtAll);    
+                
             end
         end
     end

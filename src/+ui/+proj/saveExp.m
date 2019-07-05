@@ -20,7 +20,7 @@ ff = waitbar(0,'Gathering results ...');
 % if do not want to detect again, do not need to save dF
 vSave0 = {...  % basic variables for results analysis
     'opts','scl','btSt','ov','bd','datOrg','evt','fts','dffMat','dMat',...
-    'riseLst','featureTable','userFeatures'...
+    'riseLst','featureTable','userFeatures','dF',...
     };
 % vSave1 = {...  % extra variables for event detection
 %     'arLst','lmLoc','svLst','seLstAll','riseX','riseLstAll','evtLstAll','ftsLstAll',...
@@ -116,14 +116,26 @@ if fh.expEvt.Value==1
     ftb = [fpath,filesep,fname,'.xlsx'];
     writetable(ftTb1,ftb,'WriteVariableNames',0,'WriteRowNames',1);
 
+    
+    bd = getappdata(f,'bd');
+    bdcell = bd('cell');
     % for each region
     if ~isempty(fts.region) && isfield(fts.region.cell,'memberIdx') && ~isempty(fts.region.cell.memberIdx)
+        fpathRegion = [fpath,'\Regions'];
+        if ~exist(fpathRegion,'file') && ~isempty(fpathRegion)
+            mkdir(fpathRegion);    
+        end
+
         memSel = fts.region.cell.memberIdx(xSel,:);
         for ii=1:size(memSel,2)
             mem00 = memSel(:,ii);
+            Name = bdcell{ii}{4};
+            if strcmp(Name,'None')
+               Name = num2str(ii); 
+            end
             cc00 = cc(:,mem00>0);
             ftTb00 = table(cc00,'RowNames',ftTb.Row);
-            ftb00 = [fpath,filesep,fname,'_region_',num2str(ii),'.xlsx'];
+            ftb00 = [fpathRegion,filesep,fname,'_region_',Name,'.xlsx'];
             writetable(ftTb00,ftb00,'WriteVariableNames',0,'WriteRowNames',1);
         end
     end

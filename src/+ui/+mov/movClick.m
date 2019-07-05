@@ -1,4 +1,4 @@
-function movClick(~,evtDat,f,~,lbl)
+function movClick(~,evtDat,f,op,lbl)
 % get cursor location and run operation specified by op when click movie
 %
 % Note the difference between image cooridate and matrix coordinate
@@ -15,28 +15,53 @@ y = max(round(xy(2)),1);
 
 % remove drawn regions
 if strcmp(lbl,'cell') || strcmp(lbl,'landmk')
+    
     bd = getappdata(f,'bd');
     xrg = max(x-1,1):min(x+1,sz(2));
     yrg = max(y-1,1):min(y+1,sz(1));
-    if bd.isKey(lbl)
-        bd0 = bd(lbl);
-        for ii=1:numel(bd0)
-            map00 = zeros(sz(1),sz(2));
-            x00 = bd0{ii}{2};
-            map00(x00) = 1;
-            map00 = flipud(map00);
-            %map00 = bd0{ii}{2};
-            %map00 = poly2mask(x00(:,1),x00(:,2),sz(1),sz(2));
-            v00 = map00(yrg,xrg);
-            if sum(v00(:))>0
-                bd0{ii} = [];
+    if(strcmp(op,'rm')) %remove
+        if bd.isKey(lbl)
+            bd0 = bd(lbl);
+            for ii=1:numel(bd0)
+                map00 = zeros(sz(1),sz(2));
+                x00 = bd0{ii}{2};
+                map00(x00) = 1;
+                map00 = flipud(map00);
+                %map00 = bd0{ii}{2};
+                %map00 = poly2mask(x00(:,1),x00(:,2),sz(1),sz(2));
+                v00 = map00(yrg,xrg);
+                if sum(v00(:))>0
+                    bd0{ii} = [];
+                end
             end
+            idxSel = cellfun(@isempty,bd0);
+            bd0 = bd0(~idxSel);
+            bd(lbl) = bd0;
         end
-        idxSel = cellfun(@isempty,bd0);
-        bd0 = bd0(~idxSel);
-        bd(lbl) = bd0;
+        setappdata(f,'bd',bd);
+    else
+       % name
+       if bd.isKey(lbl)
+            bd0 = bd(lbl);
+            for ii=1:numel(bd0)
+                map00 = zeros(sz(1),sz(2));
+                x00 = bd0{ii}{2};
+                map00(x00) = 1;
+                map00 = flipud(map00);
+                v00 = map00(yrg,xrg);
+                if sum(v00(:))>0
+                    % dialog
+                    curName = {bd0{ii}{4}};
+                    answer = inputdlg('New Name','Name',1,curName);
+                    bd0{ii}{4} = answer{1};
+                end
+            end
+            idxSel = cellfun(@isempty,bd0);
+            bd0 = bd0(~idxSel);
+            bd(lbl) = bd0;
+        end
+        setappdata(f,'bd',bd);
     end
-    setappdata(f,'bd',bd);
 end
 
 % show curve, add to favourite or delete from favourite

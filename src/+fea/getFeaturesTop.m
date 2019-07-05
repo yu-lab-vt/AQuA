@@ -148,6 +148,7 @@ function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
         ftsLst.curve.dffMaxPval(ii) = dffMaxPval;
         ftsLst.curve.tBegin(ii) = min(it);
         ftsLst.curve.tEnd(ii) = max(it);
+        ftsLst.curve.duration(ii) = (max(it)-min(it)+1)*secondPerFrame;
         ftsLst.curve.rise19(ii) = rise19;
         ftsLst.curve.fall91(ii) = fall91;
         ftsLst.curve.width55(ii) = width55;

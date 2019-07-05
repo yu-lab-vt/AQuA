@@ -1,4 +1,4 @@
-function [riseLst,datR,evtLst,seLst] = evtTopEx(dat,dF,seLst,opts,ff)
+function [riseLst,datR,evtLst,seLst] = evtTopEx(dat,dF,seLst,opts,ff,f)
 % extend and align detected events
 % mainly for glutamate data, later will be used for other data types
 
@@ -7,6 +7,10 @@ function [riseLst,datR,evtLst,seLst] = evtTopEx(dat,dF,seLst,opts,ff)
 seMap = zeros(size(dat),'uint32');
 for nn=1:numel(seLst)
     seMap(seLst{nn}) = nn;
+end
+
+if(exist('f'))
+   fh = guidata(f); 
 end
 
 % extend event time windows
@@ -57,10 +61,23 @@ for nn=1:numel(seLst)
     datL(rgh,rgw,rgtx) = evtL;
     riseLst = burst.addToRisingMap(riseLst,evtMap,dlyMap,nEvt,nEvt0,rgh,rgw,rgt,rgtSel);
     nEvt = nEvt + 1;
+    
+    if(exist('f'))
+       fh.nEvt.String = nEvt;
+    end
     %nEvt = nEvt + nEvt0;
 end
 
 evtLst = label2idx(datL);
+% filter small events
+size2d = zeros(numel(evtLst),1);
+for i = 1:numel(evtLst)
+    [ih,iw,it] = ind2sub([H,W,T],evtLst{i});
+    size2d(i) = numel(unique(sub2ind([H,W],ih,iw)));
+end
+filter = size2d>opts.minSize;
+evtLst = evtLst(filter);
+riseLst = riseLst(filter);
 
 if exist('ff','var')
     waitbar(0.8,ff);

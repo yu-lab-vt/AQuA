@@ -28,7 +28,7 @@ if op==1
     fh.overlayLmk.Enable = xxx;
     fh.sldMinOv.Enable = xxx;
     fh.sldMaxOv.Enable = xxx;
-    fh.sldBriOv.Enable = xxx;
+%     fh.sldBriOv.Enable = xxx;
     fh.updtFeature1.Enable = xxx;
     return
 end

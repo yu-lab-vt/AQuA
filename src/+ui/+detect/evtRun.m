@@ -37,7 +37,7 @@ if isfield(opts,'skipSteps') && opts.skipSteps>0
         riseLst{i} = rr;
     end
 else
-    [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,ff,bd);
+    [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,ff,bd,f);
 end
 
 [ftsLst,dffMat] = fea.getFeatureQuick(dat,evtLst,opts);

@@ -34,13 +34,17 @@ function addPatchLineText(f,axNow,n,updtAll)
             bd0 = bd('cell');
             for ii=1:numel(bd0)
                 xyLst = bd0{ii}{1};
+                Name = bd0{ii}{4};
+                if strcmp(Name,'None')
+                    Name = num2str(ii);
+                end
                 for jj=1:numel(xyLst)
                     xy = xyLst{jj};
                     %xy = bd0{ii}{1};
                     patch(axNow,'XData',xy(:,2),'YData',H-xy(:,1)+1,...
-                        'FaceColor','none','LineStyle','-','EdgeColor',[0.2 0.2 0.5],'Tag','fix');
+                        'FaceColor','none','LineStyle','-','EdgeColor',[0.5 0.5 0.8],'Tag','fix');
                     if jj==1
-                        text(axNow,xy(1,2)+2,H-xy(1,1)+2,num2str(ii),'Color','b','Tag','fix');
+                        text(axNow,xy(1,2)+2,H-xy(1,1)+2,Name,'Color',[0.7 0.7 0.9],'Tag','fix','FontSize',14);
                     end
                 end                
             end
@@ -50,13 +54,17 @@ function addPatchLineText(f,axNow,n,updtAll)
             bd0 = bd('landmk');
             for ii=1:numel(bd0)
                 xyLst = bd0{ii}{1};
+                Name = bd0{ii}{4};
+                if strcmp(Name,'None')
+                    Name = num2str(ii);
+                end
                 for jj=1:numel(xyLst)
                     xy = xyLst{jj};
                     %xy = bd0{ii}{1};
                     patch(axNow,'XData',xy(:,2),'YData',H-xy(:,1)+1,...
                         'FaceColor','none','LineStyle','-','EdgeColor',[0.4 0.4 0],'Tag','fix');
                     if jj==1
-                        text(axNow,xy(1,2)+2,H-xy(1,1)+2,num2str(ii),'Color','y','Tag','fix');
+                        text(axNow,xy(1,2)+2,H-xy(1,1)+2,Name,'Color','y','Tag','fix');
                     end
                 end                
             end

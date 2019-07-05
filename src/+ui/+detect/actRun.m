@@ -52,7 +52,7 @@ setappdata(f,'opts',opts);
 ui.detect.postRun([],[],f,arLst,[],'Step 1: active voxels');
 fh.GaussFilter.Enable = 'on';
 delete(ff);
-fprintf('Done\n')
+fprintf('Done\n');
 
 end
 

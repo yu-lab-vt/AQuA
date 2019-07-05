@@ -1,4 +1,4 @@
-function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd)
+function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd,f)
     % evtTop super voxels to super events and optionally, to events
     
     [H,W,T] = size(dat);
@@ -7,6 +7,10 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd)
         gaptxx = opts.gapExt;  % 5 by default
     else
         gaptxx = 50;
+    end
+    
+    if(exist('f'))
+       fh = guidata(f); 
     end
     
     lblMapS = zeros(size(dat),'uint32');
@@ -47,6 +51,19 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd)
     end
     
     seLst = label2idx(seMap);
+    % filter small super events
+    size2d = zeros(numel(seLst),1);
+    for i = 1:numel(seLst)
+        [ih,iw,it] = ind2sub([H,W,T],seLst{i});
+        size2d(i) = numel(unique(sub2ind([H,W],ih,iw)));
+    end
+    filter = size2d>opts.minSize;
+    seLst = seLst(filter);
+    % update seMap
+    seMap = zeros([H,W,T]);
+    for i = 1:numel(seLst)
+        seMap(seLst{i}) = i;
+    end
     if exist('ff','var')
         waitbar(0.2,ff);
     end
@@ -92,12 +109,32 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd)
         datL(rgh,rgw,rgtx) = evtL;
         riseLst = burst.addToRisingMap(riseLst,evtMap,dlyMap,nEvt,nEvt0,rgh,rgw,rgt,rgtSel);
         nEvt = nEvt + nEvt0;
+        
+        if(exist('f'))
+           fh.nEvt.String = nEvt;
+        end
+        
+        
         %     if nEvt>=223
         %         keyboard
         %     end
     end
     
     evtLst = label2idx(datL);
+    
+    % filter small events
+    size2d = zeros(numel(evtLst),1);
+    for i = 1:numel(evtLst)
+        [ih,iw,it] = ind2sub([H,W,T],evtLst{i});
+        size2d(i) = numel(unique(sub2ind([H,W],ih,iw)));
+    end
+    filter = size2d>opts.minSize;
+    evtLst = evtLst(filter);
+    riseLst = riseLst(filter);
+    
+    if(exist('f'))
+       fh.nEvt.String = numel(evtLst);
+    end
     
     % ov1 = plt.regionMapWithData(spLst,zeros(H,W),0.3); zzshow(ov1);
     % ov2 = plt.regionMapWithData(evtMap0,evtMap0*0,0.5); zzshow(ov2);
