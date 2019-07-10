@@ -37,6 +37,7 @@ waitbar(1,ff);
 
 ui.detect.postRun([],[],f,evtLstFilterZ,datR,'Step 4: events cleaned');
 
+fh.nEvtName.String = 'nEvt';
 fh.nEvt.String = num2str(numel(evtLstFilterZ));
 delete(ff);
 fprintf('Done\n')

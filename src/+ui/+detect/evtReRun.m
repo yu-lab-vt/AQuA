@@ -32,6 +32,7 @@ setappdata(f,'evt',evtLstE);
 
 ui.detect.postRun([],[],f,evtLstE,datRE,'Events');
 
+fh.nEvtName.String = 'nEvt';
 fh.nEvt.String = num2str(numel(evtLstE));
 
 btSt = getappdata(f,'btSt');

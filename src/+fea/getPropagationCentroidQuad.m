@@ -88,7 +88,49 @@ for tt=t0:t1
             dh = seedh-seedhInit;
             dw = seedw-seedwInit;            
             sigDist(tt,ii,kk) = sum([dw,dh].*[kDi(ii,1),kDi(ii,2)]);
-        end 
+        end      
+    end
+end
+
+
+% max propagation speed.
+boundary = cell(tt,nThr);
+propMaxSpeed = zeros(T,nThr);
+for tt = max(t0-1,1):min(t1+1,T)
+    imgCur = volr0(:,:,tt);
+    for kk = 1:nThr
+        pixCur = imgCur>=thr0(kk);
+        pixCur = bwmorph(pixCur,'close');
+        boundary{tt,kk} = cell2mat(bwboundaries(pixCur));
+    end
+end
+
+for tt = max(2,t0):t1
+    imgCur = volr0(:,:,tt);
+    for kk = 1:nThr
+        pixCur = imgCur>=thr0(kk);
+        pixCur = bwmorph(pixCur,'close');
+        preBound = boundary{tt-1,kk};
+        curBound = boundary{tt,kk};
+        if(~isempty(preBound))
+            for ii = 1:size(curBound,1)
+               xy = curBound(ii,:);
+               shift = xy-preBound;
+               dist = sqrt(shift(:,1).^2 + shift(:,2).^2);
+               curSpeed = min(dist);
+               propMaxSpeed(tt,kk) = max(propMaxSpeed(tt,kk),curSpeed);
+            end
+        end
+        
+        if(~isempty(curBound))
+            for ii = 1:size(preBound,1)
+               xy = preBound(ii,:);
+               shift = xy-curBound;
+               dist = sqrt(shift(:,1).^2 + shift(:,2).^2);
+               curSpeed = min(dist);
+               propMaxSpeed(tt,kk) = max(propMaxSpeed(tt,kk),curSpeed);
+            end
+        end
     end
 end
 
@@ -121,6 +163,7 @@ ftsPg.areaChange{nEvt} = pixNumChange*muPerPix*muPerPix;
 ftsPg.areaChangeRate{nEvt} = pixNumChangeRate;
 
 ftsPg.areaFrame{nEvt} = pixNum*muPerPix*muPerPix;
+ftsPg.propMaxSpeed{nEvt} = propMaxSpeed*muPerPix;
 
 end
 

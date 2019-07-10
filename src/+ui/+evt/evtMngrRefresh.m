@@ -17,7 +17,11 @@ else
         dat{ii,2} = idx00;
         dat{ii,3} = fts.curve.tBegin(idx00);
         dat{ii,4} = fts.basic.area(idx00);
-        dat{ii,5} = fts.curve.duration(idx00);
+        if isfield(fts.curve,'duration')
+            dat{ii,5} = fts.curve.duration(idx00);
+        else
+            dat{ii,5} = fts.curve.tEnd(idx00) - fts.curve.tBegin(idx00);
+        end
         dat{ii,6} = fts.curve.dffMax(idx00);
         dat{ii,7} = fts.curve.decayTau(idx00);
     end

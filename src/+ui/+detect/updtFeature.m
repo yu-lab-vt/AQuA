@@ -8,6 +8,11 @@ function updtFeature(~, ~, f, stg)
     ov = getappdata(f, 'ov');
     opts = getappdata(f, 'opts');
     evtLst = getappdata(f, 'evt');
+    
+    fh = guidata(f);
+    fh.nEvtName.String = 'nEvt';
+    fh.nEvt.String = num2str(numel(evtLst));
+    
     gg = waitbar(0, 'Updating features ...');
     sz = opts.sz;
 

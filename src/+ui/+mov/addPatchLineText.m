@@ -34,9 +34,13 @@ function addPatchLineText(f,axNow,n,updtAll)
             bd0 = bd('cell');
             for ii=1:numel(bd0)
                 xyLst = bd0{ii}{1};
-                Name = bd0{ii}{4};
-                if strcmp(Name,'None')
-                    Name = num2str(ii);
+                Name = 'None';
+                if numel(bd0{ii})>=4
+                    Name = bd0{ii}{4};
+                else
+                    if strcmp(Name,'None')
+                        Name = num2str(ii);
+                    end
                 end
                 for jj=1:numel(xyLst)
                     xy = xyLst{jj};

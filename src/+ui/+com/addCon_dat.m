@@ -113,7 +113,7 @@ uicontrol(pImgCon,'String','Play','Callback',{@ui.mov.playMov,f},'Tag','play');
 uicontrol(pImgCon,'String','Pause','Callback',{@ui.mov.pauseMov,f});
 h00 = uicomponent(pImgCon,'style','javax.swing.JScrollBar','Tag','sldMov','Orientation',0);  % Java
 h00.AdjustmentValueChangedCallback = {@ui.mov.stepOne,f};
-uicontrol(pImgCon,'Style','text','String','nEvt');
+uicontrol(pImgCon,'Style','text','String','nEvt','Tag','nEvtName');
 nEvt = uicontrol(pImgCon,'Style','text','String','0','Tag','nEvt');
 nEvt.BackgroundColor = [1,1,1];
 % uicontrol(pImgCon,'Style','slider','Min',0,'Max',100,'Value',1,'SliderStep',[0.01 0.1],...

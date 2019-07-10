@@ -52,6 +52,7 @@ setappdata(f,'datRAll',datR);
 ui.detect.postRun([],[],f,seLst,datR,'Step 3a: super events');
 ui.detect.postRun([],[],f,evtLst,datR,'Step 3b: events all');
 
+fh.nEvtName.String = 'nEvt';
 fh.nEvt.String = num2str(numel(evtLst));
 fprintf('Done\n')
 delete(ff);

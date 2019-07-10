@@ -51,7 +51,11 @@ if strcmp(lbl,'cell') || strcmp(lbl,'landmk')
                 v00 = map00(yrg,xrg);
                 if sum(v00(:))>0
                     % dialog
-                    curName = {bd0{ii}{4}};
+                    if numel(bd0{ii})>=4
+                        curName = {bd0{ii}{4}};
+                    else
+                        curName = {num2str(ii)};
+                    end
                     answer = inputdlg('New Name','Name',1,curName);
                     bd0{ii}{4} = answer{1};
                 end
