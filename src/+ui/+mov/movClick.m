@@ -57,7 +57,9 @@ if strcmp(lbl,'cell') || strcmp(lbl,'landmk')
                         curName = {num2str(ii)};
                     end
                     answer = inputdlg('New Name','Name',1,curName);
-                    bd0{ii}{4} = answer{1};
+                    if(~isempty(answer))
+                        bd0{ii}{4} = answer{1};
+                    end
                 end
             end
             idxSel = cellfun(@isempty,bd0);

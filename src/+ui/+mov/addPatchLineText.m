@@ -37,10 +37,9 @@ function addPatchLineText(f,axNow,n,updtAll)
                 Name = 'None';
                 if numel(bd0{ii})>=4
                     Name = bd0{ii}{4};
-                else
-                    if strcmp(Name,'None')
-                        Name = num2str(ii);
-                    end
+                end
+                if strcmp(Name,'None')
+                    Name = num2str(ii);
                 end
                 for jj=1:numel(xyLst)
                     xy = xyLst{jj};
@@ -59,6 +58,9 @@ function addPatchLineText(f,axNow,n,updtAll)
             for ii=1:numel(bd0)
                 xyLst = bd0{ii}{1};
                 Name = bd0{ii}{4};
+                if numel(bd0{ii})>=4
+                    Name = bd0{ii}{4};
+                end
                 if strcmp(Name,'None')
                     Name = num2str(ii);
                 end
