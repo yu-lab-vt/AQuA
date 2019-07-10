@@ -46,7 +46,7 @@ setappdata(f,'svLst',svLst);
 setappdata(f,'riseX',riseX);
 
 ui.detect.postRun([],[],f,svLst,[],'Step 2: super voxels');
-fh.nEvtName.String = 'nSp';
+fh.nEvtName.String = 'nSv';
 fh.nEvt.String = num2str(numel(svLst));
 
 delete(ff);
