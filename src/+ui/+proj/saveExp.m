@@ -118,9 +118,10 @@ if fh.expEvt.Value==1
 
     
     bd = getappdata(f,'bd');
-    bdcell = bd('cell');
+    
     % for each region
     if ~isempty(fts.region) && isfield(fts.region.cell,'memberIdx') && ~isempty(fts.region.cell.memberIdx)
+        bdcell = bd('cell');
         fpathRegion = [fpath,'\Regions'];
         if ~exist(fpathRegion,'file') && ~isempty(fpathRegion)
             mkdir(fpathRegion);    
