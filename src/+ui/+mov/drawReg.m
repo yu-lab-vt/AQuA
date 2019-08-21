@@ -3,6 +3,7 @@ function drawReg(~,~,f,op,lbl)
     
     fh = guidata(f);
     bd = getappdata(f,'bd');
+    btSt = getappdata(f,'btSt');
     
     if bd.isKey(lbl)
         bd0 = bd(lbl);
@@ -11,7 +12,14 @@ function drawReg(~,~,f,op,lbl)
     end
     
     ax = fh.mov;
+    if btSt.sbs==0
+        ax = fh.mov;
+    end
+    if btSt.sbs==1
+        ax = fh.movL;
+    end
     
+  
     if strcmp(op,'add')
         tmp = [];
         hh = impoly(ax);
