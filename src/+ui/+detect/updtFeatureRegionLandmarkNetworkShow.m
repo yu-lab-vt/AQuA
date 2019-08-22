@@ -52,6 +52,26 @@ try
     if ~isempty(regLst) || ~isempty(lmkLst)
         fprintf('Updating region and landmark features ...\n')
         ftsLst.region = fea.getDistRegionBorderMIMO(evtx,datR,regLst,lmkLst,muPerPix,opts.minShow1);
+        if bd.isKey('cell')
+            bd0 = bd('cell');
+            for i = 1:numel(regLst)
+                cname{i} = bd0{i}{4};
+                if(strcmp(cname{i},'None'))
+                    cname{i} = num2str(i);
+                end
+            end
+            ftsLst.region.cell.name = cname;
+        end
+        if bd.isKey('landmk')
+            bd0 = bd('landmk');
+            for i = 1:numel(lmkLst)
+                lname{i} = bd0{i}{4};
+                if(strcmp(lname{i},'None'))
+                    lname{i} = num2str(i);
+                end
+            end
+            ftsLst.region.landMark.name = lname;
+        end
     end
 catch
 end
