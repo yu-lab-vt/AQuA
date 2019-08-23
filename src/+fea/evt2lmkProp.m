@@ -37,6 +37,7 @@ for ii=1:length(evts)
     [ih,iw,it] = ind2sub(sz,loc0);
     tRg = min(it):max(it);
     distPix = nan(numel(tRg),nLmk);
+    distPixMax = nan(numel(tRg),nLmk);
     
     sigPre = [];
     for tt=1:numel(tRg)
@@ -59,13 +60,17 @@ for ii=1:length(evts)
             cc = lmkBorder{jj};
             if ~isempty(ih0)
                 xx = min(sqrt((ih0'-cc(:,1)).^2 + (iw0'-cc(:,2)).^2));
+                xx2 = max(sqrt((ih0'-cc(:,1)).^2 + (iw0'-cc(:,2)).^2),[],2);
             else
                 xx = nan;
+                xx2 = nan;
             end
             if opPix==0
                 distPix(tt,jj) = min(xx(:));
+                distPixMax(tt,jj) = min(xx2(:));
             else
                 distPix(tt,jj) = median(xx(:));
+                distPixMax(tt,jj) = median(xx2(:));
             end
         end
     end
@@ -76,6 +81,7 @@ for ii=1:length(evts)
             if isnan(distPix(tt,jj))
                 if tt>1
                     distPix(tt,jj) = distPix(tt-1,jj);
+                    distPixMax(tt,jj) = distPixMax(tt-1,jj);
                 end
             end
         end
@@ -83,6 +89,7 @@ for ii=1:length(evts)
     
     % distance to landmark
     d2lmk{ii} = distPix*muPerPix;  % shortest distance to landmark at each frame
+    d2lmkMax{ii} = distPixMax*muPerPix;
     d2lmkAvg(ii,:) = nanmean(distPix,1);  % average distance to the landmark
     d2lmkMin(ii,:) = nanmin(distPix,[],1);  % minimum distance to the landmark
     
@@ -104,6 +111,7 @@ end
 
 rLmk = [];
 rLmk.distPerFrame = d2lmk;
+rLmk.distMaxPerFrame = d2lmkMax;
 rLmk.distAvg = d2lmkAvg*muPerPix;
 rLmk.distMin = d2lmkMin*muPerPix;
 
