@@ -1,4 +1,4 @@
-function ftsPg = getPropagationCentroidQuad(voli0,volr0,muPerPix,nEvt,ftsPg,northDi,minShow1)
+function ftsPg = getPropagationCentroidQuad(voli0,volr0,muPerPix,nEvt,ftsPg,northDi,opts)
 % getFeatures extract local features from events
 % specify direction of 'north', or anterior
 % not good at tracking complex propagation
@@ -22,7 +22,12 @@ kDi(3,:) = [-b,a];
 kDi(4,:) = [b,-a];
 
 % propagation features
-thr0 = minShow1:0.1:0.8;  % significant propagation (increase of reconstructed signal)
+if isfield(opts,'propthrmin')
+    thr0 = opts.propthrmin:opts.propthrstep:opts.propthrmax;
+else
+    minShow1 = opts.minShow1;
+    thr0 = minShow1:0.1:0.8;  % significant propagation (increase of reconstructed signal)
+end
 % thr0 = 0.2:0.1:0.8;
 nThr = numel(thr0);
 volr0(voli0==0) = 0;  % exclude values outside event

@@ -57,7 +57,7 @@ function addPatchLineText(f,axNow,n,updtAll)
             bd0 = bd('landmk');
             for ii=1:numel(bd0)
                 xyLst = bd0{ii}{1};
-                Name = bd0{ii}{4};
+                Name = 'None';
                 if numel(bd0{ii})>=4
                     Name = bd0{ii}{4};
                 end

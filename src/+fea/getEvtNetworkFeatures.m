@@ -7,6 +7,8 @@ H = sz(1); W = sz(2); T = sz(3);
 
 nEvt = numel(evts);
 ex = zeros(nEvt,6);
+% ex = false(nEvt,H,W);
+% ex2 = zeros(nEvt,2);
 evtSize = zeros(nEvt,1);
 idxBad = true(nEvt,1);
 tIdx = cell(T,1);
@@ -18,7 +20,15 @@ for nn=1:nEvt
         ihw = sub2ind([H,W],ih,iw);
         ihw = unique(ihw);
         evtSize(nn) = numel(ihw);
+        % origin
         ex(nn,:) = [min(ih),max(ih),min(iw),max(iw),min(it),max(it)];
+        % improved
+%         tmp = false(H,W);
+%         tmp(ihw) = true;
+%         ex(nn,:,:) = tmp;
+%         ex2(nn,1) = min(it);
+%         ex2(nn,2) = max(it);
+        
         for tt=min(it):max(it)
             tIdx{tt} = union(tIdx{tt},nn);
         end
@@ -44,9 +54,18 @@ for ii=1:nEvt
     h0 = p0(1); h1 = p0(2);
     w0 = p0(3); w1 = p0(4);
     t0 = p0(5); t1 = p0(6);
-    
+%     t0 = ex2(ii,1);
+%     t1 = ex2(ii,2);
     % occur at same spatial location
     isSel = h0<=ex(:,2) & h1>=ex(:,1) & w0<=ex(:,4) & w1>=ex(:,3);
+%     p0 = ex(ii,:,:);
+%     isSel = [];
+%     for jj=1:nEvt
+%         interRegion = p0&ex(jj,:,:);
+%         if sum(interRegion(:)>0)
+%             isSel = [isSel,jj];
+%         end
+%     end
     %isSel(ii) = 0;
     if sum(isSel)>0
         szCo = evtSize(isSel);

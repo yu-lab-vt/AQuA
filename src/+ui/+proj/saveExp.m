@@ -130,7 +130,10 @@ if fh.expEvt.Value==1
         memSel = fts.region.cell.memberIdx(xSel,:);
         for ii=1:size(memSel,2)
             mem00 = memSel(:,ii);
-            Name = bdcell{ii}{4};
+            Name = 'None';
+            if numel(bdcell{ii})>=4
+                Name = bdcell{ii}{4};
+            end
             if strcmp(Name,'None')
                Name = num2str(ii); 
             end

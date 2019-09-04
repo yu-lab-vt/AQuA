@@ -44,7 +44,7 @@ for ii=1:numel(evtLst)
         voxr = double(voxr)/255;
     end
     
-    ftsLst.propagation = fea.getPropagationCentroidQuad(voxi,voxr,muPix,ii,ftsLst.propagation,northDi,opts.minShow1);
+    ftsLst.propagation = fea.getPropagationCentroidQuad(voxi,voxr,muPix,ii,ftsLst.propagation,northDi,opts);
     %ftsLst.propagation = fea.getPropagationPixTracing(voxi,voxr,muPix,ii,ftsLst.propagation,northDi,0);
     %ftsLst.propagation = fea.getPropagationPixTracing(voxi,voxr,muPix,ii,ftsLst.propagation,northDi,1);
 end
