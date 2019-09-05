@@ -23,7 +23,11 @@ kDi(4,:) = [b,-a];
 
 % propagation features
 if isfield(opts,'propthrmin')
-    thr0 = opts.propthrmin:opts.propthrstep:opts.propthrmax;
+    if opts.propthrmin == opts.propthrmax || opts.propthrstep==0
+        thr0 = opts.propthrmin;
+    else
+        thr0 = opts.propthrmin:opts.propthrstep:opts.propthrmax;
+    end
 else
     minShow1 = opts.minShow1;
     thr0 = minShow1:0.1:0.8;  % significant propagation (increase of reconstructed signal)
