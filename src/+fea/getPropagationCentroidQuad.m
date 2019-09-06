@@ -21,10 +21,12 @@ kDi(2,:) = [-a,-b];
 kDi(3,:) = [-b,a];
 kDi(4,:) = [b,-a];
 
+singleThr = 0;
 % propagation features
 if isfield(opts,'propthrmin')
     if opts.propthrmin == opts.propthrmax || opts.propthrstep==0
         thr0 = opts.propthrmin;
+        singleThr = 1;
     else
         thr0 = opts.propthrmin:opts.propthrstep:opts.propthrmax;
     end
@@ -173,6 +175,11 @@ ftsPg.areaChangeRate{nEvt} = pixNumChangeRate;
 
 ftsPg.areaFrame{nEvt} = pixNum*muPerPix*muPerPix;
 ftsPg.propMaxSpeed{nEvt} = propMaxSpeed*muPerPix;
+
+if singleThr
+    ftsPg.maxPropSpeed(nEvt) = max(ftsPg.propMaxSpeed{nEvt});
+    ftsPg.avgPropSpeed(nEvt) = mean(ftsPg.propMaxSpeed{nEvt});
+end
 
 end
 
