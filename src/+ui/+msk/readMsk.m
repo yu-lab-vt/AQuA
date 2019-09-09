@@ -1,17 +1,18 @@
 function readMsk(~,~,f,srcType,mskType,initThr)
     
     % read mask data
+    opts = getappdata(f,'opts');
     btSt = getappdata(f,'btSt');
     if isfield(btSt,'mskFolder') && ~isempty(btSt.mskFolder)
         p0 = btSt.mskFolder;
     else
-        p0 = '.';
+        p0 = opts.filePath;
     end
     if ~exist('initThr','var')
         initThr = [];
     end
     
-    opts = getappdata(f,'opts');
+   
     bdCrop = opts.regMaskGap;
     
     if strcmp(srcType,'file')

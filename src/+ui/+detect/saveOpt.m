@@ -15,7 +15,7 @@ function saveOpt(~,~,f)
     clear definput selname
     
     %file0 = [opts.fileName,'_AQuA']; SP, 18.07.16
-    selpath = uigetdir('.','Choose output folder');
+    selpath = uigetdir(opts.filePath,'Choose output folder');
     path0 = [selpath,filesep];
     if ~isnumeric(selpath)
         ui.proj.struct2csv(opts,[path0,file0]);

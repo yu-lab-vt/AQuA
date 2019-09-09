@@ -1,7 +1,8 @@
 function loadOpt(~,~,f)
     
     %file0 = [opts.fileName,'_AQuA']; SP, 18.07.16
-    [file,path] = uigetfile('.csv','Choose Parameter file');
+    opts = getappdata(f,'opts');
+    [file,path] = uigetfile('.csv','Choose Parameter file',opts.filePath);
     if ~isnumeric([path,file])
         optsOrg = getappdata(f,'opts');
         opts = ui.proj.csv2struct([path,file]);

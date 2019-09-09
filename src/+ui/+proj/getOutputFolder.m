@@ -15,7 +15,7 @@ function getOutputFolder(~,~,f)
     clear definput selname
     
     %file0 = [opts.fileName,'_AQuA']; SP, 18.07.16
-    selpath = uigetdir('.','Choose output folder');
+    selpath = uigetdir(opts.filePath,'Choose output folder');
     path0 = [selpath,filesep,opts.fileName];
     if ~isnumeric(selpath)
         ui.proj.saveExp([],[],f,file0,path0);

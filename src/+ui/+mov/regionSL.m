@@ -26,7 +26,7 @@ function regionSL(~,~,f,op,lbl)
         clear definput selname
 
         %file0 = [opts.fileName,'_AQuA']; SP, 18.07.16
-        selpath = uigetdir('.','Choose output folder');
+        selpath = uigetdir(opts.filePath,'Choose output folder');
         path0 = [selpath,filesep,file0];
         if ~isnumeric(selpath)
             if bd.isKey(lbl)
@@ -37,7 +37,7 @@ function regionSL(~,~,f,op,lbl)
             save(path0,'bd0');
         end
     else
-       [file,path] = uigetfile('.mat','Choose Region file'); 
+       [file,path] = uigetfile('.mat','Choose Region file',opts.filePath); 
        if ~isnumeric([path,file])
            loadContent = load([path,file],'bd0');
            bd(lbl) = loadContent.bd0;
