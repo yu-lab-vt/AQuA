@@ -72,23 +72,25 @@ end
 fh = guidata(f);
 opts = getappdata(f,'opts');
 
-waitbar(0.25,ff,'Saving ...');
+
 btSt = getappdata(f,'btSt');
 favEvtLst = btSt.evtMngrMsk;
 fout = [path0,filesep,file0];
 [fpath,fname,ext] = fileparts(fout);
 
 if fh.expEvt.Value==1
+    waitbar(0.25,ff,'Saving res file...');
     if isempty(ext)
         fout = [fout,'.mat'];
     end
     save(fout,'res','-v7.3');
 end
 
-waitbar(0.5,ff,'Writing movie ...');
+
 
 % export movie
 if fh.expMov.Value==1
+    waitbar(0.5,ff,'Writing movie ...');
     ov1 = zeros(opts.sz(1),opts.sz(2),3,opts.sz(3));
     for tt=1:opts.sz(3)
         if mod(tt,100)==0
@@ -102,6 +104,7 @@ if fh.expMov.Value==1
 end
 
 if fh.expEvt.Value==1
+    waitbar(0.75,ff,'Writing feature table ...');
     % export feature table
     ftTb = getappdata(f,'featureTable');
     if isempty(ftTb)
