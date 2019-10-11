@@ -16,6 +16,8 @@ for tt=T-1:-1:1
     tmp(idx0) = tmpNxt(idx0);
     datx(:,:,tt) = tmp;
 end
-datx = imgaussfilt(datx,[1 1]);
-
+% datx = imgaussfilt(datx,[1 1]);        
+for tt=1:size(datx,3)
+    datx(:,:,tt) = imgaussfilt(datx(:,:,tt),[1 1]);
+end
 end
