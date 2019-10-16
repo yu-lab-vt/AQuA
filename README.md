@@ -15,7 +15,7 @@ AQuA (**A**strocyte **Qu**antification and **A**nalysis) is a tool to detect eve
 - [Getting started](#getting-started)
 - [Example datasets](#example-datasets)
 - [Reference](#reference)
-- [Updates] (#updates)
+- [Updates](#updates)
 
 # More about AQuA
 ## From raw data to events
