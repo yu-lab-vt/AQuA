@@ -104,4 +104,4 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 
 # Updates
-**10/16/2019:** The update add the new script `aqua_batch.m` which can let users deal with mutiple files. [MATLAB Without GUI](#matlab-without-gui) shows how to use it.
+**10/16/2019:** The update add the new script `aqua_batch.m` which can let users deal with multiple files. [MATLAB Without GUI](#matlab-without-gui) shows how to use it.
