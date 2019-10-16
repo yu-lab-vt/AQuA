@@ -37,9 +37,9 @@ if correctTrend>0
         c0 = y - yFit;
         c0 = c0 - min(c0) + min(y);
     catch
-        warning('Curve trend removal error')
-        disp(c0)
-        disp(s0)
+        warning('Curve trend removal error');
+        disp(c0);
+        disp(s0);
         save(['debug_deTrend_',num2str(randi(1e8)),'.mat'],'c0','s0');
     end
 end

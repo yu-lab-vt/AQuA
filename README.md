@@ -53,6 +53,19 @@ AQuA (**A**strocyte **Qu**antification and **A**nalysis) is a tool to detect eve
 
 We tested on MATLAB versions later than 2017a. Earlier versions are not supported.
 
+## MATLAB Without GUI
+# Use aqua_cmd.m file
+1. Double click `aqua_cmd.m` file.
+2. Set the folder path 'p0' and target dataset name 'f0'.
+3. Run the file.
+4. The output files will be saved in a subfolder of 'p0'.
+
+# Use aqua_batch.m file
+1. Double click `aqua_batch.m` file.
+2. Set the folder path 'p0', and for each target dataset, set the parameters in AQuA/cfg/parameters_for_batch.csv. Each dataset is corresponding to one parameter setting.
+3. Run the file.
+4. The output files will be saved in a subfolder of 'p0'.
+
 ## Fiji plugin
 
 1. Download **[here](https://github.com/yu-lab-vt/AQuA-Fiji/releases)**.
