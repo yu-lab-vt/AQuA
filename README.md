@@ -10,10 +10,12 @@ AQuA (**A**strocyte **Qu**antification and **A**nalysis) is a tool to detect eve
   - [Graphical user interface](#graphical-user-interface)
 - [Download and installation](#download-and-installation)
   - [MATLAB GUI](#matlab-gui)
+  - [MATLAB Without GUI](#matlab-without-gui)
   - [Fiji plugin](#fiji-plugin)
 - [Getting started](#getting-started)
 - [Example datasets](#example-datasets)
 - [Reference](#reference)
+- [Updates] (#updates)
 
 # More about AQuA
 ## From raw data to events
@@ -101,4 +103,5 @@ We also provide some synthetic data sets. These are used in the simulation part 
 Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K. Cahill, Xuelong Mi, Guoqiang Yu, Kira E. Poskanzer, *An event-based paradigm for analyzing fluorescent astrocyte activity uncovers novel single-cell and population-level physiology*, BioRxiv 504217; doi: https://doi.org/10.1101/504217. [[Link to BioRxiv]](https://www.biorxiv.org/content/early/2018/12/21/504217)
 
 
-
+# Updates
+**10/16/2019:** The update add the new script `aqua_batch.m` which can let users deal with mutiple files. [MATLAB Without GUI](#matlab-without-gui) shows how to use it.
