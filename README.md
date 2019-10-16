@@ -64,7 +64,7 @@ We tested on MATLAB versions later than 2017a. Earlier versions are not supporte
 
 ### Use aqua_batch.m file
 1. Double click `aqua_batch.m` file.
-2. Set the folder path 'p0', and for each target dataset, set the parameters in AQuA/cfg/parameters_for_batch.csv. Each dataset is corresponding to one parameter setting.
+2. Set the folder path 'p0', and for each target dataset, set the parameters in `AQuA/cfg/parameters_for_batch.csv`. Each dataset is corresponding to one parameter setting.
 3. Run the file.
 4. The output files will be saved in subfolders of 'p0'.
 
@@ -104,4 +104,4 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 
 # Updates
-**10/16/2019:** The update add the new script `aqua_batch.m` which can let users deal with multiple files. [MATLAB Without GUI](#matlab-without-gui) shows how to use it.
+**10/16/2019:** The update adds the new script `aqua_batch.m` which can let users deal with multiple files. **[MATLAB Without GUI](#matlab-without-gui)** shows how to use it.  
