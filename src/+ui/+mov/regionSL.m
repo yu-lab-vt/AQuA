@@ -13,7 +13,7 @@ function regionSL(~,~,f,op,lbl)
                 selname = '_Cell.mat';
             end
         else
-            definput = {'LandMark.mat'};
+            definput = {'_LandMark.mat'};
             selname = inputdlg('Type desired suffix for Region file:',...
                 'Region file',[1 75],definput);
 

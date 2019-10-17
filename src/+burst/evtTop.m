@@ -64,7 +64,7 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd,f)
     for i = 1:numel(seLst)
         seMap(seLst{i}) = i;
     end
-    if exist('ff','var')
+    if exist('ff','var') && ~isempty(ff)
         waitbar(0.2,ff);
     end
     
@@ -80,7 +80,7 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd,f)
             continue
         end
         fprintf('SE %d \n',nn)
-        if exist('ff','var')
+        if exist('ff','var')&& ~isempty(ff)
             waitbar(0.2+nn/numel(seLst)*0.55,ff);
         end
         
@@ -139,7 +139,7 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd,f)
     % ov1 = plt.regionMapWithData(spLst,zeros(H,W),0.3); zzshow(ov1);
     % ov2 = plt.regionMapWithData(evtMap0,evtMap0*0,0.5); zzshow(ov2);
     
-    if exist('ff','var')
+    if exist('ff','var') && ~isempty(ff)
         waitbar(0.8,ff);
     end
     

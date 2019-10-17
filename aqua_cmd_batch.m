@@ -15,24 +15,51 @@ startup;  % initialize
 
 p0 = 'D:\'; %% tif folder
 
+%% For cell boundary and landmark
+p_cell = '';   % cell boundary path, if you have
+p_landmark = '';   % landmark path, if you have
+
+bd = containers.Map;
+bd('None') = [];
+if(~strcmp(p_cell,''))
+    cell_region = load(p_cell);
+    bd('cell') = cell_region.bd0;
+    
+end
+if(~strcmp(p_landmark,''))
+    landmark = load(p_landmark);
+    bd('landmk') = landmark.bd0;
+end
+
 files = dir(fullfile(p0,'*.tif'));  
 
+%% 
 for x = 1:size(files,1)
 
     f0 = files(x).name;  % file name
 
     %% Note: Setting the parameters should be consistent with your target file
     opts = util.parseParam_for_batch(x,0);
-
     [datOrg,opts] = burst.prep1(p0,f0,[],opts);  % read data
-
     [folder, name, ext] = fileparts(strcat(p0,'\',f0));
 
     %% detection
-    [dat,dF,~,lmLoc,opts,dL] = burst.actTop(datOrg,opts);  % foreground and seed detection
-    [svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,[],opts);  % super voxel detection
+    sz = opts.sz;
+    evtSpatialMask = ones(sz(1),sz(2));
+    if bd.isKey('cell')
+        bd0 = bd('cell');
+        evtSpatialMask = zeros(sz(1),sz(2));
+        for ii=1:numel(bd0)
+            idx = bd0{ii}{2};
+            spaMsk0 = zeros(sz(1),sz(2));
+            spaMsk0(idx) = 1;
+            evtSpatialMask(spaMsk0>0) = 1;
+        end
+    end
+    [dat,dF,~,lmLoc,opts,dL] = burst.actTop(datOrg,opts,evtSpatialMask);  % foreground and seed detection
+    [svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,evtSpatialMask,opts);  % super voxel detection
 
-    [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts);  % events
+    [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,[],bd);  % events
     [ftsLst,dffMat] = fea.getFeatureQuick(datOrg,evtLst,opts);
 
     % filter by significance level
@@ -43,7 +70,7 @@ for x = 1:size(files,1)
     riseLstFilterZ = riseLst(mskx);
 
     % merging (glutamate)
-    evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts);
+    evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,bd);
 
     % reconstruction (glutamate)
     if opts.extendSV==0 || opts.ignoreMerge==0 || opts.extendEvtRe>0
@@ -61,6 +88,58 @@ for x = 1:size(files,1)
     evtx1 = evtLstE;
     ftsLstE.networkAll = [];
     ftsLstE.network = [];
+    if bd.isKey('cell')
+        bd0 = bd('cell');
+        evtSpatialMask = zeros(sz(1),sz(2));
+        regLst = cell(numel(bd0),1);
+        for ii=1:numel(bd0)
+            pix00 = bd0{ii}{2};
+            regLst{ii} = pix00;
+            evtSpatialMask(pix00) = 1;
+        end
+    else
+    regLst = [];
+    evtSpatialMask = ones(sz(1),sz(2));
+    end
+
+    if bd.isKey('landmk')
+        bd1 = bd('landmk');
+        lmkLst = cell(numel(bd1),1);
+        for ii=1:numel(bd1)
+            lmkLst{ii} = bd1{ii}{2};
+        end
+    else
+        lmkLst = [];
+    end
+
+    try
+        if ~isempty(regLst) || ~isempty(lmkLst)
+            fprintf('Updating region and landmark features ...\n')
+            ftsLstE.region = fea.getDistRegionBorderMIMO(evtLstE,datR,regLst,lmkLst,opts.spatialRes,opts.minShow1);
+            if bd.isKey('cell')
+                bd0 = bd('cell');
+                for i = 1:numel(regLst)
+                    cname{i} = bd0{i}{4};
+                    if(strcmp(cname{i},'None'))
+                        cname{i} = num2str(i);
+                    end
+                end
+                ftsLstE.region.cell.name = cname;
+            end
+            if bd.isKey('landmk')
+                bd0 = bd('landmk');
+                for i = 1:numel(lmkLst)
+                    lname{i} = bd0{i}{4};
+                    if(strcmp(lname{i},'None'))
+                        lname{i} = num2str(i);
+                    end
+                end
+                ftsLstE.region.landMark.name = lname;
+            end
+        end
+    catch
+    end
+
     try
         ftsLstE.networkAll = fea.getEvtNetworkFeatures(evtLstE,sz);  % all filtered events
         ftsLstE.network = fea.getEvtNetworkFeatures(evtx1,sz);  % events inside cells only
@@ -196,7 +275,7 @@ for x = 1:size(files,1)
     end
 
     %% save output
-
+    res.bd = bd;
     save([path0,name,'_AQuA.mat'], 'res');
 end
     

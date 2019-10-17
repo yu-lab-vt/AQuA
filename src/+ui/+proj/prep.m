@@ -114,7 +114,11 @@ if op>0
     waitbar(0.5,ff);
     
     if ~isfield(res,'scl')
+        if isfield(res,'bd')
+            [~,~,res.scl,res.btSt] = ui.proj.prepInitUIStruct(res.datOrg,res.opts);
+        else
         [~,res.bd,res.scl,res.btSt] = ui.proj.prepInitUIStruct(res.datOrg,res.opts);
+        end
         res.stg = [];
         res.stg.detect = 1;
         res.stg.post = 1;
