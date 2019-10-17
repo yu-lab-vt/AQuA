@@ -39,6 +39,11 @@ function [ftsLst,dffMatExt] = getFeatureQuick(dat,evtLst,opts)
     ftsLst = [];
     ftsLst.basic = [];
     ftsLst.propagation = [];
+    ftsLst.curve.dffMaxZ = [];
+    ftsLst.curve.dffMaxPval = [];
+    ftsLst.curve.rgt1 = [];
+    ftsLst.curve.tBegin = [];
+    ftsLst.curve.tEnd = [];
     
     dffMatExt = nan(numel(evtLst),T);
     for ii=1:numel(evtLst)

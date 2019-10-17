@@ -80,7 +80,11 @@ end
 %% export table
 fts = ftsLstE;
 tb = readtable('userFeatures.csv','Delimiter',',');
-nEvt = numel(ftsLstE.basic.area);
+if(isempty(ftsLstE.basic))
+    nEvt = 0;
+else
+    nEvt = numel(ftsLstE.basic.area);
+end
 nFt = numel(tb.Name);
 ftsTb = nan(nFt,nEvt);
 ftsName = cell(nFt,1);
