@@ -104,4 +104,5 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 
 # Updates
+**10/17/2019:** The update avoid the error report when nothing detected for `aqua_batch.m`.
 **10/16/2019:** The update adds the new script `aqua_batch.m` which can let users deal with multiple files. **[MATLAB Without GUI](#matlab-without-gui)** shows how to use it.  
