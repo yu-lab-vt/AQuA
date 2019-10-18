@@ -100,6 +100,8 @@ We also provide some synthetic data sets. These are used in the simulation part 
 
 
 # Reference
+Yizhi Wang$, Nicole V. DelRosso$, Trisha V. Vaidyanathan, Michelle K. Cahill, Michael E. Reitman, Silvia Pittolo, Xuelong Mi, Guoqiang Yu#, Kira E. Poskanzer#, *Accurate quantification of astrocyte and neurotransmitter fluorescence dynamics for single-cell and population-level physiology*, Nature Neuroscience, 2019, ($ co-first authors, # co-corresponding authors)
+
 Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K. Cahill, Xuelong Mi, Guoqiang Yu, Kira E. Poskanzer, *An event-based paradigm for analyzing fluorescent astrocyte activity uncovers novel single-cell and population-level physiology*, BioRxiv 504217; doi: https://doi.org/10.1101/504217. [[Link to BioRxiv]](https://www.biorxiv.org/content/early/2018/12/21/504217)
 
 
@@ -108,7 +110,7 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 1) The update avoid the error report when nothing detected for `aqua_batch.m`. 
 
-2) Let `aqua_batch.m` could read cell boundaries and landmarks.
+2) Allow `aqua_batch.m` to read a batch of cell boundaries and landmarks.
 
 **10/16/2019:** 
 
