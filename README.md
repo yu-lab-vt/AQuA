@@ -108,7 +108,7 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 # Updates
 **10/17/2019:** 
 
-1) The update avoid the error report when nothing detected for `aqua_batch.m`. 
+1) The update avoids the error report when nothing is detected for `aqua_batch.m`. 
 
 2) Allow `aqua_batch.m` to read a batch of cell boundaries and landmarks.
 
