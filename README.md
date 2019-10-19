@@ -104,6 +104,12 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 
 # Updates
+
+**10/19/2019:** 
+
+Repair the bug in Fiji version that 'minimum correlation' in merging step cannot be set to float data.
+
+
 **10/17/2019:** 
 
 1) The update avoid the error report when nothing detected for `aqua_batch.m`. 
