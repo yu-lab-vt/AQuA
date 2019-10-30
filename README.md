@@ -107,10 +107,13 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**10/30/2019:** 
+
+The update adds the random seed and makes the random variables controllable. Now with same parameter setting, AQuA will give same results. (Due to the randomness, the results will have a little difference before.)
+
 **10/19/2019:** 
 
 Repair the bug in Fiji version that 'minimum correlation' in merging step cannot be set to float data.
-
 
 **10/17/2019:** 
 

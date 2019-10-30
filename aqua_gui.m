@@ -2,6 +2,8 @@ function aqua_gui(res,dbg)
     %AQUA_GUI GUI for AQUA
     
     startup;
+    load('./cfg/random_Seed');
+    rng(s);
     
     if ~exist('dbg','var')
         dbg = 0;
