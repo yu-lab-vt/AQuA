@@ -33,7 +33,7 @@ function datxCol = movStep(f,n,ovOnly,updtAll)
     
     % re-scale movie
     dat0 = dat(:,:,n);
-    dF0 = dF(:,:,n);
+    dF0 = dF(:,:,n)/max(dF(:));
     if scl.map==1
         dat0 = dat0.^2;
     end
