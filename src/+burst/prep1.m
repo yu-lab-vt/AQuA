@@ -35,7 +35,7 @@ function [dat,opts] = prep1(p0,f0,rgT,opts,ff)
         waitbar(0.4,ff);
     end
     
-    dat = dat + randn(size(dat))*1e-4;
+%     dat = dat + randn(size(dat))*1e-4;
     [H,W,T] = size(dat);
     opts.sz = [H,W,T];
     opts.maxValueDepth = maxImg;

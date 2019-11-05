@@ -18,7 +18,7 @@ function [dat,dF,arLst,lmLoc,opts,dActVox] = actTop(datOrg,opts,evtSpatialMask,f
     stdMap = sqrt(median(xx,3)/0.9133);
     stdMapGauBef = double(imgaussfilt(stdMap));
     stdMapGauBef(noiseEstMask==0) = nan;
-    stdEstBef = double(nanmedian(stdMapGauBef(:)));
+    stdEstBef = double(nanmedian(stdMapGauBef(:))) + 1e-6;
     
     % smooth the data
     dat = datOrg;
@@ -33,12 +33,12 @@ function [dat,dF,arLst,lmLoc,opts,dActVox] = actTop(datOrg,opts,evtSpatialMask,f
     stdMap = sqrt(median(xx,3)/0.9133);
     stdMapGau = double(imgaussfilt(stdMap));
     stdMapGau(noiseEstMask==0) = nan;
-    stdEst = double(nanmedian(stdMapGau(:)));
+    stdEst = double(nanmedian(stdMapGau(:))) + 1e-6;
     
     % delta F
     dF = burst.getDfBlk(dat,noiseEstMask,opts.cut,opts.movAvgWin,stdEst);
-    idx00 = find(dF<=0);
-    dF(idx00) = randn(numel(idx00),1)*stdEst;
+%     idx00 = find(dF<=0);
+%     dF(idx00) = randn(numel(idx00),1)*stdEst;
     if exist('ff','var')
         waitbar(0.5,ff);
     end
