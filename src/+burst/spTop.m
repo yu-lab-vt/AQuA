@@ -39,7 +39,7 @@ function [svLst,dReconSp,riseX] = spTop(dat,dF,lmLoc,evtSpatialMask,opts,ff)
     zVec1 = stat.getSpZ(dat,lblMap,opts.varEst);
     spLst = label2idx(lblMap);
     spLst = spLst(zVec1>opts.thrSvSig);
-    lblMap = zeros(size(lblMap));
+    lblMap = zeros(size(lblMap),'uint32');
     for nn=1:numel(spLst)
         lblMap(spLst{nn}) = nn;
     end

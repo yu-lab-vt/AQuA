@@ -5,9 +5,9 @@ function zVec = getSpZ(dat,lblMapS,varEst)
 
 s0 = sqrt(varEst);
 [H,W,T] = size(dat);
-datVec = reshape(dat,[],T);
+datVec = reshape(dat,[],T); clear dat;
 spLst = label2idx(lblMapS);
-lblMapSVec = reshape(lblMapS,[],T);
+lblMapSVec = reshape(lblMapS,[],T); clear lblMapS;
 zVec = nan(numel(spLst),1);
 
 for nn=1:numel(spLst)

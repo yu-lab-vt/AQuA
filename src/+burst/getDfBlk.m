@@ -15,6 +15,7 @@ function dF = getDfBlk(datIn,evtSpatialMask,cut,movAvgWin,stdEst)
     xxMin = min(xxMA,[],2);
     xBias = nanmean(xxMin(:));
 
+
     nBlk = max(floor(T/cut),1);
     for ii=1:nBlk
         t0 = (ii-1)*cut+1;
@@ -27,9 +28,7 @@ function dF = getDfBlk(datIn,evtSpatialMask,cut,movAvgWin,stdEst)
         
         datMA = movmean(dat,movAvgWin,3);
         datMin = min(datMA,[],3)-xBias;
-        dF0 = dat - datMin;
-        
-        dF(:,:,t0:t1) = dF0;
+        dF(:,:,t0:t1) = dat - datMin;
     end
     
 end

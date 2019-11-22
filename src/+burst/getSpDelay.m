@@ -1,17 +1,17 @@
-function [lblMapEx,riseX] = getSpDelay(dat,lblMap,opts)
+function [lblMapEx,riseX] = getSpDelay(dfSmo,lblMap,opts)
 % getSpDelay get the delay of each super pixel
 
-[H,W,T] = size(dat);
+[H,W,T] = size(dfSmo);
 
-datSmo = zeros(size(dat),'single');
+% datSmo = zeros(size(dat),'single');
 for tt=1:T
-    datSmo(:,:,tt) = imgaussfilt(dat(:,:,tt),1);
+    dfSmo(:,:,tt) = imgaussfilt(dfSmo(:,:,tt),1);
 end
 
 K = max(round(T/10),3);
-datSmoBase = min(movmean(datSmo,K,3),[],3);
+datSmoBase = min(movmean(dfSmo,K,3),[],3);
 % df = dat - datSmoBase;
-dfSmo = datSmo - datSmoBase;
+dfSmo = dfSmo - datSmoBase;
 
 % extend super voxels
 if isfield(opts,'extendSV') && opts.extendSV==0

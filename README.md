@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**11/22/2019:** 
+
+The update saves the use of memory, while the results will not change.
+
 **10/30/2019:** 
 
 The update adds the random seed and makes the random variables controllable. Now with same parameter setting, AQuA will give same results. (Due to the randomness, the results will have a little difference before.)

@@ -2,7 +2,7 @@ function lblMap2F = filterAndFillSp(lblMap)
 % filterAndFillSp remove small super voxels and fill holes
 
 [H,W,T] = size(lblMap);
-lblMap2F = zeros(H,W,T,'uint32');
+% lblMap2F = zeros(H,W,T,'uint32');
 
 % remove seeds with small regions patch
 pixLstCut = label2idx(lblMap);
@@ -26,13 +26,12 @@ if nLmG==0
     return
 end
 
-lblMap2 = zeros(H,W,T,'uint32');
+lblMap2F = zeros(H,W,T,'uint32');
 for ii=1:numel(pixLstCutG)
-    lblMap2(pixLstCutG{ii}) = uint32(ii);
+    lblMap2F(pixLstCutG{ii}) = uint32(ii);
 end
 
 % fill holes
-lblMap2F = lblMap2;
 dh = [-1 1 0 0];
 dw = [0 0 -1 1];
 for tt=1:T

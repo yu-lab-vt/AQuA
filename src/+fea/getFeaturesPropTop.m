@@ -1,10 +1,10 @@
-function ftsLst = getFeaturesPropTop(dat,evtRec,evtLst,ftsLst,opts)
+function ftsLst = getFeaturesPropTop(~,evtRec,evtLst,ftsLst,opts)
 % getFeaturesPropTop extract propagation related features
 % dat: single (0 to 1)
 % evtMap: single ( integer)
 % evtRec: uint8 ( integer)
 
-[H,W,T] = size(dat);
+[H,W,T] = size(evtRec);
 
 if ~isfield(opts,'northx')
     northDi = [0,1];
@@ -12,9 +12,9 @@ else
     northDi = [opts.northx,opts.northy];
 end
 
-if opts.usePG
-    dat = dat.^2;
-end
+% if opts.usePG
+%     dat = dat.^2;
+% end
 muPix = opts.spatialRes;
 ftsLst.propagation = [];
 for ii=1:numel(evtLst)
@@ -36,9 +36,9 @@ for ii=1:numel(evtLst)
         ih1 = ih-min(rgH)+1;
         iw1 = iw-min(rgW)+1;
         it1 = it-min(rgT)+1;
-        voxd = dat(rgH,rgW,rgT);
-        voxi = zeros(size(voxd));
-        pix1 = sub2ind(size(voxd),ih1,iw1,it1);
+%         voxd = dat(rgH,rgW,rgT);
+        voxi = zeros(length(rgH),length(rgW),length(rgT));
+        pix1 = sub2ind(size(voxi),ih1,iw1,it1);
         voxi(pix1) = 1;
         voxr = evtRec(rgH,rgW,rgT);
         voxr = double(voxr)/255;

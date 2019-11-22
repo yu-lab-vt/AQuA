@@ -9,9 +9,9 @@ nRg = numel(voxLst);
 dlyOrder = 1:numel(voxLst);
 gapt = 10;  % 3
 
-datSmoVec = reshape(dfSmo,[],T);
-lblMapFVec = reshape(lblMap,[],T);
-datMskVec = reshape(dL,[],T);
+datSmoVec = reshape(dfSmo,[],T); clear dfSmo;
+lblMapFVec = reshape(lblMap,[],T); clear lblMap;
+datMskVec = reshape(dL,[],T); clear dL;
 
 lblMapX = zeros(size(datSmoVec),'uint32');
 nSp = 1;
