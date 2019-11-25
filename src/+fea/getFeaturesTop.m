@@ -74,13 +74,9 @@ function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
         if numel(rgT)==1
             continue
         end
-        if ii==43
-            %keyboard
-        end
         
         % dff
-        voxd1 = dat(rgH,rgW,:);
-        voxd1 = reshape(voxd1,[],T);
+        
         voxi1 = evtMap(rgH,rgW,:);
         voxi1 = reshape(voxi1,[],T);               
         
@@ -90,7 +86,12 @@ function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
             sigz = sum(voxi1==ii,1)>0;
         end
         
+        voxd1 = dat(rgH,rgW,:);
+        voxd1 = reshape(voxd1,[],T);
         charxIn1 = mean(voxd1(sigxy>0,:),1);
+        idx = sub2ind([numel(rgH),numel(rgW),T],ih-min(rgH)+1,iw-min(rgW)+1,it);
+        evtData = voxd1(idx);
+        clear voxd1;
         charx1 = fea.curvePolyDeTrend(charxIn1,sigz,opts.correctTrend);
         sigma1 = sqrt(median((charx1(2:end)-charx1(1:end-1)).^2)/0.9113);
         
@@ -104,10 +105,9 @@ function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
         
         % dff without other events
         voxd2 = reshape(datx(rgH,rgW,:),[],T);
-        idx = sub2ind([numel(rgH),numel(rgW),T],ih-min(rgH)+1,iw-min(rgW)+1,it);
-        voxd2(idx) = voxd1(idx);  % bring current event back
-        
+        voxd2(idx) = evtData;  % bring current event back
         charxIn2 = nanmean(voxd2(sigxy>0,:),1);
+        clear voxd2;
         charx2 = fea.curvePolyDeTrend(charxIn2,sigz,opts.correctTrend);
         charxBg2 = min(movmean(charx2,Tww));
         charxBg2 = charxBg2 - bbm*sigma1 - opts.bgFluo^2;
@@ -163,9 +163,9 @@ function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
         ih1 = ih-min(rgH)+1;
         iw1 = iw-min(rgW)+1;
         it1 = it-min(rgT)+1;
-        voxd = dat(rgH,rgW,rgT);
-        voxi = zeros(size(voxd));
-        pix1 = sub2ind(size(voxd),ih1,iw1,it1);
+%         voxd = dat(rgH,rgW,rgT);
+        voxi = zeros(length(rgH),length(rgW),length(rgT));
+        pix1 = sub2ind(size(voxi),ih1,iw1,it1);
         voxi(pix1) = 1;
         ftsLst.basic = fea.getBasicFeatures(voxi,muPerPix,ii,ftsLst.basic);
         

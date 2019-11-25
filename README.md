@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**11/25/2019:** 
+
+The update changes the GUI panel. Now users could select whether to output feature table or not.  
+
 **11/22/2019:** 
 
 The update saves the use of memory, while the results will not change.

@@ -12,7 +12,7 @@
 close all
 clearvars
 startup;  % initialize
-load('./cfg/random_Seed');
+load('random_Seed');
 rng(s);
 
 p0 = 'D:\'; %% tif folder

@@ -103,7 +103,7 @@ if fh.expMov.Value==1
     io.writeTiffSeq(fmov,ov1,8);
 end
 
-if fh.expEvt.Value==1
+if fh.expFt.Value==1
     waitbar(0.75,ff,'Writing feature table ...');
     % export feature table
     ftTb = getappdata(f,'featureTable');

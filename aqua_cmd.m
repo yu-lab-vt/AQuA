@@ -1,7 +1,7 @@
 %% setup
 % -- preset 1: in vivo. 2: ex vivo. 3: GluSnFR
 startup;  % initialize
-load('./cfg/random_Seed');
+load('random_Seed');
 rng(s);
 
 preset = 1;
