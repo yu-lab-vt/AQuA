@@ -52,14 +52,19 @@ function readMsk(~,~,f,srcType,mskType,initThr)
         return
     end
     
-    if ~strcmp(srcType,'self')
+    H = opts.sz(1) + 2 * bdCrop;
+    W = opts.sz(2) + 2 * bdCrop;
+    dat = imresize(dat,[H,W]);
+    
+%     if ~strcmp(srcType,'self')
         dat = dat(bdCrop+1:end-bdCrop,bdCrop+1:end-bdCrop,:);
-    end
+%     end
     
     btSt.mskFolder = PathName;
     setappdata(f,'btSt',btSt);
     
     % mean projection
+    
     dat = squeeze(dat);
     if numel(size(dat))==3
         datAvg = mean(dat,3);
