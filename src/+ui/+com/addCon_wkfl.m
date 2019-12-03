@@ -43,7 +43,7 @@ function addCon_wkfl(f,pWkfl)
     uicontrol(bDrawBt,'String','Mask builder',...
         'Callback',{@ui.msk.mskBuilderOpen,f},'Enable','on');
     uicontrol(bDrawBt,'String','Update features','Tag','updtFeature1',...
-        'Callback',{@ui.detect.updtFeature,f,1},'Enable','off');
+        'Callback',{@ui.detect.updtFeature,f,0},'Enable','off');
     uix.Empty('Parent',bDraw);
     bDraw.Heights = [-1,20,5];
     

@@ -48,6 +48,10 @@ function updtFeature(~, ~, f, stg)
         [ftsLstE, dffMat, dMat] = fea.getFeaturesTop(datOrg, evtLst, opts);
         setappdata(f, 'dffMat', dffMat);
         setappdata(f, 'dMat', dMat);
+        
+        % filter table init
+        setappdata(f,'fts',ftsLstE);
+        ui.detect.filterInit([],[],f);
     else 
         ftsLstE = getappdata(f, 'fts');
     end 

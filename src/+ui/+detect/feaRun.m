@@ -11,8 +11,7 @@ function feaRun(~,~,f)
     % enable feature overlay
     ui.over.chgOv([],[],f,1)
     
-    % filter table init
-    ui.detect.filterInit([],[],f);
+    
     
     fh.updtFeature1.Enable = 'on';
     fh.pFilter.Visible = 'on';
