@@ -109,7 +109,7 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 **12/3/2019:** 
 
-The update fixs one bug. Now each time click "Update features" in GUI, the proof reading table will be updated.
+The update fixes one bug. Now each time "Update features" in GUI is clicked , the proof reading table will be updated.
 
 **11/25/2019:** 
 
