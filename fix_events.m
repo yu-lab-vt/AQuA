@@ -21,7 +21,12 @@ sz = opts.sz;
 dat = double(res.datOrg);
 dat = dat/max(dat(:));
 
+
 evt = res.evt;
+load('Default_btSt.mat');
+btSt.filterMsk = ones(numel(evt),1);
+btSt.regMask = ones(numel(evt),1);
+res.btSt = btSt;
 dff = res.dffMat(:,:,2);
 evtMap = zeros(sz);
 for ii=1:numel(evt)
@@ -132,7 +137,6 @@ end
 evtMapExt = reshape(evtMapExt,sz);
 datRExt = reshape(datRExt,sz);
 
-
 %% update overlay
 evtLst = label2idx(evtMapExt);
 nEvt = numel(evtLst);
@@ -165,7 +169,7 @@ res.ov('Events') = ovx;
 %% update some features and save
 fprintf('Preparing AQuA...\n')
 [ftsLstE, dffMat, dMat] = fea.getFeaturesTop(dat, evtLst, opts);
-ftsLstE = fea.getFeaturesPropTop(dat, datRExt, evtLst, ftsLstE, opts);
+ftsLstE = fea.getFeaturesPropTop(dat, uint8(datRExt*255), evtLst, ftsLstE, opts);
 
 % update network features
 sz = size(dat);
@@ -255,7 +259,11 @@ res.fts = ftsLstE;
 res.dffMat = dffMat;
 res.dMat = dMat;
 res.riseLst = res0.riseLst;
-res.riseLstFilter = res0.riseLstFilter;
+if(~exist('res0.riseLstFilter','var'))
+    res.riseLstFilter = res.riseLst;
+else
+    res.riseLstFilter = res0.riseLstFilter;
+end
 
 idx = 1:numel(res.evt);
 xSel = ~ismember(idx,btSt.rmLst);

@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**12/18/2019:** 
+
+The update fixes one bug existing in 'fix_events'.
+
 **12/3/2019:** 
 
 The update fixes one bug. Now each time "Update features" in GUI is clicked , the proof reading table will be updated.
