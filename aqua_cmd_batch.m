@@ -72,7 +72,11 @@ for x = 1:size(files,1)
     riseLstFilterZ = riseLst(mskx);
 
     % merging (glutamate)
-    evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,bd);
+    if opts.ignoreMerge==0
+        evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,bd);
+    else
+        evtLstMerge = evtLstFilterZ;
+    end
 
     % reconstruction (glutamate)
     if opts.extendSV==0 || opts.ignoreMerge==0 || opts.extendEvtRe>0

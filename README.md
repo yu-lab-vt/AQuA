@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**12/19/2019:** 
+
+Solve the issue that the detected events are forced to merge in "aqua_cmd.m" and "aqua_cmd_batch.m".
+
 **12/18/2019:** 
 
 The update fixes one bug existing in 'fix_events'.
