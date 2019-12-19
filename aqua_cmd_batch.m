@@ -62,7 +62,7 @@ for x = 1:size(files,1)
     [svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,evtSpatialMask,opts);  % super voxel detection
 
     [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,[],bd);  % events
-    [ftsLst,dffMat] = fea.getFeatureQuick(datOrg,evtLst,opts);
+    [ftsLst,dffMat] = fea.getFeatureQuick(dat,evtLst,opts);
 
     % filter by significance level
     mskx = ftsLst.curve.dffMaxZ>opts.zThr;

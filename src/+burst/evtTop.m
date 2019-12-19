@@ -1,6 +1,7 @@
 function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd,f)
     % evtTop super voxels to super events and optionally, to events
-    
+    load('random_Seed.mat');
+    rng(s);
     [H,W,T] = size(dat);
     
     if isfield(opts,'gapExt')

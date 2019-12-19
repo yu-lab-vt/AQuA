@@ -45,7 +45,7 @@ opts = util.parseParam(preset,1);
 [svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,[],opts);  % super voxel detection
 
 [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts);  % events
-[ftsLst,dffMat] = fea.getFeatureQuick(datOrg,evtLst,opts);
+[ftsLst,dffMat] = fea.getFeatureQuick(dat,evtLst,opts);
 
 % fitler by significance level
 mskx = ftsLst.curve.dffMaxZ>opts.zThr;
