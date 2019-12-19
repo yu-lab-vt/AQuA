@@ -56,7 +56,7 @@ riseLstFilterZ = riseLst(mskx);
 
 % merging (glutamate)
 if opts.ignoreMerge==0
-    evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,bd);
+    evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,[]);
 else
     evtLstMerge = evtLstFilterZ;
 end
