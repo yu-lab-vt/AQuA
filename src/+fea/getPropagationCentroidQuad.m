@@ -23,7 +23,7 @@ kDi(4,:) = [b,-a];
 
 singleThr = 0;
 % propagation features
-if isfield(opts,'propthrmin')
+if isfield(opts,'propthrmin') || ~isnan(opts.propthrmin)
     if opts.propthrmin == opts.propthrmax || opts.propthrstep==0
         thr0 = opts.propthrmin;
         singleThr = 1;

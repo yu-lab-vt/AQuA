@@ -48,6 +48,8 @@ if op==0
         pf0 = fh.fIn.String;
         [filepath,name,ext] = fileparts(pf0);
         f.Name = ['AQUA: ',name];
+        randomseed = load('random_Seed.mat');
+        rng(randomseed.s);
         [datOrg,opts] = burst.prep1(filepath,[name,ext],[],opts,ff);
         %cfg0.file = pf0;  % save folder
         %save(cfgFile,'cfg0');
