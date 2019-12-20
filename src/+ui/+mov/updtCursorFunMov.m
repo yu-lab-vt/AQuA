@@ -13,6 +13,10 @@ function updtCursorFunMov(~,~,f,op,lbl)
     fh.RmCell.BackgroundColor = col;
     fh.RmLm.ForegroundColor = [0 0 0];
     fh.RmCell.ForegroundColor = [0 0 0];
+    fh.DragLm.BackgroundColor = col;
+    fh.DragCell.BackgroundColor = col;
+    fh.DragLm.ForegroundColor = [0 0 0];
+    fh.DragCell.ForegroundColor = [0 0 0];
     fh.NameCell.BackgroundColor = col;
     fh.NameCell.ForegroundColor = [0 0 0];
     fh.NameLm.BackgroundColor = col;
@@ -37,27 +41,29 @@ function updtCursorFunMov(~,~,f,op,lbl)
             if strcmp(op,'add')
                 fh.AddCell.BackgroundColor = [0.3 0.3 0.7];
                 fh.AddCell.ForegroundColor = [1 1 1];
-            else
-                if strcmp(op,'rm')
-                    fh.RmCell.BackgroundColor = [0.3 0.3 0.7];
-                    fh.RmCell.ForegroundColor = [1 1 1];
-                else
-                    fh.NameCell.BackgroundColor = [0.3 0.3 0.7];
-                    fh.NameCell.ForegroundColor = [1 1 1];
-                end
+            elseif strcmp(op,'rm')
+                fh.RmCell.BackgroundColor = [0.3 0.3 0.7];
+                fh.RmCell.ForegroundColor = [1 1 1];
+            elseif strcmp(op,'name')
+                fh.NameCell.BackgroundColor = [0.3 0.3 0.7];
+                fh.NameCell.ForegroundColor = [1 1 1];
+            elseif strcmp(op,'drag')
+                fh.DragCell.BackgroundColor = [0.3 0.3 0.7];
+                fh.DragCell.ForegroundColor = [1 1 1];
             end
         case 'landmk'
             if strcmp(op,'add')
                 fh.AddLm.BackgroundColor = [0.3 0.3 0.7];
                 fh.AddLm.ForegroundColor = [1 1 1];
-            else
-                if strcmp(op,'rm')
-                    fh.RmLm.BackgroundColor = [0.3 0.3 0.7];
-                    fh.RmLm.ForegroundColor = [1 1 1];
-                else
-                    fh.NameLm.BackgroundColor = [0.3 0.3 0.7];
-                    fh.NameLm.ForegroundColor = [1 1 1];
-                end
+            elseif strcmp(op,'rm')
+                fh.RmLm.BackgroundColor = [0.3 0.3 0.7];
+                fh.RmLm.ForegroundColor = [1 1 1];
+            elseif strcmp(op,'name')
+                fh.NameLm.BackgroundColor = [0.3 0.3 0.7];
+                fh.NameLm.ForegroundColor = [1 1 1];
+            elseif strcmp(op,'drag')
+                fh.DragLm.BackgroundColor = [0.3 0.3 0.7];
+                fh.DragLm.ForegroundColor = [1 1 1];
             end
         case 'viewFav'
             fh.viewFavClick.BackgroundColor = [0.3 0.3 0.7];
@@ -77,6 +83,9 @@ function updtCursorFunMov(~,~,f,op,lbl)
     elseif strcmp(op,'addrm')&&strcmp(lbl,'addAll')
         ui.mov.movAddAll([],[],f);
         btSt = getappdata(f,'btSt');
+    elseif strcmp(op,'drag')
+        ui.mov.dragReg([],[],f,op,lbl);
+        btSt.clickSt = [];
     else
         fh.ims.im1.ButtonDownFcn = {@ui.mov.movClick,f,op,lbl};
         fh.ims.im2a.ButtonDownFcn = {@ui.mov.movClick,f,op,lbl};

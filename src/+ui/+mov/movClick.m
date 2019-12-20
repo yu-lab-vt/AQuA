@@ -39,7 +39,7 @@ if strcmp(lbl,'cell') || strcmp(lbl,'landmk')
             bd(lbl) = bd0;
         end
         setappdata(f,'bd',bd);
-    else
+    elseif(strcmp(op,'name'))
        % name
        if bd.isKey(lbl)
             bd0 = bd(lbl);

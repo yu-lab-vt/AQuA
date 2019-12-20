@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**12/20/2019:** 
+
+Add new functin for cell regions and landmark reigons. The button "->" in the top-left corner of the GUI can let users to drag regions.
+
 **12/19/2019:** 
 
 Solve the issue that the detected events are forced to merge in "aqua_cmd.m" and "aqua_cmd_batch.m".
