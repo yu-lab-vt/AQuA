@@ -33,7 +33,7 @@ function dragReg(~,~,f,op,lbl)
             iw0 = max(min(round(points(1,1)),W),1);
             ih0 = max(min(H-round(points(1,2))+1,H),1);
             ihw0= sub2ind([H,W],ih0,iw0);
-            for ii = numel(bd0)
+            for ii = 1:numel(bd0)
                 tmp = bd0{ii};
                 pix = tmp{2};
                 if ismember(ihw0,pix)
