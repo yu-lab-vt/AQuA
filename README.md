@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**1/16/2020:** 
+
+The update adds the features of favorited events into the '.mat' result.
+
 **12/20/2019:** 
 
 Add new functin for cell regions and landmark reigons. The button "->" in the top-left corner of the GUI can let users to drag regions.
