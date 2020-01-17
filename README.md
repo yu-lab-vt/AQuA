@@ -81,9 +81,9 @@ Note: The Fiji version do not save the results in 'res' data structure in 'mat' 
 
 # Getting started
 If you are using AQuA for the first time, please read
-**[the step by step user guide](https://drive.google.com/open?id=1vUZP44KG3B4m4LZXfzcauiyp-Sqd0eJ1)**.
+**[the step by step user guide](https://drive.google.com/open?id=1a3lhe0dUth-5J1-S2fZlPOCZlPbeuvUr)**.
 
-Or you can check the **[details on output files, extracted features, and parameter settings](https://drive.google.com/open?id=1U3oJpEFwv0lXdax6efSnoifcYjJuRzj3)**.
+Or you can check the **[details on output files, extracted features, and parameter settings](https://drive.google.com/open?id=1assaXYBP6a0OOHrYGYBWjYO2pgwKR3Iu)**.
 
 # Example datasets
 You can try these real data sets in AQuA. These data sets are used in the supplemental of the paper.
@@ -106,6 +106,11 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 
 # Updates
+
+**1/17/2020:** 
+
+Add area under the curve feature for each event. Users could find them in 'fts.curve' structure. 
+Update **[the step by step user guide](https://drive.google.com/open?id=1a3lhe0dUth-5J1-S2fZlPOCZlPbeuvUr)** and **[details on output files, extracted features, and parameter settings](https://drive.google.com/open?id=1assaXYBP6a0OOHrYGYBWjYO2pgwKR3Iu)**.
 
 **1/16/2020:** 
 

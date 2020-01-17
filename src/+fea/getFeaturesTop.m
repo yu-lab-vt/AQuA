@@ -158,6 +158,12 @@ function [ftsLst,dffMat,dMat] = getFeaturesTop(dat,evtLst,opts)
         ftsLst.curve.width11(ii) = width11;
         ftsLst.curve.decayTau(ii) = decayTau;
         
+        % AUC
+        datVec = reshape(dat,[],T);
+        datCurve = mean(datVec(ihw,:),1);
+        ftsLst.curve.datAUC(ii) = sum(datCurve(min(it):max(it)));
+        ftsLst.curve.dffAUC(ii) = sum(dff1(min(it):max(it)));
+        
         % basic features
         rgT = min(it):max(it);
         ih1 = ih-min(rgH)+1;

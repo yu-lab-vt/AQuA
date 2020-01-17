@@ -1,5 +1,6 @@
 Name,Script
 Index,x=1:nEvt
+Starting Frame,x=fts.curve.tBegin
 Basic - Area,x=fts.basic.area
 Basic - Perimeter,x=fts.basic.peri
 Basic - Circularity,x=fts.basic.circMetric
@@ -9,6 +10,8 @@ Curve - Duration 50% to 50%,x=fts.curve.width55
 Curve - Duration 10% to 10%,x=fts.curve.width11
 Curve - Rising duration 10% to 90%,x=fts.curve.rise19
 Curve - Decaying duration 90% to 10%,x=fts.curve.fall91
+Curve - dat AUC,x=fts.curve.datAUC
+Curve - dff AUC,x=fts.curve.dffAUC
 Curve - Decay tau,x=fts.curve.decayTau
 Propagation - onset - overall,"x0=fts.propagation.propGrowOverall; x=sum(x0,2)"
 Propagation - onset - one direction,"x0=fts.propagation.propGrowOverall(:,xxDi); x=x0"
