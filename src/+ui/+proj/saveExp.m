@@ -60,6 +60,7 @@ if ~isempty(res.riseLst)  % rising map is for super events
     res.riseLstFav = res.riseLst(xSelFav);
 end
 res.evtSelectedList = find(xSel>0);
+res.evtFavList = find(xSelFav>0);
 
 % save raw movie with 8 or 16 bits to save space
 res.opts.bitNum = 16;
