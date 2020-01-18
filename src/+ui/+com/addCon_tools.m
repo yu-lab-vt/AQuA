@@ -23,7 +23,8 @@ bEvtBtn.ButtonSize = [120,20];
 
 uicontrol(bCurveBtn,'String','Show curves','Callback',{@ui.evt.evtMngrShowCurve,f});
 uicontrol(bCurveBtn,'String','Save curves','Callback',{@ui.evt.saveCurveFig,f});
-uix.Empty('Parent',bCurveBtn);
+uicontrol(bCurveBtn,'String','Save waves','Callback',{@ui.evt.saveWaves,f});
+% uix.Empty('Parent',bCurveBtn);
 bCurveBtn.ButtonSize = [120,20];
 
 tb.ColumnName = {'','Index','Frame','Size','Duration','df/f','Tau'};

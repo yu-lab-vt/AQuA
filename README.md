@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**1/18/2020:** 
+
+Add 'Save waves' button in favorite list part. Users could export the waves data of selected events as '.csv' files. 
+
 **1/17/2020:** 
 
 Add area under the curve feature for each event. Users could find them in 'fts.curve' structure. 
