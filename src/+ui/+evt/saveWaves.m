@@ -17,9 +17,16 @@ function saveWaves(~,~,f)
         mkdir(path2);    
     end
     
+    fh = guidata(f);
+    tb = fh.evtTable;
+    dat = tb.Data;
+    favLst = [];
+    for ii=1:size(dat,1)
+        if dat{ii,1}==1
+            favLst = union(dat{ii,2},favLst);
+        end
+    end
     
-    btSt = getappdata(f,'btSt');
-    favLst = btSt.evtMngrMsk;
     dffMat = getappdata(f,'dffMat');
     fts = getappdata(f,'fts');
     
