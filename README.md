@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**2/5/2020:** 
+
+The update solves the problem that AQuA cannot detect event in the first frame and end frame.
+
 **1/18/2020:** 
 
 Add 'Save waves' button in favorite list part. Users could export the waves data of selected events as '.csv' files. 

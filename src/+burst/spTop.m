@@ -1,6 +1,23 @@
 function [svLst,dReconSp,riseX] = spTop(dat,dF,lmLoc,evtSpatialMask,opts,ff)
     
+    % in case starting, or ending signals are not detected
+    ext = 2;
     [H,W,T] = size(dat);
+    backGround = mean(dat-dF,3);
+    dat2 = zeros(H,W,T+2*ext,'single');
+    dat2(:,:,ext+1:end-ext) = dat;
+    for i = 1:ext
+        dat2(:,:,i) = backGround;
+        dat2(:,:,end-i+1) = backGround;
+    end
+    
+    dat = dat2; clear dat2;
+    dF2 = zeros(H,W,T+2*ext,'single');
+    dF2(:,:,ext+1:end-ext) = dF;
+    dF = dF2; clear dF2;
+    T = T + 2*ext;
+    lmLoc = lmLoc + H*W*ext;
+    
     dReconSp = [];
     
     if isempty(evtSpatialMask)
@@ -17,13 +34,13 @@ function [svLst,dReconSp,riseX] = spTop(dat,dF,lmLoc,evtSpatialMask,opts,ff)
     opts1.maxStp = 1;
     lmAll = zeros(H,W,T,'logical');
     lmAll(lmLoc) = true;
-    [resCell,lblMap] = burst.growSeed(dat,dF,resCell,lblMap,lmLoc,lmAll,opts1,0);
+    [resCell,lblMap] = burst.growSeed(dF,dF,resCell,lblMap,lmLoc,lmAll,opts1,0);
     for pp=1:40
         fprintf('Grow %d\n',pp);
         if exist('ff','var')
             waitbar(0.1+pp/80,ff);
         end
-        [resCell,lblMap] = burst.growSeed(dat,dF,resCell,lblMap,lmLoc,lmAll,opts1,pp);
+        [resCell,lblMap] = burst.growSeed(dF,dF,resCell,lblMap,lmLoc,lmAll,opts1,pp);
     end
     
     % clean super voxels
@@ -47,6 +64,10 @@ function [svLst,dReconSp,riseX] = spTop(dat,dF,lmLoc,evtSpatialMask,opts,ff)
     if exist('ff','var')
         waitbar(0.8,ff);
     end
+    
+    % remove extension
+    lblMap = lblMap(:,:,ext+1:end-ext);
+    dat = dat(:,:,ext+1:end-ext);
     
     % Extend and re-fit each patch, estimate delay, reconstruct signal
     fprintf('Extending super voxels ...\n')
