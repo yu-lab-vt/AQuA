@@ -21,7 +21,7 @@ uicontrol(pDeProp,'Style','edit','String','1','Tag','tmpRes');
 uicontrol(pDeProp,'Style','edit','String','1','Tag','spaRes');
 uicontrol(pDeProp,'Style','edit','String','2','Tag','bdSpa');
 uicontrol(pDeProp,'Style','text','String','Data type (presets)','HorizontalAlignment','left');
-uicontrol(pDeProp,'Style','text','String','Temporal resolution: second per frame','HorizontalAlignment','left');
+uicontrol(pDeProp,'Style','text','String','Temporal resolution: seconds per frame','HorizontalAlignment','left');
 uicontrol(pDeProp,'Style','text','String','Spatial resolution: um per pixel','HorizontalAlignment','left');
 uicontrol(pDeProp,'Style','text','String','Exclude pixels shorter than this distance to border','HorizontalAlignment','left');
 pDeProp.Widths = [100,-1];
