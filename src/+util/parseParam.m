@@ -13,11 +13,11 @@ opts = [];
 optsInfo = [];
 optsName = [];
 
-cfg = readtable(cfgFile,'ReadVariableNames',false);
-cfg = cfg(2:end,:);
+cfg = readtable(cfgFile);
+% cfg = cfg(2:end,:);
 
 % remove empty lines
-cfg = cfg(~cellfun(@isempty,cfg.Var1),:);
+cfg = cfg(~cellfun(@isempty,cfg.Name),:);
 
 vName = cfg{:,2};
 
