@@ -3,6 +3,11 @@ function [evtMap,evtMemC,evtMemCMap] = riseMap2evt(spLst,dlyMap,distMat,maxRiseU
 nSp = numel(spLst);
 [H,W] = size(dlyMap);
 evtMap = zeros(H,W);
+if(nSp==0)
+    evtMemC = [];
+    evtMemCMap = [];
+   return; 
+end
 
 % distMatIn = distMat;
 distMat = abs(distMat);
