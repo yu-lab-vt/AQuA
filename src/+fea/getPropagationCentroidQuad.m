@@ -163,7 +163,12 @@ propShrinkOverall = nansum(propShrink,1);
 pixNumChange = zeros(size(pixNum));
 pixNumChange(2:end,:) = pixNum(2:end,:)-pixNum(1:end-1,:);
 pixNumChangeRateMultiThr = pixNumChange/nPix;
-pixNumChangeRate = nanmax(pixNumChangeRateMultiThr,[],2);
+pixNumChangeRateMultiThrAbs = abs(pixNumChangeRateMultiThr);
+[~,id] = nanmax(pixNumChangeRateMultiThrAbs,[],2);
+pixNumChangeRate = zeros(size(pixNumChangeRateMultiThr,1),1);
+for i = 1:size(pixNumChangeRateMultiThr,1)
+    pixNumChangeRate(i) = pixNumChangeRateMultiThr(i,id(i));
+end
 
 % output
 ftsPg.propGrow{nEvt} = propGrow*muPerPix;
