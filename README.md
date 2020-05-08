@@ -107,6 +107,11 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**5/8/2020:** 
+
+This update changes the estimated noise in step 1. Previous version estimated the noise before smoothing and used it to detect active regions, which is unreasonable since the detection is based on the smoothed data. 
+The current version estimates the noise after smoothing. With the accurate estimation, users can feel safe to set the intensity threshold as 2 or 3 instead of adjusting this parameter very hard.
+
 **2/5/2020:** 
 
 The update solves the problem that AQuA cannot detect event in the first frame and end frame.

@@ -60,7 +60,7 @@ function [dat,dF,arLst,lmLoc,opts,dActVox] = actTop(dat,opts,evtSpatialMask,ff)
     
     % noise and threshold, get active voxels
     if isfield(opts,'legacyModeActRun') && opts.legacyModeActRun>0
-        opts.varEst = stdEstBef.^2;
+        opts.varEst = stdEst.^2;
 %         opts.varMap = stdMapGauBef.^2;
         [arLst,dActVox] = burst.getAr(dF,opts,evtSpatialMask);
     else
