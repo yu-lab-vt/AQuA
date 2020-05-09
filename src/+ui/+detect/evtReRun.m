@@ -18,7 +18,7 @@ opts.extendEvtRe = fh.extendEvtRe.Value==1;
 setappdata(f,'opts',opts);
 
 if isfield(opts,'skipSteps') && opts.skipSteps>0
-    riseLstE = riseLstFilterZ; datRE = datR; evtLstE = evtLstFilterZ;
+    riseLstE = riseLstFilterZ; datRE = datR; evtLstE = evtLstMerge;
 else
     if opts.extendSV==0	|| opts.ignoreMerge==0 || opts.extendEvtRe>0
         [riseLstE,datRE,evtLstE] = burst.evtTopEx(dat,dF,evtLstMerge,opts,ff,f);

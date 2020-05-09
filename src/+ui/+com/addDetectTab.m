@@ -47,14 +47,18 @@ function addDetectTab(f,pDeOut)
     
     % event detection: active voxels
     bAct = uix.VBox('Parent',pAct);
+    uicontrol(bAct,'Style','checkbox','String','Skip step 2,3,4',...
+        'Value',0,'Tag','skipSteps');
     gAct = uix.Grid('Parent',bAct,'Padding',10,'Spacing',8);
     uicontrol(gAct,'Style','edit','String','2','Tag','thrArScl');
     uicontrol(gAct,'Style','edit','String','0.5','Tag','smoXY');
     uicontrol(gAct,'Style','edit','String','8','Tag','minSize');
+    
     h{end+1} = uicontrol(gAct,'Style','text','String','Intensity threshold scaling factor');
     h{end+1} = uicontrol(gAct,'Style','text','String','Smoothing (sigma)');
     h{end+1} = uicontrol(gAct,'Style','text','String','Minimum size (pixels)');
     gAct.Widths = [50,-1]; gAct.Heights = [15,15,15];
+    bAct.Heights = [20,-1];
     
     % event detection: superpixels and rising time
     bPhase = uix.VBox('Parent',pSp);
@@ -92,7 +96,7 @@ function addDetectTab(f,pDeOut)
     uicontrol(gMerge,'Style','edit','String','2','Tag','mergeEventCorr');
     uicontrol(gMerge,'Style','edit','String','2','Tag','mergeEventMaxTimeDif');
     h{end+1} = uicontrol(gMerge,'Style','text','String','Maximum distance');
-    h{end+1} = uicontrol(gMerge,'Style','text','String','Minimum correlation');
+    h{end+1} = uicontrol(gMerge,'Style','text','String','Minimum correlation','Tag','mergeEventCorrText');
     h{end+1} = uicontrol(gMerge,'Style','text','String','Maximum time difference');
     gMerge.Widths = [50,-1]; gMerge.Heights = [15,15,15];
     bMerge.Heights = [20,-1];

@@ -3,6 +3,10 @@ function flow(~,evtDat,f,op)
 fh = guidata(f);
 nTabTot = numel(fh.deOutTab.TabEnables);
 ixTab = fh.deOutTab.Selection;
+opts = getappdata(f,'opts');
+skipSteps = fh.skipSteps.Value==1;
+opts.skipSteps = skipSteps;
+setappdata(f,'opts',opts);
 
 % controls
 if strcmp(op,'chg')
@@ -32,8 +36,13 @@ end
 % go to previous step
 if strcmp(op,'back')
     if ixTab>1
-        fh.deOutTab.Selection = ixTab-1;
+        if(skipSteps && ixTab==5)
+            fh.deOutTab.Selection = ixTab-4;
+        else
+            fh.deOutTab.Selection = ixTab-1;
+        end
     end
+    fh.deOutNext.Enable = 'on';
 end
 
 % run current step
@@ -62,8 +71,23 @@ end
 % go to next step
 if strcmp(op,'next')
     if ixTab<nTabTot
-        fh.deOutTab.Selection = ixTab+1;
-        fh.deOutTab.TabEnables{ixTab+1} = 'on';
+        if(skipSteps && ixTab==1)
+            fh.deOutTab.Selection = ixTab+4;
+            fh.deOutTab.TabEnables{ixTab+4} = 'on';
+        else
+            fh.deOutTab.Selection = ixTab+1;
+            fh.deOutTab.TabEnables{ixTab+1} = 'on';
+        end
+        
+        if(fh.deOutTab.Selection==5)
+            if(skipSteps)
+                fh.mergeEventCorr.Visible = 'off';
+                fh.mergeEventCorrText.Visible = 'off';
+            else
+                fh.mergeEventCorr.Visible = 'on';
+                fh.mergeEventCorrText.Visible = 'on';
+            end
+        end
     end
 end
 end

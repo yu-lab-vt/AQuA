@@ -54,6 +54,9 @@ function prepInitUI(f,fh,opts,scl,~,stg,~)
     fh.thrArScl.String = num2str(opts.thrARScl);
     fh.smoXY.String = num2str(opts.smoXY);
     fh.minSize.String = num2str(opts.minSize);
+    if isfield(opts,'skipSteps') && ~isempty(opts.skipSteps)
+        fh.skipSteps.Value = (opts.skipSteps);
+    end
     
     fh.thrTWScl.String = num2str(opts.thrTWScl);
     fh.thrExtZ.String = num2str(opts.thrExtZ);

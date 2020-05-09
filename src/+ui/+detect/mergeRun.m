@@ -5,12 +5,8 @@ fprintf('Merging ...\n')
 
 fh = guidata(f);
 ff = waitbar(0,'Merging ...');
-
-evtLstFilterZ = getappdata(f,'evtLstFilterZ');
-dffMatFilterZ = getappdata(f,'dffMatFilterZ');
-tBeginFilterZ = getappdata(f,'tBeginFilterZ');
-bd = getappdata(f,'bd');
 opts = getappdata(f,'opts');
+bd = getappdata(f,'bd');
 
 try
     opts.ignoreMerge = fh.ignoreMerge.Value==1;
@@ -21,13 +17,27 @@ try
 catch
     msgbox('Error setting parameters')
 end
-
-if opts.ignoreMerge==0
-    evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,bd);
-else
-    evtLstMerge = evtLstFilterZ;
-end
     
+if(~opts.skipSteps)
+    evtLstFilterZ = getappdata(f,'evtLstFilterZ');
+    dffMatFilterZ = getappdata(f,'dffMatFilterZ');
+    tBeginFilterZ = getappdata(f,'tBeginFilterZ');
+    
+    if opts.ignoreMerge==0
+        evtLstMerge = burst.mergeEvt(evtLstFilterZ,dffMatFilterZ,tBeginFilterZ,opts,bd);
+    else
+        evtLstMerge = evtLstFilterZ;
+    end
+else
+    evtLstFilterZ = getappdata(f,'arLst');
+    setappdata(f,'evtLstFilterZ',evtLstFilterZ);
+    setappdata(f,'datRAll',uint8(ones(opts.sz)*255));
+    if opts.ignoreMerge==0
+        evtLstMerge = burst.mergeEvt_SkipSteps(evtLstFilterZ,opts,bd);
+    else
+        evtLstMerge = evtLstFilterZ;
+    end
+end
 setappdata(f,'evtLstMerge',evtLstMerge);
 
 waitbar(1,ff);
