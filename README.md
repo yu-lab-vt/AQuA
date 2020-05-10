@@ -109,12 +109,12 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 **5/9/2020:** 
 
-Some users think the results in first step are good enough. So this update allows users to skip step 2,3 and 4 so that the first step can be directly used to analyze features.
+Some users think the results in first step are all they need. This update allows users to skip step 2,3 and 4 so that the first step can be directly used to extract features.
 
 **5/8/2020:** 
 
-This update changes the estimated noise in step 1. Previous version estimated the noise before smoothing and used it to detect active regions, which is unreasonable since the detection is based on the smoothed data. 
-The current version estimates the noise after smoothing. With the accurate estimation, users can feel safe to set the intensity threshold as 2 or 3 instead of adjusting this parameter very hard.
+This update changes the estimated noise in step 1. Previous version estimated the noise before smoothing and used it to detect active regions, which created inconsistency since the detection is based on the smoothed data. 
+This updated version estimates the noise after smoothing. With the accurate estimation, users can feel safe to set the intensity threshold as 2 or 3 instead of adjusting this parameter extensively and empirically.
 
 **2/5/2020:** 
 
