@@ -126,7 +126,7 @@ if fh.expFt.Value==1
     % all selected events
     cc1 = cc(:,xSel);
     ftTb1 = table(cc1,'RowNames',ftTb.Row);
-    ftb = [fpath,filesep,fname,'.xlsx'];
+    ftb = [fpath,filesep,fname,'.csv'];
     writetable(ftTb1,ftb,'WriteVariableNames',0,'WriteRowNames',1);
 
     

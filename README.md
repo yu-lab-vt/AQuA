@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**5/13/2020:** 
+
+This update changes the exported table's extension from '.xlsx' to '.csv' to avoid the error when the number of detected events is huge.
+
 **5/9/2020:** 
 
 Some users think the results in first step are good enough. So this update allows users to skip step 2,3 and 4 so that the first step can be directly used to analyze features.
