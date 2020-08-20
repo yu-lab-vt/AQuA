@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**8/20/2020:** 
+
+This update makes loading preset step compatible with Matlab 2020b.
+
 **5/13/2020:** 
 
 This update changes the exported table's extension from '.xlsx' to '.csv' to avoid the error when the number of detected events is huge.

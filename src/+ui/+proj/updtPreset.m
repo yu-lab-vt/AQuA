@@ -1,5 +1,5 @@
 function updtPreset(~,~,f,readTb)
-    
+    warning('off','all');
     fh = guidata(f);
     
     if ~exist('readTb','var')
@@ -8,8 +8,9 @@ function updtPreset(~,~,f,readTb)
     
     if readTb>0
         cfgFile = 'parameters1.csv';
-        cfg = readtable(cfgFile,'ReadVariableNames',false);
-        cNames = cfg{1,4:end-1};
+        cfg = readtable(cfgFile,'ReadVariableNames',true);
+        cNames = cfg.Properties.VariableNames;
+        cNames = cNames(1,4:end-1);
         %cNames = cfg.Properties.VariableNames(4:end-1);
         fh.preset.String = cNames;
     end
@@ -26,5 +27,5 @@ function updtPreset(~,~,f,readTb)
     if isfield(opts,'regMaskGap') && ~isempty(opts.regMaskGap)
         fh.bdSpa.String = num2str(opts.regMaskGap);
     end    
-    
+    warning('on','all');
 end
