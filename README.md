@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**3/15/2021:** 
+
+This update makes changes in the reading step. Previous version will report error when the input data is a color image since AQuA can only deal with gray image. This updated version will automatically convert the input color image into gray image to avoid the error.
+
 **8/20/2020:** 
 
 This update makes loading preset step compatible with Matlab 2020b.
