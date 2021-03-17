@@ -107,6 +107,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**3/17/2021:** 
+
+This update allows AQuA to load data with the format of BIGTIFF.
+
 **3/15/2021:** 
 
 This update makes changes in the reading step. Previous version will report error when the input data is a color image since AQuA can only deal with gray image. This updated version will automatically convert the input color image into gray image to avoid the error.
