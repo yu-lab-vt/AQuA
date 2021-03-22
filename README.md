@@ -83,7 +83,7 @@ Note: The Fiji version do not save the results in 'res' data structure in 'mat' 
 If you are using AQuA for the first time, please read
 **[the step by step user guide](https://drive.google.com/open?id=1a3lhe0dUth-5J1-S2fZlPOCZlPbeuvUr)**.
 
-Or you can check the **[details on output files, extracted features, and parameter settings](https://drive.google.com/file/d/17UYI2ik_34KkL0yfRcazslWpzwmkjdUK/view?usp=sharing)**.
+Or you can check the **[details on output files, extracted features, and parameter settings](https://drive.google.com/file/d/1CckDLbrkw16b7MPlOQdYpZciIz80Snm_/view?usp=sharing)**.
 
 # Example datasets
 You can try these real data sets in AQuA. These data sets are used in the supplemental of the paper.
