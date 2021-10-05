@@ -30,5 +30,3 @@ Region - event centroid distance to border - normalized by region radius,"x0=fts
 Network - Temporal density,"x=fts.network.nOccurSameLoc(:,1)"
 Network - Temporal density with similar size only,"x=fts.network.nOccurSameLoc(:,2)"
 Network - Spatial density,x=fts.network.nOccurSameTime
-Propagation - Max Propagation Speed,x=fts.propagation.maxPropSpeed
-Propagation - Average Propagation Speed,x=fts.propagation.avgPropSpeed
