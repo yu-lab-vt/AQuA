@@ -12,8 +12,6 @@
 close all
 clearvars
 startup;  % initialize
-load('random_Seed.mat');
-rng(s);
 
 p0 = 'D:\'; %% tif folder
 
@@ -37,7 +35,8 @@ files = dir(fullfile(p0,'*.tif'));
 
 %% 
 for x = 1:size(files,1)
-
+    load('random_Seed.mat');
+    rng(s);
     f0 = files(x).name;  % file name
 
     %% Note: Setting the parameters should be consistent with your target file
