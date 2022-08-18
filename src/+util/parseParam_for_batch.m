@@ -17,7 +17,7 @@ cfg = readtable(cfgFile,'ReadVariableNames',false);
 % cfg = cfg(2:end,:);
 
 % remove empty lines
-cfg = cfg(~cellfun(@isempty,cfg.Name),:);
+cfg = cfg(~cellfun(@isempty,cfg.Var1),:);
 
 vName = cfg{:,2};
 
