@@ -10,6 +10,7 @@ if ~isfield(opts,'northx')
     northDi = [0,1];
 else
     northDi = [opts.northx,opts.northy];
+    northDi = northDi/sqrt(sum(northDi.^2));
 end
 
 % if opts.usePG
