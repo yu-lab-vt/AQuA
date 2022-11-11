@@ -13,7 +13,7 @@ close all
 clearvars
 startup;  % initialize
 
-p0 = 'D:\'; %% tif folder
+p0 = 'D:\Folder\'; %% tif folder
 
 %% For cell boundary and landmark
 p_cell = '';   % cell boundary path, if you have
@@ -57,10 +57,37 @@ for x = 1:size(files,1)
             evtSpatialMask(spaMsk0>0) = 1;
         end
     end
-    [dat,dF,~,lmLoc,opts,dL] = burst.actTop(datOrg,opts,evtSpatialMask);  % foreground and seed detection
-    [svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,evtSpatialMask,opts);  % super voxel detection
 
-    [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,[],bd);  % events
+    % step 1
+    [dat,dF,arLst,lmLoc,opts,dL] = burst.actTop(datOrg,opts,evtSpatialMask);  % foreground and seed detection
+
+    % step 2
+    if isfield(opts,'skipSteps') && opts.skipSteps>0
+        svLst = arLst;
+        riseX = [];
+    else
+        % grow seeds
+        [svLst,~,riseX] = burst.spTop(dat,dF,lmLoc,evtSpatialMask,opts);  % super voxel detection
+    end
+    
+    % step 3
+    if isfield(opts,'skipSteps') && opts.skipSteps>0
+        evtLst = svLst;
+        seLst = evtLst;
+        datR = 255*ones(size(dat));
+        riseLst = cell(0);
+        H = opts.sz(1);
+        W = opts.sz(2);
+        for i = 1:numel(evtLst)
+            rr = [];
+            rr.dlyMap = zeros(H,W);
+            rr.rgh = 1:H;
+            rr.rgw = 1:W;
+            riseLst{i} = rr;
+        end
+    else
+        [riseLst,datR,evtLst,seLst] = burst.evtTop(dat,dF,svLst,riseX,opts,[],bd);  % events
+    end
     [ftsLst,dffMat] = fea.getFeatureQuick(dat,evtLst,opts);
 
     % filter by significance level
