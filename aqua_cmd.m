@@ -202,5 +202,5 @@ if 0
     [ov1,lblMapS] = plt.regionMapWithData(evtLstE,datOrg,0.5,datRE); zzshow(ov1);
 end
 
-save([path0,name,'_AQuA.mat'], 'res');
+save([path0,name,'_AQuA.mat'], 'res','-v7.3');
 
