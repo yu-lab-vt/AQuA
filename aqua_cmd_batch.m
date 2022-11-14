@@ -308,7 +308,7 @@ for x = 1:size(files,1)
 
     %% save output
     res.bd = bd;
-    save([path0,name,'_AQuA.mat'], 'res');
+    save([path0,name,'_AQuA.mat'], 'res','-v7.3');
 end
     
 
