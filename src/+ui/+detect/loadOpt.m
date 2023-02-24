@@ -12,6 +12,8 @@ function loadOpt(~,~,f)
         opts.sz = optsOrg.sz;
         opts.maxValueDat = optsOrg.maxValueDat;
         opts.maxValueDepth = optsOrg.maxValueDepth;
+%         opts.frameRate = optsOrg.frameRate;
+%         opts.spatialRes = optsOrg.spatialRes;
         setappdata(f,'opts',opts);
         
         % adjust interface parameters
