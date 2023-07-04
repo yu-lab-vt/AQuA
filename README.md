@@ -79,7 +79,10 @@ We tested on MATLAB versions later than 2017a. Earlier versions are not supporte
 5. Open movie and choose project path in AQuA GUI.
 
 Some browsers may show a warning when downloading the 'jar' file. Please choose 'keep file'.
+
 Note: The Fiji version do not save the results in 'res' data structure in 'mat' file. If users want to obtain the results and process by themselves, please use MATLAB version.
+Due to the resolution issue and the implementation, there could be slight differences between the results of Fiji version and MATLAB version. Some MATLAB functions cannot be found in Java and implemented by authors. 
+Our updates are mainly on MATLAB platform, but the latest updates have also been synchronized to the Fiji version
 
 # Getting started
 If you are using AQuA for the first time, please read
@@ -108,6 +111,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 
 # Updates
+
+**7/04/2023:** 
+
+The major updates of the AQuA framework have been synchronized to the Fiji version.
 
 **3/17/2021:** 
 
