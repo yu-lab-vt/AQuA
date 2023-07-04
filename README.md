@@ -80,9 +80,10 @@ We tested on MATLAB versions later than 2017a. Earlier versions are not supporte
 
 Some browsers may show a warning when downloading the 'jar' file. Please choose 'keep file'.
 
-Note: The Fiji version do not save the results in 'res' data structure in 'mat' file. If users want to obtain the results and process by themselves, please use MATLAB version.
-Due to the resolution issue and the implementation, there could be slight differences between the results of Fiji version and MATLAB version. Some MATLAB functions cannot be found in Java and implemented by authors. 
-Our updates are mainly on MATLAB platform, but the latest updates have also been synchronized to the Fiji version
+Note: 
+Our updates are mainly on MATLAB platform, but the latest updates have also been synchronized to the Fiji version. Due to the resolution issue and the implementation (some MATLAB functions cannot be found in Java and implemented by authors), there could be slight differences between the results of Fiji version and MATLAB version. 
+The Fiji version does not save the results in 'res' data structure in 'mat' file. If users want to obtain the results and process them by themselves, the MATLAB version is more recommended.
+
 
 # Getting started
 If you are using AQuA for the first time, please read
