@@ -38,13 +38,13 @@ function [riseLst,datR,evtLst,seLst] = evtTop(dat,dF,svLst,riseX,opts,ff,bd,f)
     % super voxels to super events
     fprintf('Detecting super events ...\n')
     stp11 = max(round(opts.maxStp/2),2);
-    if opts.superEventdensityFirst==1
-        [neibLst,exldLst] = burst.svNeib(lblMapS,riseMap,stp11,opts.cOver);
-        seMap = burst.sv2se(lblMapS,neibLst,exldLst);
-    else
+%     if opts.superEventdensityFirst==1
+%         [neibLst,exldLst] = burst.svNeib(lblMapS,riseMap,stp11,opts.cOver);
+%         seMap = burst.sv2se_Modify(lblMapS,neibLst,exldLst);
+%     else
         xx = double(riseMap); xx(xx==0) = nan;
         seMap = burst.sp2evtStp1(lblMapS,xx,0,stp11,0.2,dat);
-    end
+%     end
     
     % seperate events in different region
     if exist('bd')==1 && ~isempty(bd)
