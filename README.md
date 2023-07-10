@@ -113,6 +113,10 @@ Yizhi Wang, Nicole V. DelRosso, Trisha Vaidyanathan, Michael Reitman, Michelle K
 
 # Updates
 
+**7/10/2023:** 
+
+This update solves one issue not detected before. In some special cases, two connected distinct signals that have a obviously different rising time difference may be considered as one (super) event. This update is to solve it.
+
 **7/04/2023:** 
 
 The major updates of the AQuA framework have been synchronized to the Fiji version.
