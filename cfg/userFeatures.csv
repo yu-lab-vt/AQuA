@@ -6,10 +6,11 @@ Basic - Perimeter,x=fts.basic.peri
 Basic - Circularity,x=fts.basic.circMetric
 Curve - P Value on max Dff (-log10),x=-log10(fts.curve.dffMaxPval)
 Curve - Max Dff,x=fts.curve.dffMax
-Curve - Duration 50% to 50%,x=fts.curve.width55
-Curve - Duration 10% to 10%,x=fts.curve.width11
-Curve - Rising duration 10% to 90%,x=fts.curve.rise19
-Curve - Decaying duration 90% to 10%,x=fts.curve.fall91
+Curve - Duration of visualized event overlay,x=fts.curve.duration
+Curve - Duration 50% to 50% based on averge dF/F,x=fts.curve.width55
+Curve - Duration 10% to 10% based on averge dF/F,x=fts.curve.width11
+Curve - Rising duration 10% to 90% based on averge dF/F,x=fts.curve.rise19
+Curve - Decaying duration 90% to 10% based on averge dF/F,x=fts.curve.fall91
 Curve - dat AUC,x=fts.curve.datAUC
 Curve - dff AUC,x=fts.curve.dffAUC
 Curve - Decay tau,x=fts.curve.decayTau
@@ -27,6 +28,6 @@ Landmark - event toward landmark before reaching,"x=fts.region.landmarkDir.chgTo
 Landmark - event away from landmark after reaching,"x=fts.region.landmarkDir.chgAwayAftReach(:,xxLmk)"
 Region - event centroid distance to border,"x0=fts.region.cell.dist2border;x=nanmin(x0,[],2)"
 Region - event centroid distance to border - normalized by region radius,"x0=fts.region.cell.dist2borderNorm; x=nanmin(x0,[],2)"
-Network - Temporal density,"x=fts.network.nOccurSameLoc(:,1)"
-Network - Temporal density with similar size only,"x=fts.network.nOccurSameLoc(:,2)"
-Network - Spatial density,x=fts.network.nOccurSameTime
+Network - number of events in the same location,"x=fts.network.nOccurSameLoc(:,1)"
+Network - number of events in the same location with similar size only,"x=fts.network.nOccurSameLoc(:,2)"
+Network - maximum number of events appearing at the same time,x=fts.network.nOccurSameTime
