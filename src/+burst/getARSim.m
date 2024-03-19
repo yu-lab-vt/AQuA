@@ -14,7 +14,9 @@ rr = load('smoCorr.mat');
 smo0 = rr.sVec(max(ix,iy));
 
 dSim = randn(opts.sz(1),opts.sz(2),200)*0.2;
-dSim = imgaussfilt(dSim,[smo0 smo0]);
+if smo0 > 0
+    dSim = imgaussfilt(dSim,[smo0 smo0]);
+end
 
 rto = size(dat,3)/size(dSim,3);
 
