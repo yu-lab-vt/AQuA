@@ -4,6 +4,9 @@
 
 AQuA (**A**strocyte **Qu**antification and **A**nalysis) is a tool to detect signalling events from microscopic time-lapse imaging data of astrocytes or other cell types. The algorithm is data-driven and based on machine learning principles, so, potentially, it can be applied across model organisms, fluorescent indicators, experimental modes, cell types, and imaging resolutions and speeds. 
 
+We have developed its improved version, **A**ctivity **Qu**antification and **A**nalysis, AQuA2. It can be found **[here](https://github.com/yu-lab-vt/AQuA2)**.
+.
+
 If you have any feedback or issue, you are welcome to either post issue in Issues section or send email to yug@vt.edu (Guoqiang Yu at Virginia Tech).
 
 - [More about AQuA](#more-about-aqua)
